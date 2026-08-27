@@ -1,0 +1,6 @@
+{
+  "name": "財務報表分析與決策系統",
+  "description": "專業財務報表分析與視覺化決策平台，支援應收帳款與存貨週轉率、獲利能力指標、多帳戶數據整合、AI自動化財務洞察與趨勢預測及PDF報告匯出。",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
