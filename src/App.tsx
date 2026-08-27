@@ -148,10 +148,10 @@ const DashboardContent: React.FC = () => {
       </aside>
 
       {/* Main App Work Area */}
-      <div className="flex-1 flex flex-col min-w-0">
+      <div className="flex-1 flex flex-col min-w-0 pb-20 md:pb-0">
         <Navbar />
 
-        <main className="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8 space-y-6">
+        <main className="flex-1 max-w-7xl w-full mx-auto p-3.5 sm:p-6 lg:p-8 space-y-5 sm:space-y-6">
           {/* Bento Category Navigation Header */}
           <MetricFilterTabs />
 
@@ -160,9 +160,9 @@ const DashboardContent: React.FC = () => {
 
           {/* Dynamic Bento Modules based on selected category */}
           {selectedCategory === 'all' && (
-            <div className="space-y-6">
+            <div className="space-y-5 sm:space-y-6">
               {/* Bento Grid: Turnover & Profitability */}
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 sm:gap-6">
                 <TurnoverAnalysisChart />
                 <ProfitabilityChart />
               </div>
@@ -182,7 +182,7 @@ const DashboardContent: React.FC = () => {
           )}
 
           {selectedCategory === 'turnover' && (
-            <div className="space-y-6">
+            <div className="space-y-5 sm:space-y-6">
               <TurnoverAnalysisChart />
               <FinancialHealthRadar />
               <MultiAccountComparison />
@@ -191,7 +191,7 @@ const DashboardContent: React.FC = () => {
           )}
 
           {selectedCategory === 'profitability' && (
-            <div className="space-y-6">
+            <div className="space-y-5 sm:space-y-6">
               <ProfitabilityChart />
               <DuPontDecomposition />
               <FinancialHealthRadar />
@@ -200,7 +200,7 @@ const DashboardContent: React.FC = () => {
           )}
 
           {selectedCategory === 'dupont' && (
-            <div className="space-y-6">
+            <div className="space-y-5 sm:space-y-6">
               <DuPontDecomposition />
               <ProfitabilityChart />
               <FinancialHealthRadar />
@@ -209,7 +209,7 @@ const DashboardContent: React.FC = () => {
           )}
 
           {selectedCategory === 'solvency' && (
-            <div className="space-y-6">
+            <div className="space-y-5 sm:space-y-6">
               <FinancialHealthRadar />
               <DuPontDecomposition />
               <MultiAccountComparison />
@@ -218,7 +218,7 @@ const DashboardContent: React.FC = () => {
           )}
 
           {selectedCategory === 'cashflow' && (
-            <div className="space-y-6">
+            <div className="space-y-5 sm:space-y-6">
               <TurnoverAnalysisChart />
               <FinancialHealthRadar />
               <FinancialDataTable />
@@ -248,7 +248,7 @@ const DashboardContent: React.FC = () => {
           </div>
 
           {/* Bento Footer */}
-          <footer className="pt-4 pb-8 text-center text-xs text-slate-500">
+          <footer className="pt-4 pb-6 text-center text-xs text-slate-500">
             <div className="flex flex-wrap items-center justify-center gap-2 font-medium text-slate-400">
               <span className="text-indigo-400 font-semibold">Finalyze AI</span>
               <span>•</span>
@@ -264,6 +264,79 @@ const DashboardContent: React.FC = () => {
           </footer>
         </main>
       </div>
+
+      {/* Mobile Bottom Navigation Dock (Fixed at bottom for mobile screens) */}
+      <nav className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-[#020617]/95 backdrop-blur-xl border-t border-slate-800/90 px-2 py-1.5 safe-bottom shadow-2xl">
+        <div className="flex items-center justify-around max-w-lg mx-auto">
+          <button
+            onClick={() => setSelectedCategory('all')}
+            className={`flex flex-col items-center justify-center py-1 px-2.5 rounded-xl transition min-w-[50px] ${
+              selectedCategory === 'all'
+                ? 'text-indigo-400 font-bold'
+                : 'text-slate-400 hover:text-slate-200'
+            }`}
+          >
+            <LayoutGrid className="w-5 h-5 mb-0.5" />
+            <span className="text-[10px]">全景大盤</span>
+          </button>
+
+          <button
+            onClick={() => setSelectedCategory('turnover')}
+            className={`flex flex-col items-center justify-center py-1 px-2.5 rounded-xl transition min-w-[50px] ${
+              selectedCategory === 'turnover'
+                ? 'text-indigo-400 font-bold'
+                : 'text-slate-400 hover:text-slate-200'
+            }`}
+          >
+            <RotateCcw className="w-5 h-5 mb-0.5" />
+            <span className="text-[10px]">週轉營運</span>
+          </button>
+
+          <button
+            onClick={() => setSelectedCategory('profitability')}
+            className={`flex flex-col items-center justify-center py-1 px-2.5 rounded-xl transition min-w-[50px] ${
+              selectedCategory === 'profitability'
+                ? 'text-indigo-400 font-bold'
+                : 'text-slate-400 hover:text-slate-200'
+            }`}
+          >
+            <Percent className="w-5 h-5 mb-0.5" />
+            <span className="text-[10px]">獲利指標</span>
+          </button>
+
+          <button
+            onClick={() => setSelectedCategory('dupont')}
+            className={`flex flex-col items-center justify-center py-1 px-2.5 rounded-xl transition min-w-[50px] ${
+              selectedCategory === 'dupont'
+                ? 'text-indigo-400 font-bold'
+                : 'text-slate-400 hover:text-slate-200'
+            }`}
+          >
+            <GitFork className="w-5 h-5 mb-0.5" />
+            <span className="text-[10px]">杜邦拆解</span>
+          </button>
+
+          <button
+            onClick={() => setSelectedCategory('solvency')}
+            className={`flex flex-col items-center justify-center py-1 px-2.5 rounded-xl transition min-w-[50px] ${
+              selectedCategory === 'solvency'
+                ? 'text-indigo-400 font-bold'
+                : 'text-slate-400 hover:text-slate-200'
+            }`}
+          >
+            <Activity className="w-5 h-5 mb-0.5" />
+            <span className="text-[10px]">償債結構</span>
+          </button>
+
+          <button
+            onClick={() => setIsDataEditorOpen(true)}
+            className="flex flex-col items-center justify-center py-1 px-2.5 rounded-xl text-slate-400 hover:text-slate-200 transition min-w-[50px]"
+          >
+            <SlidersHorizontal className="w-5 h-5 mb-0.5 text-slate-400" />
+            <span className="text-[10px]">管理數據</span>
+          </button>
+        </div>
+      </nav>
     </div>
   );
 };
@@ -279,4 +352,5 @@ export default function App() {
     </FinancialProvider>
   );
 }
+
 

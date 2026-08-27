@@ -84,12 +84,12 @@ export const FinancialDataTable: React.FC = () => {
   };
 
   return (
-    <div className="rounded-3xl border border-slate-800 bg-slate-900/60 backdrop-blur-sm p-6 shadow-sm">
-      {/* Header & Controls */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-5">
+    <div className="rounded-2xl sm:rounded-3xl border border-slate-800 bg-slate-900/60 backdrop-blur-sm p-4.5 sm:p-6 shadow-sm">
+      {/* Header & Statement Switcher */}
+      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 mb-5 sm:mb-6">
         <div>
           <div className="flex items-center space-x-2">
-            <Table className="w-5 h-5 text-blue-400" />
+            <Table className="w-5 h-5 text-blue-400 flex-shrink-0" />
             <h3 className="text-base font-bold text-white tracking-tight">
               完整財務報表與比率明細表
             </h3>
@@ -99,12 +99,12 @@ export const FinancialDataTable: React.FC = () => {
           </p>
         </div>
 
-        <div className="flex items-center space-x-2 self-start sm:self-auto">
+        <div className="flex items-center space-x-2 self-start lg:self-auto flex-wrap gap-y-2">
           {/* Sub-tabs */}
-          <div className="flex items-center bg-slate-950/70 p-1 rounded-2xl border border-slate-800 text-xs font-medium">
+          <div className="flex items-center bg-slate-950/70 p-1 rounded-xl sm:rounded-2xl border border-slate-800 text-xs font-medium overflow-x-auto max-w-full scrollbar-none">
             <button
               onClick={() => setStatementTab('ratios')}
-              className={`px-3 py-1.5 rounded-xl transition ${
+              className={`px-2.5 sm:px-3 py-1.5 rounded-lg sm:rounded-xl transition whitespace-nowrap min-h-[32px] ${
                 statementTab === 'ratios' ? 'bg-blue-600 text-white font-semibold shadow-sm' : 'text-slate-400 hover:text-slate-200'
               }`}
             >
@@ -112,7 +112,7 @@ export const FinancialDataTable: React.FC = () => {
             </button>
             <button
               onClick={() => setStatementTab('income')}
-              className={`px-3 py-1.5 rounded-xl transition ${
+              className={`px-2.5 sm:px-3 py-1.5 rounded-lg sm:rounded-xl transition whitespace-nowrap min-h-[32px] ${
                 statementTab === 'income' ? 'bg-blue-600 text-white font-semibold shadow-sm' : 'text-slate-400 hover:text-slate-200'
               }`}
             >
@@ -120,7 +120,7 @@ export const FinancialDataTable: React.FC = () => {
             </button>
             <button
               onClick={() => setStatementTab('balance')}
-              className={`px-3 py-1.5 rounded-xl transition ${
+              className={`px-2.5 sm:px-3 py-1.5 rounded-lg sm:rounded-xl transition whitespace-nowrap min-h-[32px] ${
                 statementTab === 'balance' ? 'bg-blue-600 text-white font-semibold shadow-sm' : 'text-slate-400 hover:text-slate-200'
               }`}
             >
@@ -128,7 +128,7 @@ export const FinancialDataTable: React.FC = () => {
             </button>
             <button
               onClick={() => setStatementTab('cashflow')}
-              className={`px-3 py-1.5 rounded-xl transition ${
+              className={`px-2.5 sm:px-3 py-1.5 rounded-lg sm:rounded-xl transition whitespace-nowrap min-h-[32px] ${
                 statementTab === 'cashflow' ? 'bg-blue-600 text-white font-semibold shadow-sm' : 'text-slate-400 hover:text-slate-200'
               }`}
             >
@@ -139,26 +139,26 @@ export const FinancialDataTable: React.FC = () => {
           {/* Export CSV Button */}
           <button
             onClick={exportToCsv}
-            className="flex items-center space-x-1.5 px-3.5 py-2 rounded-2xl bg-slate-800/80 hover:bg-slate-700 text-slate-200 border border-slate-700/60 text-xs font-medium transition"
+            className="flex items-center space-x-1.5 px-3 sm:px-3.5 py-1.5 sm:py-2 rounded-xl sm:rounded-2xl bg-slate-800/80 hover:bg-slate-700 text-slate-200 border border-slate-700/60 text-xs font-medium transition min-h-[32px]"
             title="匯出 CSV 試算表"
           >
-            <Download className="w-3.5 h-3.5 text-emerald-400" />
-            <span className="hidden sm:inline">匯出 CSV</span>
+            <Download className="w-3.5 h-3.5 text-emerald-400 flex-shrink-0" />
+            <span className="inline">匯出 CSV</span>
           </button>
         </div>
       </div>
 
       {/* Table Data View */}
-      <div className="overflow-x-auto rounded-2xl border border-slate-800">
+      <div className="overflow-x-auto rounded-xl sm:rounded-2xl border border-slate-800">
         <table className="w-full text-left text-xs border-collapse">
           <thead className="bg-slate-950/80 text-slate-400 font-semibold border-b border-slate-800">
             <tr>
-              <th className="py-3 px-4 min-w-[200px] sticky left-0 bg-slate-950 z-10">項目名稱</th>
-              <th className="py-3 px-3 text-center min-w-[70px]">單位</th>
+              <th className="py-2.5 sm:py-3 px-3 sm:px-4 min-w-[180px] sm:min-w-[200px] sticky left-0 bg-slate-950 z-20 border-r border-slate-800/80 shadow-[2px_0_6px_rgba(0,0,0,0.3)]">項目名稱</th>
+              <th className="py-2.5 sm:py-3 px-2 sm:px-3 text-center min-w-[60px] sm:min-w-[70px]">單位</th>
               {activeCompanyPeriodsWithRatios.map((p, idx) => (
                 <th
                   key={p.id}
-                  className={`py-3 px-4 text-right min-w-[110px] ${
+                  className={`py-2.5 sm:py-3 px-3 sm:px-4 text-right min-w-[100px] sm:min-w-[110px] ${
                     idx === activeCompanyPeriodsWithRatios.length - 1
                       ? 'bg-blue-950/40 text-blue-200 font-bold border-l border-blue-900/40'
                       : ''
@@ -181,35 +181,35 @@ export const FinancialDataTable: React.FC = () => {
                   </td>
                 </tr>
                 <tr className="hover:bg-slate-800/30">
-                  <td className="py-2.5 px-4 font-sans font-medium text-slate-200 sticky left-0 bg-slate-900 z-10">應收帳款週轉率</td>
+                  <td className="py-2.5 px-4 font-sans font-medium text-slate-200 sticky left-0 bg-slate-900 z-10 border-r border-slate-800/80 shadow-[2px_0_6px_rgba(0,0,0,0.3)]">應收帳款週轉率</td>
                   <td className="py-2.5 px-3 text-center text-slate-400">次/年</td>
                   {activeCompanyPeriodsWithRatios.map((p) => (
                     <td key={p.id} className="py-2.5 px-4 text-right text-blue-300">{p.ratios.arTurnover}</td>
                   ))}
                 </tr>
                 <tr className="hover:bg-slate-800/30">
-                  <td className="py-2.5 px-4 font-sans font-medium text-slate-200 sticky left-0 bg-slate-900 z-10">應收帳款週轉天數 (DSO)</td>
+                  <td className="py-2.5 px-4 font-sans font-medium text-slate-200 sticky left-0 bg-slate-900 z-10 border-r border-slate-800/80 shadow-[2px_0_6px_rgba(0,0,0,0.3)]">應收帳款週轉天數 (DSO)</td>
                   <td className="py-2.5 px-3 text-center text-slate-400">天</td>
                   {activeCompanyPeriodsWithRatios.map((p) => (
                     <td key={p.id} className="py-2.5 px-4 text-right text-blue-300">{p.ratios.dso}</td>
                   ))}
                 </tr>
                 <tr className="hover:bg-slate-800/30">
-                  <td className="py-2.5 px-4 font-sans font-medium text-slate-200 sticky left-0 bg-slate-900 z-10">存貨週轉率</td>
+                  <td className="py-2.5 px-4 font-sans font-medium text-slate-200 sticky left-0 bg-slate-900 z-10 border-r border-slate-800/80 shadow-[2px_0_6px_rgba(0,0,0,0.3)]">存貨週轉率</td>
                   <td className="py-2.5 px-3 text-center text-slate-400">次/年</td>
                   {activeCompanyPeriodsWithRatios.map((p) => (
                     <td key={p.id} className="py-2.5 px-4 text-right text-indigo-300">{p.ratios.inventoryTurnover}</td>
                   ))}
                 </tr>
                 <tr className="hover:bg-slate-800/30">
-                  <td className="py-2.5 px-4 font-sans font-medium text-slate-200 sticky left-0 bg-slate-900 z-10">存貨週轉天數 (DSI)</td>
+                  <td className="py-2.5 px-4 font-sans font-medium text-slate-200 sticky left-0 bg-slate-900 z-10 border-r border-slate-800/80 shadow-[2px_0_6px_rgba(0,0,0,0.3)]">存貨週轉天數 (DSI)</td>
                   <td className="py-2.5 px-3 text-center text-slate-400">天</td>
                   {activeCompanyPeriodsWithRatios.map((p) => (
                     <td key={p.id} className="py-2.5 px-4 text-right text-indigo-300">{p.ratios.dsi}</td>
                   ))}
                 </tr>
                 <tr className="hover:bg-slate-800/30">
-                  <td className="py-2.5 px-4 font-sans font-medium text-slate-200 sticky left-0 bg-slate-900 z-10">現金轉換循環 (CCC)</td>
+                  <td className="py-2.5 px-4 font-sans font-medium text-slate-200 sticky left-0 bg-slate-900 z-10 border-r border-slate-800/80 shadow-[2px_0_6px_rgba(0,0,0,0.3)]">現金轉換循環 (CCC)</td>
                   <td className="py-2.5 px-3 text-center text-slate-400">天</td>
                   {activeCompanyPeriodsWithRatios.map((p) => (
                     <td key={p.id} className="py-2.5 px-4 text-right font-bold text-cyan-300">{p.ratios.cashConversionCycle}</td>
@@ -222,42 +222,42 @@ export const FinancialDataTable: React.FC = () => {
                   </td>
                 </tr>
                 <tr className="hover:bg-slate-800/30">
-                  <td className="py-2.5 px-4 font-sans font-medium text-slate-200 sticky left-0 bg-slate-900 z-10">營業毛利率 (Gross Margin)</td>
+                  <td className="py-2.5 px-4 font-sans font-medium text-slate-200 sticky left-0 bg-slate-900 z-10 border-r border-slate-800/80 shadow-[2px_0_6px_rgba(0,0,0,0.3)]">營業毛利率 (Gross Margin)</td>
                   <td className="py-2.5 px-3 text-center text-slate-400">%</td>
                   {activeCompanyPeriodsWithRatios.map((p) => (
                     <td key={p.id} className="py-2.5 px-4 text-right text-emerald-300">{p.ratios.grossMargin}%</td>
                   ))}
                 </tr>
                 <tr className="hover:bg-slate-800/30">
-                  <td className="py-2.5 px-4 font-sans font-medium text-slate-200 sticky left-0 bg-slate-900 z-10">營業利益率 (Operating Margin)</td>
+                  <td className="py-2.5 px-4 font-sans font-medium text-slate-200 sticky left-0 bg-slate-900 z-10 border-r border-slate-800/80 shadow-[2px_0_6px_rgba(0,0,0,0.3)]">營業利益率 (Operating Margin)</td>
                   <td className="py-2.5 px-3 text-center text-slate-400">%</td>
                   {activeCompanyPeriodsWithRatios.map((p) => (
                     <td key={p.id} className="py-2.5 px-4 text-right text-emerald-300">{p.ratios.operatingMargin}%</td>
                   ))}
                 </tr>
                 <tr className="hover:bg-slate-800/30">
-                  <td className="py-2.5 px-4 font-sans font-medium text-slate-200 sticky left-0 bg-slate-900 z-10">稅後純益率 (Net Margin)</td>
+                  <td className="py-2.5 px-4 font-sans font-medium text-slate-200 sticky left-0 bg-slate-900 z-10 border-r border-slate-800/80 shadow-[2px_0_6px_rgba(0,0,0,0.3)]">稅後純益率 (Net Margin)</td>
                   <td className="py-2.5 px-3 text-center text-slate-400">%</td>
                   {activeCompanyPeriodsWithRatios.map((p) => (
                     <td key={p.id} className="py-2.5 px-4 text-right text-emerald-300">{p.ratios.netMargin}%</td>
                   ))}
                 </tr>
                 <tr className="hover:bg-slate-800/30">
-                  <td className="py-2.5 px-4 font-sans font-medium text-slate-200 sticky left-0 bg-slate-900 z-10">股東權益報酬率 (ROE)</td>
+                  <td className="py-2.5 px-4 font-sans font-medium text-slate-200 sticky left-0 bg-slate-900 z-10 border-r border-slate-800/80 shadow-[2px_0_6px_rgba(0,0,0,0.3)]">股東權益報酬率 (ROE)</td>
                   <td className="py-2.5 px-3 text-center text-slate-400">%</td>
                   {activeCompanyPeriodsWithRatios.map((p) => (
                     <td key={p.id} className="py-2.5 px-4 text-right font-bold text-amber-300">{p.ratios.roe}%</td>
                   ))}
                 </tr>
                 <tr className="hover:bg-slate-800/30">
-                  <td className="py-2.5 px-4 font-sans font-medium text-slate-200 sticky left-0 bg-slate-900 z-10">資產報酬率 (ROA)</td>
+                  <td className="py-2.5 px-4 font-sans font-medium text-slate-200 sticky left-0 bg-slate-900 z-10 border-r border-slate-800/80 shadow-[2px_0_6px_rgba(0,0,0,0.3)]">資產報酬率 (ROA)</td>
                   <td className="py-2.5 px-3 text-center text-slate-400">%</td>
                   {activeCompanyPeriodsWithRatios.map((p) => (
                     <td key={p.id} className="py-2.5 px-4 text-right text-amber-300">{p.ratios.roa}%</td>
                   ))}
                 </tr>
                 <tr className="hover:bg-slate-800/30">
-                  <td className="py-2.5 px-4 font-sans font-medium text-slate-200 sticky left-0 bg-slate-900 z-10">每股盈餘 (EPS)</td>
+                  <td className="py-2.5 px-4 font-sans font-medium text-slate-200 sticky left-0 bg-slate-900 z-10 border-r border-slate-800/80 shadow-[2px_0_6px_rgba(0,0,0,0.3)]">每股盈餘 (EPS)</td>
                   <td className="py-2.5 px-3 text-center text-slate-400">元</td>
                   {activeCompanyPeriodsWithRatios.map((p) => (
                     <td key={p.id} className="py-2.5 px-4 text-right font-bold text-amber-300">${p.ratios.eps}</td>
@@ -270,21 +270,21 @@ export const FinancialDataTable: React.FC = () => {
                   </td>
                 </tr>
                 <tr className="hover:bg-slate-800/30">
-                  <td className="py-2.5 px-4 font-sans font-medium text-slate-200 sticky left-0 bg-slate-900 z-10">流動比率 (Current Ratio)</td>
+                  <td className="py-2.5 px-4 font-sans font-medium text-slate-200 sticky left-0 bg-slate-900 z-10 border-r border-slate-800/80 shadow-[2px_0_6px_rgba(0,0,0,0.3)]">流動比率 (Current Ratio)</td>
                   <td className="py-2.5 px-3 text-center text-slate-400">%</td>
                   {activeCompanyPeriodsWithRatios.map((p) => (
                     <td key={p.id} className="py-2.5 px-4 text-right text-slate-300">{p.ratios.currentRatio}%</td>
                   ))}
                 </tr>
                 <tr className="hover:bg-slate-800/30">
-                  <td className="py-2.5 px-4 font-sans font-medium text-slate-200 sticky left-0 bg-slate-900 z-10">速動比率 (Quick Ratio)</td>
+                  <td className="py-2.5 px-4 font-sans font-medium text-slate-200 sticky left-0 bg-slate-900 z-10 border-r border-slate-800/80 shadow-[2px_0_6px_rgba(0,0,0,0.3)]">速動比率 (Quick Ratio)</td>
                   <td className="py-2.5 px-3 text-center text-slate-400">%</td>
                   {activeCompanyPeriodsWithRatios.map((p) => (
                     <td key={p.id} className="py-2.5 px-4 text-right text-slate-300">{p.ratios.quickRatio}%</td>
                   ))}
                 </tr>
                 <tr className="hover:bg-slate-800/30">
-                  <td className="py-2.5 px-4 font-sans font-medium text-slate-200 sticky left-0 bg-slate-900 z-10">負債比率 (Debt Ratio)</td>
+                  <td className="py-2.5 px-4 font-sans font-medium text-slate-200 sticky left-0 bg-slate-900 z-10 border-r border-slate-800/80 shadow-[2px_0_6px_rgba(0,0,0,0.3)]">負債比率 (Debt Ratio)</td>
                   <td className="py-2.5 px-3 text-center text-slate-400">%</td>
                   {activeCompanyPeriodsWithRatios.map((p) => (
                     <td key={p.id} className="py-2.5 px-4 text-right text-slate-300">{p.ratios.debtRatio}%</td>
@@ -296,42 +296,42 @@ export const FinancialDataTable: React.FC = () => {
             {statementTab === 'income' && (
               <>
                 <tr className="hover:bg-slate-800/30">
-                  <td className="py-2.5 px-4 font-sans font-medium text-slate-200 sticky left-0 bg-slate-900 z-10">營業收入 (Revenue)</td>
+                  <td className="py-2.5 px-4 font-sans font-medium text-slate-200 sticky left-0 bg-slate-900 z-10 border-r border-slate-800/80 shadow-[2px_0_6px_rgba(0,0,0,0.3)]">營業收入 (Revenue)</td>
                   <td className="py-2.5 px-3 text-center text-slate-400">千元</td>
                   {activeCompanyPeriodsWithRatios.map((p) => (
                     <td key={p.id} className="py-2.5 px-4 text-right font-bold text-white">{p.revenue.toLocaleString()}</td>
                   ))}
                 </tr>
                 <tr className="hover:bg-slate-800/30">
-                  <td className="py-2.5 px-4 font-sans font-medium text-slate-200 sticky left-0 bg-slate-900 z-10">營業成本 (COGS)</td>
+                  <td className="py-2.5 px-4 font-sans font-medium text-slate-200 sticky left-0 bg-slate-900 z-10 border-r border-slate-800/80 shadow-[2px_0_6px_rgba(0,0,0,0.3)]">營業成本 (COGS)</td>
                   <td className="py-2.5 px-3 text-center text-slate-400">千元</td>
                   {activeCompanyPeriodsWithRatios.map((p) => (
                     <td key={p.id} className="py-2.5 px-4 text-right text-rose-300">({p.costOfGoodsSold.toLocaleString()})</td>
                   ))}
                 </tr>
                 <tr className="hover:bg-slate-800/30 bg-slate-950/40 font-bold">
-                  <td className="py-2.5 px-4 font-sans text-emerald-400 sticky left-0 bg-slate-900 z-10">營業毛利 (Gross Profit)</td>
+                  <td className="py-2.5 px-4 font-sans text-emerald-400 sticky left-0 bg-slate-900 z-10 border-r border-slate-800/80 shadow-[2px_0_6px_rgba(0,0,0,0.3)]">營業毛利 (Gross Profit)</td>
                   <td className="py-2.5 px-3 text-center text-slate-400">千元</td>
                   {activeCompanyPeriodsWithRatios.map((p) => (
                     <td key={p.id} className="py-2.5 px-4 text-right text-emerald-300">{p.grossProfit.toLocaleString()}</td>
                   ))}
                 </tr>
                 <tr className="hover:bg-slate-800/30">
-                  <td className="py-2.5 px-4 font-sans font-medium text-slate-200 sticky left-0 bg-slate-900 z-10">營業費用 (OpEx)</td>
+                  <td className="py-2.5 px-4 font-sans font-medium text-slate-200 sticky left-0 bg-slate-900 z-10 border-r border-slate-800/80 shadow-[2px_0_6px_rgba(0,0,0,0.3)]">營業費用 (OpEx)</td>
                   <td className="py-2.5 px-3 text-center text-slate-400">千元</td>
                   {activeCompanyPeriodsWithRatios.map((p) => (
                     <td key={p.id} className="py-2.5 px-4 text-right text-rose-300">({p.operatingExpenses.toLocaleString()})</td>
                   ))}
                 </tr>
                 <tr className="hover:bg-slate-800/30 font-semibold">
-                  <td className="py-2.5 px-4 font-sans text-blue-400 sticky left-0 bg-slate-900 z-10">營業利益 (EBIT)</td>
+                  <td className="py-2.5 px-4 font-sans text-blue-400 sticky left-0 bg-slate-900 z-10 border-r border-slate-800/80 shadow-[2px_0_6px_rgba(0,0,0,0.3)]">營業利益 (EBIT)</td>
                   <td className="py-2.5 px-3 text-center text-slate-400">千元</td>
                   {activeCompanyPeriodsWithRatios.map((p) => (
                     <td key={p.id} className="py-2.5 px-4 text-right text-blue-300">{p.operatingIncome.toLocaleString()}</td>
                   ))}
                 </tr>
                 <tr className="hover:bg-slate-800/30 bg-amber-950/20 font-bold">
-                  <td className="py-2.5 px-4 font-sans text-amber-400 sticky left-0 bg-slate-900 z-10">稅後淨利 (Net Income)</td>
+                  <td className="py-2.5 px-4 font-sans text-amber-400 sticky left-0 bg-slate-900 z-10 border-r border-slate-800/80 shadow-[2px_0_6px_rgba(0,0,0,0.3)]">稅後淨利 (Net Income)</td>
                   <td className="py-2.5 px-3 text-center text-slate-400">千元</td>
                   {activeCompanyPeriodsWithRatios.map((p) => (
                     <td key={p.id} className="py-2.5 px-4 text-right text-amber-300">{p.netIncome.toLocaleString()}</td>
@@ -343,56 +343,56 @@ export const FinancialDataTable: React.FC = () => {
             {statementTab === 'balance' && (
               <>
                 <tr className="hover:bg-slate-800/30">
-                  <td className="py-2.5 px-4 font-sans font-medium text-slate-200 sticky left-0 bg-slate-900 z-10">現金及約當現金</td>
+                  <td className="py-2.5 px-4 font-sans font-medium text-slate-200 sticky left-0 bg-slate-900 z-10 border-r border-slate-800/80 shadow-[2px_0_6px_rgba(0,0,0,0.3)]">現金及約當現金</td>
                   <td className="py-2.5 px-3 text-center text-slate-400">千元</td>
                   {activeCompanyPeriodsWithRatios.map((p) => (
                     <td key={p.id} className="py-2.5 px-4 text-right">{p.cashAndEquivalents.toLocaleString()}</td>
                   ))}
                 </tr>
                 <tr className="hover:bg-slate-800/30">
-                  <td className="py-2.5 px-4 font-sans font-medium text-slate-200 sticky left-0 bg-slate-900 z-10">應收帳款及票據</td>
+                  <td className="py-2.5 px-4 font-sans font-medium text-slate-200 sticky left-0 bg-slate-900 z-10 border-r border-slate-800/80 shadow-[2px_0_6px_rgba(0,0,0,0.3)]">應收帳款及票據</td>
                   <td className="py-2.5 px-3 text-center text-slate-400">千元</td>
                   {activeCompanyPeriodsWithRatios.map((p) => (
                     <td key={p.id} className="py-2.5 px-4 text-right text-blue-300">{p.accountsReceivable.toLocaleString()}</td>
                   ))}
                 </tr>
                 <tr className="hover:bg-slate-800/30">
-                  <td className="py-2.5 px-4 font-sans font-medium text-slate-200 sticky left-0 bg-slate-900 z-10">存貨 (Inventory)</td>
+                  <td className="py-2.5 px-4 font-sans font-medium text-slate-200 sticky left-0 bg-slate-900 z-10 border-r border-slate-800/80 shadow-[2px_0_6px_rgba(0,0,0,0.3)]">存貨 (Inventory)</td>
                   <td className="py-2.5 px-3 text-center text-slate-400">千元</td>
                   {activeCompanyPeriodsWithRatios.map((p) => (
                     <td key={p.id} className="py-2.5 px-4 text-right text-indigo-300">{p.inventory.toLocaleString()}</td>
                   ))}
                 </tr>
                 <tr className="hover:bg-slate-800/30 font-semibold bg-slate-950/30">
-                  <td className="py-2.5 px-4 font-sans text-slate-300 sticky left-0 bg-slate-900 z-10">流動資產合計</td>
+                  <td className="py-2.5 px-4 font-sans text-slate-300 sticky left-0 bg-slate-900 z-10 border-r border-slate-800/80 shadow-[2px_0_6px_rgba(0,0,0,0.3)]">流動資產合計</td>
                   <td className="py-2.5 px-3 text-center text-slate-400">千元</td>
                   {activeCompanyPeriodsWithRatios.map((p) => (
                     <td key={p.id} className="py-2.5 px-4 text-right">{p.currentAssets.toLocaleString()}</td>
                   ))}
                 </tr>
                 <tr className="hover:bg-slate-800/30 font-bold text-white bg-blue-950/20">
-                  <td className="py-2.5 px-4 font-sans text-blue-300 sticky left-0 bg-slate-900 z-10">資產總額 (Total Assets)</td>
+                  <td className="py-2.5 px-4 font-sans text-blue-300 sticky left-0 bg-slate-900 z-10 border-r border-slate-800/80 shadow-[2px_0_6px_rgba(0,0,0,0.3)]">資產總額 (Total Assets)</td>
                   <td className="py-2.5 px-3 text-center text-slate-400">千元</td>
                   {activeCompanyPeriodsWithRatios.map((p) => (
                     <td key={p.id} className="py-2.5 px-4 text-right text-white">{p.totalAssets.toLocaleString()}</td>
                   ))}
                 </tr>
                 <tr className="hover:bg-slate-800/30">
-                  <td className="py-2.5 px-4 font-sans font-medium text-slate-200 sticky left-0 bg-slate-900 z-10">流動負債合計</td>
+                  <td className="py-2.5 px-4 font-sans font-medium text-slate-200 sticky left-0 bg-slate-900 z-10 border-r border-slate-800/80 shadow-[2px_0_6px_rgba(0,0,0,0.3)]">流動負債合計</td>
                   <td className="py-2.5 px-3 text-center text-slate-400">千元</td>
                   {activeCompanyPeriodsWithRatios.map((p) => (
                     <td key={p.id} className="py-2.5 px-4 text-right">{p.currentLiabilities.toLocaleString()}</td>
                   ))}
                 </tr>
                 <tr className="hover:bg-slate-800/30">
-                  <td className="py-2.5 px-4 font-sans font-medium text-slate-200 sticky left-0 bg-slate-900 z-10">負債總額 (Total Liabilities)</td>
+                  <td className="py-2.5 px-4 font-sans font-medium text-slate-200 sticky left-0 bg-slate-900 z-10 border-r border-slate-800/80 shadow-[2px_0_6px_rgba(0,0,0,0.3)]">負債總額 (Total Liabilities)</td>
                   <td className="py-2.5 px-3 text-center text-slate-400">千元</td>
                   {activeCompanyPeriodsWithRatios.map((p) => (
                     <td key={p.id} className="py-2.5 px-4 text-right">{p.totalLiabilities.toLocaleString()}</td>
                   ))}
                 </tr>
                 <tr className="hover:bg-slate-800/30 font-bold bg-amber-950/20">
-                  <td className="py-2.5 px-4 font-sans text-amber-400 sticky left-0 bg-slate-900 z-10">股東權益總額 (Equity)</td>
+                  <td className="py-2.5 px-4 font-sans text-amber-400 sticky left-0 bg-slate-900 z-10 border-r border-slate-800/80 shadow-[2px_0_6px_rgba(0,0,0,0.3)]">股東權益總額 (Equity)</td>
                   <td className="py-2.5 px-3 text-center text-slate-400">千元</td>
                   {activeCompanyPeriodsWithRatios.map((p) => (
                     <td key={p.id} className="py-2.5 px-4 text-right text-amber-300">{p.stockholdersEquity.toLocaleString()}</td>
@@ -404,21 +404,21 @@ export const FinancialDataTable: React.FC = () => {
             {statementTab === 'cashflow' && (
               <>
                 <tr className="hover:bg-slate-800/30 font-semibold">
-                  <td className="py-2.5 px-4 font-sans text-emerald-400 sticky left-0 bg-slate-900 z-10">營業活動現金流量 (OCF)</td>
+                  <td className="py-2.5 px-4 font-sans text-emerald-400 sticky left-0 bg-slate-900 z-10 border-r border-slate-800/80 shadow-[2px_0_6px_rgba(0,0,0,0.3)]">營業活動現金流量 (OCF)</td>
                   <td className="py-2.5 px-3 text-center text-slate-400">千元</td>
                   {activeCompanyPeriodsWithRatios.map((p) => (
                     <td key={p.id} className="py-2.5 px-4 text-right text-emerald-300 font-bold">{p.operatingCashFlow.toLocaleString()}</td>
                   ))}
                 </tr>
                 <tr className="hover:bg-slate-800/30">
-                  <td className="py-2.5 px-4 font-sans font-medium text-slate-200 sticky left-0 bg-slate-900 z-10">資本支出 (CapEx)</td>
+                  <td className="py-2.5 px-4 font-sans font-medium text-slate-200 sticky left-0 bg-slate-900 z-10 border-r border-slate-800/80 shadow-[2px_0_6px_rgba(0,0,0,0.3)]">資本支出 (CapEx)</td>
                   <td className="py-2.5 px-3 text-center text-slate-400">千元</td>
                   {activeCompanyPeriodsWithRatios.map((p) => (
                     <td key={p.id} className="py-2.5 px-4 text-right text-rose-300">({p.capitalExpenditures.toLocaleString()})</td>
                   ))}
                 </tr>
                 <tr className="hover:bg-slate-800/30 font-bold bg-cyan-950/30">
-                  <td className="py-2.5 px-4 font-sans text-cyan-400 sticky left-0 bg-slate-900 z-10">自由現金流量 (Free Cash Flow)</td>
+                  <td className="py-2.5 px-4 font-sans text-cyan-400 sticky left-0 bg-slate-900 z-10 border-r border-slate-800/80 shadow-[2px_0_6px_rgba(0,0,0,0.3)]">自由現金流量 (Free Cash Flow)</td>
                   <td className="py-2.5 px-3 text-center text-slate-400">千元</td>
                   {activeCompanyPeriodsWithRatios.map((p) => (
                     <td key={p.id} className="py-2.5 px-4 text-right text-cyan-300">{p.ratios.freeCashFlow.toLocaleString()}</td>

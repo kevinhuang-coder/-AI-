@@ -93,19 +93,19 @@ export const FinancialHealthRadar: React.FC = () => {
   ];
 
   return (
-    <div className="rounded-3xl border border-slate-800 bg-slate-900/60 backdrop-blur-sm p-6 sm:p-7 shadow-sm">
+    <div className="rounded-2xl sm:rounded-3xl border border-slate-800 bg-slate-900/60 backdrop-blur-sm p-4.5 sm:p-7 shadow-sm">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6 pb-4 border-b border-slate-800/80">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-5 sm:mb-6 pb-4 border-b border-slate-800/80">
         <div className="flex items-center space-x-3">
           <div className="w-10 h-10 rounded-2xl bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 flex items-center justify-center flex-shrink-0">
             <Activity className="w-5 h-5" />
           </div>
           <div>
-            <div className="flex items-center space-x-2">
+            <div className="flex items-center space-x-2 flex-wrap gap-y-1">
               <h3 className="text-base font-bold text-white tracking-tight">
                 五維度財務健檢雷達 (Financial Health Radar)
               </h3>
-              <span className="text-[11px] px-2 py-0.5 rounded-full bg-slate-800 text-slate-300 border border-slate-700 font-mono">
+              <span className="text-[10px] sm:text-[11px] px-2 py-0.5 rounded-full bg-slate-800 text-slate-300 border border-slate-700 font-mono">
                 {latestPeriod.period}
               </span>
             </div>
@@ -115,20 +115,20 @@ export const FinancialHealthRadar: React.FC = () => {
           </div>
         </div>
 
-        <div className="flex items-center space-x-3">
+        <div className="flex items-center space-x-3 self-start sm:self-auto">
           <span className={`text-xs px-3.5 py-1.5 rounded-xl border font-bold flex items-center gap-1.5 ${getRatingColor(health.rating)}`}>
-            <Award className="w-3.5 h-3.5" />
+            <Award className="w-3.5 h-3.5 flex-shrink-0" />
             <span>綜合評級：{health.rating}</span>
           </span>
         </div>
       </div>
 
       {/* Full-width 3-Column Executive Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 sm:gap-6 items-stretch">
         
         {/* Column 1: Overall Health Score Gauge (lg:col-span-3) */}
-        <div className="lg:col-span-3 flex flex-col items-center justify-center p-6 bg-slate-950/70 rounded-2xl border border-slate-800 text-center h-full min-h-[300px]">
-          <div className="relative flex items-center justify-center w-36 h-36">
+        <div className="lg:col-span-3 flex flex-col items-center justify-center p-5 sm:p-6 bg-slate-950/70 rounded-2xl border border-slate-800 text-center min-h-[260px] sm:min-h-[300px]">
+          <div className="relative flex items-center justify-center w-32 h-32 sm:w-36 sm:h-36">
             <svg className="w-full h-full -rotate-90" viewBox="0 0 100 100">
               <circle
                 cx="50"
@@ -153,8 +153,8 @@ export const FinancialHealthRadar: React.FC = () => {
               />
             </svg>
             <div className="absolute flex flex-col items-center justify-center">
-              <span className="text-4xl font-black text-white font-mono tracking-tight">{health.totalScore}</span>
-              <span className="text-[11px] text-slate-400 font-semibold uppercase font-mono mt-0.5">SCORE / 100</span>
+              <span className="text-3xl sm:text-4xl font-black text-white font-mono tracking-tight">{health.totalScore}</span>
+              <span className="text-[10px] sm:text-[11px] text-slate-400 font-semibold uppercase font-mono mt-0.5">SCORE / 100</span>
             </div>
           </div>
 
@@ -179,19 +179,19 @@ export const FinancialHealthRadar: React.FC = () => {
         </div>
 
         {/* Column 2: Spacious Radar Chart Canvas (lg:col-span-5) */}
-        <div className="lg:col-span-5 h-[300px] sm:h-[320px] w-full flex items-center justify-center bg-slate-950/40 rounded-2xl border border-slate-800/60 p-2">
+        <div className="lg:col-span-5 h-[270px] sm:h-[320px] w-full flex items-center justify-center bg-slate-950/40 rounded-2xl border border-slate-800/60 p-1 sm:p-2">
           <ResponsiveContainer width="100%" height="100%">
-            <RadarChart data={health.radarData} margin={{ top: 20, right: 35, bottom: 20, left: 35 }}>
+            <RadarChart data={health.radarData} margin={{ top: 15, right: 25, bottom: 15, left: 25 }}>
               <PolarGrid stroke="#1e293b" />
               <PolarAngleAxis
                 dataKey="subject"
-                tick={{ fill: '#cbd5e1', fontSize: 12, fontWeight: 600 }}
+                tick={{ fill: '#cbd5e1', fontSize: 11, fontWeight: 600 }}
               />
               <PolarRadiusAxis
                 angle={30}
                 domain={[0, 100]}
                 stroke="#334155"
-                tick={{ fill: '#64748b', fontSize: 10 }}
+                tick={{ fill: '#64748b', fontSize: 9 }}
               />
               <Tooltip
                 contentStyle={{
@@ -217,16 +217,16 @@ export const FinancialHealthRadar: React.FC = () => {
         </div>
 
         {/* Column 3: 5 Dimensions Breakdown Cards (lg:col-span-4) */}
-        <div className="lg:col-span-4 space-y-2.5">
-          {dimensionList.map((dim, idx) => {
+        <div className="lg:col-span-4 space-y-2 sm:space-y-2.5 flex flex-col justify-center">
+          {dimensionList.map((dim) => {
             const Icon = dim.icon;
             const tag = getScoreTag(dim.score);
             return (
               <div
                 key={dim.name}
-                className="p-3 bg-slate-950/70 rounded-xl border border-slate-800/90 hover:border-slate-700 transition"
+                className="p-2.5 sm:p-3 bg-slate-950/70 rounded-xl border border-slate-800/90 hover:border-slate-700 transition"
               >
-                <div className="flex items-center justify-between mb-1.5">
+                <div className="flex items-center justify-between mb-1">
                   <div className="flex items-center space-x-2">
                     <div className="p-1 rounded-lg bg-slate-900 text-slate-300">
                       <Icon className="w-3.5 h-3.5" />
@@ -238,13 +238,13 @@ export const FinancialHealthRadar: React.FC = () => {
                   </div>
                   <div className="flex items-center space-x-2">
                     <span className="text-xs font-extrabold text-white font-mono">{dim.score} 分</span>
-                    <span className={`text-[10px] px-1.5 py-0.2 rounded border font-semibold ${tag.color}`}>
+                    <span className={`text-[9px] sm:text-[10px] px-1.5 py-0.2 rounded border font-semibold ${tag.color}`}>
                       {tag.label}
                     </span>
                   </div>
                 </div>
 
-                <div className="w-full bg-slate-800 h-1.5 rounded-full overflow-hidden mb-1.5">
+                <div className="w-full bg-slate-800 h-1.5 rounded-full overflow-hidden mb-1">
                   <div
                     className={`${dim.barColor} h-full rounded-full transition-all duration-500`}
                     style={{ width: `${Math.min(100, Math.max(5, dim.score))}%` }}

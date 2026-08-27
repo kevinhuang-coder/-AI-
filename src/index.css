@@ -1,16 +1,34 @@
 @import "tailwindcss";
 
 @layer base {
+  html {
+    -webkit-tap-highlight-color: transparent;
+    scroll-behavior: smooth;
+  }
+
   body {
     @apply bg-[#020617] text-slate-50 antialiased selection:bg-indigo-600 selection:text-white;
     font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+    min-height: 100vh;
+    min-height: 100dvh;
+    overflow-x: hidden;
+  }
+
+  /* Prevent automatic text zoom on iOS input focus by ensuring 16px minimum */
+  input, select, textarea {
+    font-size: 16px;
+  }
+  @media (min-width: 640px) {
+    input, select, textarea {
+      font-size: inherit;
+    }
   }
 }
 
-/* Bento custom scrollbars */
+/* Bento & Mobile custom scrollbars */
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 5px;
+  height: 5px;
 }
 ::-webkit-scrollbar-track {
   background: #020617;
@@ -21,6 +39,23 @@
 }
 ::-webkit-scrollbar-thumb:hover {
   background: #334155;
+}
+
+/* Utility for hiding scrollbar while maintaining swipe functionality */
+.scrollbar-none {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
+
+/* Mobile Safe Area Padding */
+.safe-bottom {
+  padding-bottom: env(safe-area-inset-bottom, 16px);
+}
+.safe-top {
+  padding-top: env(safe-area-inset-top, 0px);
 }
 
 @media print {
@@ -41,4 +76,5 @@
     max-width: 100% !important;
   }
 }
+
 

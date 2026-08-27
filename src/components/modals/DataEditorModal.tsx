@@ -574,53 +574,53 @@ export const DataEditorModal: React.FC = () => {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md overflow-y-auto">
-      <div className="bg-slate-900/95 border border-slate-800 rounded-3xl w-full max-w-5xl shadow-2xl overflow-hidden my-8 flex flex-col max-h-[90vh] backdrop-blur-md">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-slate-950/80 backdrop-blur-md overflow-y-auto">
+      <div className="bg-slate-900/95 border border-slate-800 rounded-2xl sm:rounded-3xl w-full max-w-5xl shadow-2xl overflow-hidden my-2 sm:my-8 flex flex-col max-h-[94vh] sm:max-h-[90vh] backdrop-blur-md">
         
         {/* Header */}
-        <div className="px-6 py-4 bg-slate-950/90 border-b border-slate-800 flex flex-wrap items-center justify-between gap-4">
+        <div className="px-4 sm:px-6 py-3 sm:py-4 bg-slate-950/90 border-b border-slate-800 flex flex-wrap items-center justify-between gap-3">
           
           <div className="flex items-center space-x-3">
-            <div className="w-10 h-10 rounded-2xl bg-blue-600/20 text-blue-400 border border-blue-500/30 flex items-center justify-center flex-shrink-0">
+            <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl sm:rounded-2xl bg-blue-600/20 text-blue-400 border border-blue-500/30 flex items-center justify-center flex-shrink-0">
               <Building2 className="w-5 h-5" />
             </div>
             <div>
-              <h3 className="text-base font-bold text-white tracking-tight flex items-center gap-2">
+              <h3 className="text-sm sm:text-base font-bold text-white tracking-tight flex items-center gap-2">
                 {editingCompany ? `編輯企業財報數據：${editingCompany.name}` : '新增分析帳戶 / 企業財報數據'}
               </h3>
-              <p className="text-xs text-slate-400">
+              <p className="text-[11px] sm:text-xs text-slate-400">
                 支援手動填寫、PDF/CSV 智慧匯入與即時版本還原追蹤
               </p>
             </div>
           </div>
 
           {/* Navigation Tabs & Close */}
-          <div className="flex items-center space-x-2">
-            <div className="flex items-center p-1 rounded-2xl bg-slate-900 border border-slate-800">
+          <div className="flex items-center space-x-2 w-full sm:w-auto justify-between sm:justify-end">
+            <div className="flex items-center p-1 rounded-xl sm:rounded-2xl bg-slate-900 border border-slate-800">
               <button
                 type="button"
                 onClick={() => setActiveTab('editor')}
-                className={`flex items-center space-x-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold transition ${
+                className={`flex items-center space-x-1.5 px-2.5 sm:px-3 py-1.5 rounded-lg sm:rounded-xl text-xs font-semibold transition min-h-[32px] ${
                   activeTab === 'editor'
                     ? 'bg-blue-600 text-white shadow-sm shadow-blue-600/25'
                     : 'text-slate-400 hover:text-slate-200'
                 }`}
               >
                 <FileSpreadsheet className="w-3.5 h-3.5" />
-                <span>報表編輯與試算</span>
+                <span>報表編輯</span>
               </button>
 
               <button
                 type="button"
                 onClick={() => setActiveTab('history')}
-                className={`flex items-center space-x-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold transition ${
+                className={`flex items-center space-x-1.5 px-2.5 sm:px-3 py-1.5 rounded-lg sm:rounded-xl text-xs font-semibold transition min-h-[32px] ${
                   activeTab === 'history'
                     ? 'bg-blue-600 text-white shadow-sm shadow-blue-600/25'
                     : 'text-slate-400 hover:text-slate-200'
                 }`}
               >
                 <Clock className="w-3.5 h-3.5" />
-                <span>最近修改記錄</span>
+                <span>歷史記錄</span>
                 {changeHistory.length > 0 && (
                   <span className="px-1.5 py-0.2 rounded-full bg-blue-500/30 text-blue-200 text-[10px] font-mono">
                     {changeHistory.length}
@@ -631,7 +631,7 @@ export const DataEditorModal: React.FC = () => {
 
             <button
               onClick={() => setIsDataEditorOpen(false)}
-              className="p-2 rounded-2xl text-slate-400 hover:text-white hover:bg-slate-800/80 transition"
+              className="p-1.5 sm:p-2 rounded-xl sm:rounded-2xl text-slate-400 hover:text-white hover:bg-slate-800/80 transition"
               title="關閉編輯器"
             >
               <X className="w-5 h-5" />
@@ -1109,7 +1109,7 @@ export const DataEditorModal: React.FC = () => {
         </div>
 
         {/* Modal Footer */}
-        <div className="px-6 py-4 bg-slate-950/90 border-t border-slate-800 flex items-center justify-between">
+        <div className="px-4 sm:px-6 py-3 sm:py-4 bg-slate-950/90 border-t border-slate-800 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
           <div>
             {editingCompany && !editingCompany.isConsolidatedGroup && (
               <button
@@ -1120,7 +1120,7 @@ export const DataEditorModal: React.FC = () => {
                     setIsDataEditorOpen(false);
                   }
                 }}
-                className="flex items-center space-x-1.5 px-3.5 py-2 rounded-2xl bg-rose-950/80 text-rose-300 hover:bg-rose-900 border border-rose-800/80 text-xs font-semibold transition"
+                className="flex items-center justify-center space-x-1.5 px-3.5 py-2.5 rounded-xl sm:rounded-2xl bg-rose-950/80 text-rose-300 hover:bg-rose-900 border border-rose-800/80 text-xs font-semibold transition w-full sm:w-auto min-h-[40px]"
               >
                 <Trash2 className="w-3.5 h-3.5" />
                 <span>刪除此企業帳戶</span>
@@ -1128,21 +1128,21 @@ export const DataEditorModal: React.FC = () => {
             )}
           </div>
 
-          <div className="flex items-center space-x-3">
+          <div className="flex items-center space-x-2 sm:space-x-3">
             <button
               type="button"
               onClick={() => setIsDataEditorOpen(false)}
-              className="px-4 py-2.5 rounded-2xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-medium transition"
+              className="flex-1 sm:flex-none px-4 py-2.5 rounded-xl sm:rounded-2xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-medium transition min-h-[40px]"
             >
               取消
             </button>
             <button
               type="button"
               onClick={handleSave}
-              className="flex items-center space-x-1.5 px-6 py-2.5 rounded-2xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold transition shadow-lg shadow-blue-500/25"
+              className="flex-[2] sm:flex-none flex items-center justify-center space-x-1.5 px-5 sm:px-6 py-2.5 rounded-xl sm:rounded-2xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold transition shadow-lg shadow-blue-500/25 min-h-[40px]"
             >
               <Save className="w-4 h-4" />
-              <span>儲存並即時計算指標</span>
+              <span>儲存並計算</span>
             </button>
           </div>
         </div>

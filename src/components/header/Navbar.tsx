@@ -76,16 +76,16 @@ export const Navbar: React.FC = () => {
               <button
                 id="company-selector-btn"
                 onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                className="flex items-center space-x-2 px-3 py-1.5 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-800 text-xs sm:text-sm font-medium transition text-left focus:outline-none focus:ring-2 focus:ring-indigo-500/50"
+                className="flex items-center space-x-1.5 sm:space-x-2 px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-800 text-xs sm:text-sm font-medium transition text-left focus:outline-none focus:ring-2 focus:ring-indigo-500/50 min-h-[38px]"
               >
                 {activeCompany.isConsolidatedGroup ? (
                   <Layers className="w-4 h-4 text-cyan-400 flex-shrink-0" />
                 ) : (
                   <Building2 className="w-4 h-4 text-indigo-400 flex-shrink-0" />
                 )}
-                <div className="max-w-[130px] sm:max-w-[180px] truncate">
-                  <span className="text-slate-200 font-semibold block truncate">{activeCompany.name}</span>
-                  <span className="text-[10px] text-slate-400 block font-mono">{activeCompany.code}</span>
+                <div className="max-w-[100px] xs:max-w-[130px] sm:max-w-[180px] truncate">
+                  <span className="text-slate-200 font-semibold block truncate text-xs sm:text-sm">{activeCompany.name}</span>
+                  <span className="text-[10px] text-slate-400 block font-mono leading-none">{activeCompany.code}</span>
                 </div>
                 <ChevronDown className="w-3.5 h-3.5 text-slate-400 flex-shrink-0" />
               </button>
@@ -94,15 +94,15 @@ export const Navbar: React.FC = () => {
               {isDropdownOpen && (
                 <>
                   <div
-                    className="fixed inset-0 z-40"
+                    className="fixed inset-0 z-40 bg-black/40 backdrop-blur-xs sm:bg-transparent"
                     onClick={() => setIsDropdownOpen(false)}
                   />
-                  <div className="absolute right-0 mt-2 w-80 rounded-2xl bg-slate-900 border border-slate-800 shadow-2xl z-50 py-2 divide-y divide-slate-800">
-                    <div className="px-3.5 py-1.5 text-[11px] font-semibold text-slate-400 uppercase tracking-wider">
+                  <div className="fixed sm:absolute left-4 right-4 sm:left-0 sm:right-auto top-16 sm:top-full mt-2 sm:w-80 rounded-2xl bg-slate-900 border border-slate-800 shadow-2xl z-50 py-2 divide-y divide-slate-800 max-h-[80vh] flex flex-col">
+                    <div className="px-3.5 py-2 text-[11px] font-semibold text-slate-400 uppercase tracking-wider">
                       切換分析帳戶 / 集團合併實體
                     </div>
 
-                    <div className="py-1 max-h-64 overflow-y-auto">
+                    <div className="py-1 overflow-y-auto max-h-56 sm:max-h-64">
                       {allCompaniesWithConsolidated.map((comp) => {
                         const isSelected = comp.id === activeCompanyId;
                         return (
@@ -144,7 +144,7 @@ export const Navbar: React.FC = () => {
                     </div>
 
                     {/* Actions in Dropdown */}
-                    <div className="p-2 space-y-1 bg-slate-950/60">
+                    <div className="p-2 space-y-1 bg-slate-950/80 mt-auto">
                       <button
                         onClick={() => {
                           setEditingCompany(null);
@@ -161,7 +161,7 @@ export const Navbar: React.FC = () => {
                           resetToSampleData();
                           setIsDropdownOpen(false);
                         }}
-                        className="w-full flex items-center space-x-2 px-3 py-1.5 text-xs font-medium text-slate-400 hover:text-slate-200 hover:bg-slate-800 rounded-lg transition"
+                        className="w-full flex items-center space-x-2 px-3 py-2 text-xs font-medium text-slate-400 hover:text-slate-200 hover:bg-slate-800 rounded-xl transition"
                       >
                         <RotateCcw className="w-3.5 h-3.5" />
                         <span>重設回預設示範數據</span>
@@ -174,7 +174,7 @@ export const Navbar: React.FC = () => {
           </div>
 
           {/* Action Buttons */}
-          <div className="flex items-center space-x-2">
+          <div className="flex items-center space-x-1.5 sm:space-x-2">
             {/* Import Financial Report Button */}
             <button
               id="import-pdf-csv-btn"
@@ -182,10 +182,10 @@ export const Navbar: React.FC = () => {
                 setEditingCompany(null);
                 setIsDataEditorOpen(true);
               }}
-              className="flex items-center space-x-1.5 px-3 py-2 rounded-xl bg-blue-600/20 hover:bg-blue-600/30 text-blue-300 border border-blue-500/30 text-xs font-semibold transition"
+              className="flex items-center space-x-1.5 px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-xl bg-blue-600/20 hover:bg-blue-600/30 text-blue-300 border border-blue-500/30 text-xs font-semibold transition min-h-[38px]"
               title="上傳 PDF 或 CSV 財務報告書"
             >
-              <Upload className="w-3.5 h-3.5 text-blue-400" />
+              <Upload className="w-3.5 h-3.5 text-blue-400 flex-shrink-0" />
               <span className="hidden md:inline">匯入財報 (PDF/CSV)</span>
               <span className="md:hidden">匯入</span>
             </button>
@@ -195,14 +195,14 @@ export const Navbar: React.FC = () => {
               id="run-ai-btn"
               onClick={runAiDiagnostic}
               disabled={isLoadingAi}
-              className="flex items-center space-x-1.5 px-3.5 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs sm:text-sm font-semibold shadow-lg shadow-indigo-900/30 transition disabled:opacity-50"
+              className="flex items-center space-x-1.5 px-3 sm:px-3.5 py-1.5 sm:py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs sm:text-sm font-semibold shadow-lg shadow-indigo-900/30 transition disabled:opacity-50 min-h-[38px]"
             >
               <Sparkles className={`w-4 h-4 ${isLoadingAi ? 'animate-spin text-amber-300' : 'text-amber-300'}`} />
               <span className="hidden sm:inline">
                 {isLoadingAi ? 'AI 深度運算中...' : 'AI 智能診斷'}
               </span>
               <span className="sm:hidden">
-                {isLoadingAi ? '運算中' : 'AI'}
+                {isLoadingAi ? '運算中' : 'AI 診斷'}
               </span>
             </button>
 
@@ -210,10 +210,10 @@ export const Navbar: React.FC = () => {
             <button
               id="export-pdf-btn"
               onClick={() => setIsPdfModalOpen(true)}
-              className="flex items-center space-x-1.5 px-3.5 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-200 border border-slate-800 text-xs sm:text-sm font-medium transition"
+              className="flex items-center space-x-1.5 px-2.5 sm:px-3.5 py-1.5 sm:py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-200 border border-slate-800 text-xs sm:text-sm font-medium transition min-h-[38px]"
               title="匯出專業財務 PDF 報告"
             >
-              <FileText className="w-4 h-4 text-emerald-400" />
+              <FileText className="w-4 h-4 text-emerald-400 flex-shrink-0" />
               <span className="hidden sm:inline">匯出 PDF</span>
               <span className="sm:hidden">PDF</span>
             </button>
@@ -225,7 +225,7 @@ export const Navbar: React.FC = () => {
                 setEditingCompany(activeCompany.isConsolidatedGroup ? null : activeCompany);
                 setIsDataEditorOpen(true);
               }}
-              className="p-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-800 transition"
+              className="p-2 sm:p-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-800 transition min-h-[38px] min-w-[38px] flex items-center justify-center"
               title="編輯/檢視財務數據"
             >
               <SlidersHorizontal className="w-4 h-4" />

@@ -35,12 +35,12 @@ export const ProfitabilityChart: React.FC = () => {
   const latest = activeCompanyPeriodsWithRatios[activeCompanyPeriodsWithRatios.length - 1];
 
   return (
-    <div className="bg-slate-900/50 border border-slate-800 rounded-3xl p-6 shadow-sm backdrop-blur-sm">
+    <div className="bg-slate-900/50 border border-slate-800 rounded-2xl sm:rounded-3xl p-4.5 sm:p-6 shadow-sm backdrop-blur-sm">
       {/* Header & Controls */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-5 sm:mb-6">
         <div>
           <div className="flex items-center space-x-2">
-            <Percent className="w-5 h-5 text-emerald-400" />
+            <Percent className="w-5 h-5 text-emerald-400 flex-shrink-0" />
             <h3 className="text-base font-bold text-white tracking-tight">
               獲利能力與股東回報指標
             </h3>
@@ -51,10 +51,10 @@ export const ProfitabilityChart: React.FC = () => {
         </div>
 
         {/* View Mode Switcher (Bento Pill) */}
-        <div className="flex items-center bg-slate-900 p-1 rounded-2xl border border-slate-800 self-start sm:self-auto text-xs font-semibold">
+        <div className="flex items-center bg-slate-900 p-1 rounded-xl sm:rounded-2xl border border-slate-800 self-start sm:self-auto text-xs font-semibold overflow-x-auto max-w-full scrollbar-none">
           <button
             onClick={() => setMetricMode('margins')}
-            className={`px-3 py-1.5 rounded-xl transition ${
+            className={`px-2.5 sm:px-3 py-1.5 rounded-lg sm:rounded-xl transition whitespace-nowrap min-h-[32px] ${
               metricMode === 'margins'
                 ? 'bg-indigo-600 text-white shadow-md font-semibold'
                 : 'text-slate-400 hover:text-slate-200'
@@ -64,7 +64,7 @@ export const ProfitabilityChart: React.FC = () => {
           </button>
           <button
             onClick={() => setMetricMode('returns')}
-            className={`px-3 py-1.5 rounded-xl transition ${
+            className={`px-2.5 sm:px-3 py-1.5 rounded-lg sm:rounded-xl transition whitespace-nowrap min-h-[32px] ${
               metricMode === 'returns'
                 ? 'bg-indigo-600 text-white shadow-md font-semibold'
                 : 'text-slate-400 hover:text-slate-200'
@@ -74,7 +74,7 @@ export const ProfitabilityChart: React.FC = () => {
           </button>
           <button
             onClick={() => setMetricMode('amounts')}
-            className={`px-3 py-1.5 rounded-xl transition ${
+            className={`px-2.5 sm:px-3 py-1.5 rounded-lg sm:rounded-xl transition whitespace-nowrap min-h-[32px] ${
               metricMode === 'amounts'
                 ? 'bg-indigo-600 text-white shadow-md font-semibold'
                 : 'text-slate-400 hover:text-slate-200'
@@ -86,10 +86,10 @@ export const ProfitabilityChart: React.FC = () => {
       </div>
 
       {/* Chart Canvas */}
-      <div className="h-72 sm:h-80 w-full">
+      <div className="h-64 sm:h-80 w-full">
         <ResponsiveContainer width="100%" height="100%">
           {metricMode === 'margins' ? (
-            <ComposedChart data={chartData} margin={{ top: 10, right: 10, left: -10, bottom: 0 }}>
+            <ComposedChart data={chartData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
               <defs>
                 <linearGradient id="grossMarginGradBento" x1="0" y1="0" x2="0" y2="1">
                   <stop offset="5%" stopColor="#10b981" stopOpacity={0.25} />
@@ -97,8 +97,8 @@ export const ProfitabilityChart: React.FC = () => {
                 </linearGradient>
               </defs>
               <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" vertical={false} />
-              <XAxis dataKey="period" stroke="#64748b" tick={{ fontSize: 12 }} />
-              <YAxis stroke="#64748b" tick={{ fontSize: 12 }} unit="%" />
+              <XAxis dataKey="period" stroke="#64748b" tick={{ fontSize: 11 }} />
+              <YAxis stroke="#64748b" tick={{ fontSize: 11 }} unit="%" />
               <Tooltip
                 contentStyle={{
                   backgroundColor: '#020617',
@@ -109,18 +109,18 @@ export const ProfitabilityChart: React.FC = () => {
                 }}
                 formatter={(value: any, name: any) => [`${value}%`, name]}
               />
-              <Legend verticalAlign="top" height={36} wrapperStyle={{ fontSize: '12px' }} />
+              <Legend verticalAlign="top" height={36} wrapperStyle={{ fontSize: '11px' }} />
               
               <Area type="monotone" dataKey="grossMargin" name="毛利率 (Gross Margin)" stroke="#10b981" strokeWidth={3} fillOpacity={1} fill="url(#grossMarginGradBento)" />
               <Line type="monotone" dataKey="operatingMargin" name="營業利益率 (Operating Margin)" stroke="#6366f1" strokeWidth={2.5} dot={{ r: 4, fill: '#6366f1' }} />
               <Line type="monotone" dataKey="netMargin" name="稅後純益率 (Net Margin)" stroke="#f59e0b" strokeWidth={2.5} dot={{ r: 4, fill: '#f59e0b' }} />
             </ComposedChart>
           ) : metricMode === 'returns' ? (
-            <ComposedChart data={chartData} margin={{ top: 10, right: 10, left: -10, bottom: 0 }}>
+            <ComposedChart data={chartData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
               <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" vertical={false} />
-              <XAxis dataKey="period" stroke="#64748b" tick={{ fontSize: 12 }} />
-              <YAxis yAxisId="left" stroke="#64748b" tick={{ fontSize: 12 }} unit="%" />
-              <YAxis yAxisId="right" orientation="right" stroke="#64748b" tick={{ fontSize: 12 }} unit="元" />
+              <XAxis dataKey="period" stroke="#64748b" tick={{ fontSize: 11 }} />
+              <YAxis yAxisId="left" stroke="#64748b" tick={{ fontSize: 11 }} unit="%" />
+              <YAxis yAxisId="right" orientation="right" stroke="#64748b" tick={{ fontSize: 11 }} unit="元" />
               <Tooltip
                 contentStyle={{
                   backgroundColor: '#020617',
@@ -134,17 +134,17 @@ export const ProfitabilityChart: React.FC = () => {
                   return [`${value}%`, name];
                 }}
               />
-              <Legend verticalAlign="top" height={36} wrapperStyle={{ fontSize: '12px' }} />
+              <Legend verticalAlign="top" height={36} wrapperStyle={{ fontSize: '11px' }} />
               
-              <Bar yAxisId="left" dataKey="roe" name="股東權益報酬率 (ROE)" fill="#f59e0b" radius={[6, 6, 0, 0]} maxBarSize={36} />
-              <Bar yAxisId="left" dataKey="roa" name="資產報酬率 (ROA)" fill="#6366f1" radius={[6, 6, 0, 0]} maxBarSize={36} />
-              <Line yAxisId="right" type="monotone" dataKey="eps" name="每股盈餘 (EPS)" stroke="#10b981" strokeWidth={3} dot={{ r: 5, fill: '#10b981' }} />
+              <Bar yAxisId="left" dataKey="roe" name="股東權益報酬率 (ROE)" fill="#f59e0b" radius={[6, 6, 0, 0]} maxBarSize={32} />
+              <Bar yAxisId="left" dataKey="roa" name="資產報酬率 (ROA)" fill="#6366f1" radius={[6, 6, 0, 0]} maxBarSize={32} />
+              <Line yAxisId="right" type="monotone" dataKey="eps" name="每股盈餘 (EPS)" stroke="#10b981" strokeWidth={3} dot={{ r: 4, fill: '#10b981' }} />
             </ComposedChart>
           ) : (
-            <ComposedChart data={chartData} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
+            <ComposedChart data={chartData} margin={{ top: 10, right: 10, left: -10, bottom: 0 }}>
               <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" vertical={false} />
-              <XAxis dataKey="period" stroke="#64748b" tick={{ fontSize: 12 }} />
-              <YAxis stroke="#64748b" tick={{ fontSize: 12 }} unit="M" />
+              <XAxis dataKey="period" stroke="#64748b" tick={{ fontSize: 11 }} />
+              <YAxis stroke="#64748b" tick={{ fontSize: 11 }} unit="M" />
               <Tooltip
                 contentStyle={{
                   backgroundColor: '#020617',
@@ -155,11 +155,11 @@ export const ProfitabilityChart: React.FC = () => {
                 }}
                 formatter={(value: any, name: any) => [`NT$ ${Number(value).toLocaleString()} 百萬`, name]}
               />
-              <Legend verticalAlign="top" height={36} wrapperStyle={{ fontSize: '12px' }} />
+              <Legend verticalAlign="top" height={36} wrapperStyle={{ fontSize: '11px' }} />
               
-              <Bar dataKey="revenue" name="營業收入" fill="#6366f1" radius={[6, 6, 0, 0]} maxBarSize={32} />
-              <Bar dataKey="grossProfit" name="營業毛利" fill="#10b981" radius={[6, 6, 0, 0]} maxBarSize={32} />
-              <Bar dataKey="netIncome" name="稅後淨利" fill="#f59e0b" radius={[6, 6, 0, 0]} maxBarSize={32} />
+              <Bar dataKey="revenue" name="營業收入" fill="#6366f1" radius={[6, 6, 0, 0]} maxBarSize={28} />
+              <Bar dataKey="grossProfit" name="營業毛利" fill="#10b981" radius={[6, 6, 0, 0]} maxBarSize={28} />
+              <Bar dataKey="netIncome" name="稅後淨利" fill="#f59e0b" radius={[6, 6, 0, 0]} maxBarSize={28} />
             </ComposedChart>
           )}
         </ResponsiveContainer>
@@ -167,27 +167,27 @@ export const ProfitabilityChart: React.FC = () => {
 
       {/* Metric Commentary Bento Modules */}
       {latest && (
-        <div className="mt-5 pt-4 border-t border-slate-800 grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
-          <div className="bg-slate-900/80 p-3.5 rounded-2xl border border-slate-800">
-            <span className="text-slate-400 block text-[11px] font-semibold uppercase tracking-wider">毛利率 (Gross Margin)</span>
-            <span className="text-base font-bold text-emerald-400 mt-1 block">{latest.ratios.grossMargin}%</span>
-            <span className="text-[11px] text-slate-500 block mt-0.5">
+        <div className="mt-4 sm:mt-5 pt-3 sm:pt-4 border-t border-slate-800 grid grid-cols-1 sm:grid-cols-3 gap-2.5 sm:gap-3 text-xs">
+          <div className="bg-slate-900/80 p-3 sm:p-3.5 rounded-xl sm:rounded-2xl border border-slate-800">
+            <span className="text-slate-400 block text-[10px] sm:text-[11px] font-semibold uppercase tracking-wider">毛利率 (Gross Margin)</span>
+            <span className="text-sm sm:text-base font-bold text-emerald-400 mt-1 block font-mono">{latest.ratios.grossMargin}%</span>
+            <span className="text-[10px] sm:text-[11px] text-slate-500 block mt-0.5">
               每 100 元營收創造 {latest.ratios.grossMargin} 元毛利潤
             </span>
           </div>
 
-          <div className="bg-slate-900/80 p-3.5 rounded-2xl border border-slate-800">
-            <span className="text-slate-400 block text-[11px] font-semibold uppercase tracking-wider">本業利益率</span>
-            <span className="text-base font-bold text-indigo-400 mt-1 block">{latest.ratios.operatingMargin}%</span>
-            <span className="text-[11px] text-slate-500 block mt-0.5">
+          <div className="bg-slate-900/80 p-3 sm:p-3.5 rounded-xl sm:rounded-2xl border border-slate-800">
+            <span className="text-slate-400 block text-[10px] sm:text-[11px] font-semibold uppercase tracking-wider">本業利益率</span>
+            <span className="text-sm sm:text-base font-bold text-indigo-400 mt-1 block font-mono">{latest.ratios.operatingMargin}%</span>
+            <span className="text-[10px] sm:text-[11px] text-slate-500 block mt-0.5">
               本業扣除管銷研費用後之核心獲利率
             </span>
           </div>
 
-          <div className="bg-slate-900/80 p-3.5 rounded-2xl border border-slate-800">
-            <span className="text-slate-400 block text-[11px] font-semibold uppercase tracking-wider">股東報酬率 (ROE)</span>
-            <span className="text-base font-bold text-amber-400 mt-1 block">{latest.ratios.roe}%</span>
-            <span className="text-[11px] text-slate-500 block mt-0.5">
+          <div className="bg-slate-900/80 p-3 sm:p-3.5 rounded-xl sm:rounded-2xl border border-slate-800">
+            <span className="text-slate-400 block text-[10px] sm:text-[11px] font-semibold uppercase tracking-wider">股東報酬率 (ROE)</span>
+            <span className="text-sm sm:text-base font-bold text-amber-400 mt-1 block font-mono">{latest.ratios.roe}%</span>
+            <span className="text-[10px] sm:text-[11px] text-slate-500 block mt-0.5">
               每股盈餘 EPS 錄得 ${latest.ratios.eps} 元
             </span>
           </div>

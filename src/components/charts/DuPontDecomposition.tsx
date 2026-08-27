@@ -29,41 +29,41 @@ export const DuPontDecomposition: React.FC = () => {
   }
 
   return (
-    <div className="rounded-3xl border border-slate-800 bg-slate-900/60 backdrop-blur-sm p-6 sm:p-7 shadow-sm">
+    <div className="rounded-2xl sm:rounded-3xl border border-slate-800 bg-slate-900/60 backdrop-blur-sm p-4.5 sm:p-7 shadow-sm">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6 pb-4 border-b border-slate-800/80">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-5 sm:mb-6 pb-4 border-b border-slate-800/80">
         <div className="flex items-center space-x-3">
           <div className="w-10 h-10 rounded-2xl bg-amber-500/10 border border-amber-500/20 text-amber-400 flex items-center justify-center flex-shrink-0">
             <GitFork className="w-5 h-5" />
           </div>
           <div>
-            <div className="flex items-center space-x-2">
+            <div className="flex items-center space-x-2 flex-wrap gap-y-1">
               <h3 className="text-base font-bold text-white tracking-tight">
                 杜邦分析三因子拆解 (DuPont Analysis)
               </h3>
-              <span className="text-[11px] px-2 py-0.5 rounded-full bg-slate-800 text-slate-300 border border-slate-700 font-mono">
+              <span className="text-[10px] sm:text-[11px] px-2 py-0.5 rounded-full bg-slate-800 text-slate-300 border border-slate-700 font-mono">
                 {latestPeriod.period}
               </span>
             </div>
             <p className="text-xs text-slate-400 mt-0.5">
-              將股東權益報酬率 (ROE) 拆解為「純益率 × 資產週轉率 × 權益乘數」，洞察獲利本質動能
+              將股東權益報酬率 (ROE) 拆解為「純益率 × 資產週轉率 × 權益乘數」，洞察獲利動能
             </p>
           </div>
         </div>
 
-        <div className="flex items-center space-x-2">
+        <div className="flex items-center space-x-2 self-start sm:self-auto">
           <span className={`text-xs px-3 py-1.5 rounded-xl border font-semibold flex items-center gap-1.5 ${driverBadgeColor}`}>
-            <Activity className="w-3.5 h-3.5" />
+            <Activity className="w-3.5 h-3.5 flex-shrink-0" />
             <span>歸因模式：{primaryDriver}</span>
           </span>
         </div>
       </div>
 
-      {/* Visual Mathematical Formula Tree - Full Width Layout */}
-      <div className="grid grid-cols-1 lg:grid-cols-11 gap-4 items-stretch text-center">
+      {/* Visual Mathematical Formula Tree - Responsive Mobile Cascade & Desktop 11-col */}
+      <div className="grid grid-cols-1 lg:grid-cols-11 gap-3 sm:gap-4 items-stretch text-center">
         
         {/* Factor 1: 稅後純益率 */}
-        <div className="lg:col-span-3 bg-slate-950/70 border border-slate-800 hover:border-emerald-500/40 rounded-2xl p-5 transition flex flex-col justify-between text-left relative overflow-hidden group">
+        <div className="lg:col-span-3 bg-slate-950/70 border border-slate-800 hover:border-emerald-500/40 rounded-2xl p-4 sm:p-5 transition flex flex-col justify-between text-left relative overflow-hidden group">
           <div className="absolute top-0 right-0 w-24 h-24 bg-emerald-500/5 rounded-full blur-2xl group-hover:bg-emerald-500/10 transition" />
           
           <div>
@@ -71,13 +71,13 @@ export const DuPontDecomposition: React.FC = () => {
               <span className="text-[11px] font-bold text-emerald-400 uppercase tracking-wider font-mono">
                 因子 1 • 獲利效益
               </span>
-              <span className="text-[10px] px-2 py-0.5 rounded-md bg-emerald-950/60 border border-emerald-800/60 text-emerald-300">
+              <span className="text-[10px] px-2 py-0.5 rounded-md bg-emerald-950/60 border border-emerald-800/60 text-emerald-300 font-medium">
                 純益率
               </span>
             </div>
-            <h4 className="text-sm font-bold text-slate-100 mt-2">稅後純益率 (Net Margin)</h4>
+            <h4 className="text-sm font-bold text-slate-100 mt-1.5">稅後純益率 (Net Margin)</h4>
             
-            <div className="text-3xl font-extrabold text-emerald-400 my-2.5 font-mono">
+            <div className="text-2xl sm:text-3xl font-extrabold text-emerald-400 my-2 sm:my-2.5 font-mono">
               {netMargin}%
             </div>
           </div>
@@ -95,20 +95,20 @@ export const DuPontDecomposition: React.FC = () => {
               </div>
             </div>
             <p className="text-[11px] text-slate-400 leading-relaxed">
-              衡量每 100 元營收所保留之實質淨利，反映核心產品定價權與總體費用控管能力。
+              衡量每 100 元營收所保留之實質淨利，反映核心定價權與總體費用控管能力。
             </p>
           </div>
         </div>
 
         {/* Multiply Sign 1 */}
-        <div className="lg:col-span-1 flex items-center justify-center py-2 lg:py-0">
-          <div className="w-9 h-9 rounded-2xl bg-slate-800/80 border border-slate-700/80 text-amber-400 font-bold flex items-center justify-center shadow-md">
+        <div className="lg:col-span-1 flex items-center justify-center py-1 lg:py-0">
+          <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl sm:rounded-2xl bg-slate-800/80 border border-slate-700/80 text-amber-400 font-bold flex items-center justify-center shadow-md">
             <X className="w-4 h-4" />
           </div>
         </div>
 
         {/* Factor 2: 總資產週轉率 */}
-        <div className="lg:col-span-3 bg-slate-950/70 border border-slate-800 hover:border-blue-500/40 rounded-2xl p-5 transition flex flex-col justify-between text-left relative overflow-hidden group">
+        <div className="lg:col-span-3 bg-slate-950/70 border border-slate-800 hover:border-blue-500/40 rounded-2xl p-4 sm:p-5 transition flex flex-col justify-between text-left relative overflow-hidden group">
           <div className="absolute top-0 right-0 w-24 h-24 bg-blue-500/5 rounded-full blur-2xl group-hover:bg-blue-500/10 transition" />
           
           <div>
@@ -116,14 +116,14 @@ export const DuPontDecomposition: React.FC = () => {
               <span className="text-[11px] font-bold text-blue-400 uppercase tracking-wider font-mono">
                 因子 2 • 營運效率
               </span>
-              <span className="text-[10px] px-2 py-0.5 rounded-md bg-blue-950/60 border border-blue-800/60 text-blue-300">
+              <span className="text-[10px] px-2 py-0.5 rounded-md bg-blue-950/60 border border-blue-800/60 text-blue-300 font-medium">
                 週轉次數
               </span>
             </div>
-            <h4 className="text-sm font-bold text-slate-100 mt-2">總資產週轉率 (Asset Turnover)</h4>
+            <h4 className="text-sm font-bold text-slate-100 mt-1.5">總資產週轉率 (Asset Turnover)</h4>
             
-            <div className="text-3xl font-extrabold text-blue-400 my-2.5 font-mono">
-              {assetTurnover} <span className="text-xs font-normal text-slate-400">次/年</span>
+            <div className="text-2xl sm:text-3xl font-extrabold text-blue-400 my-2 sm:my-2.5 font-mono">
+              {assetTurnover} <span className="text-xs font-normal text-slate-400 font-sans">次/年</span>
             </div>
           </div>
 
@@ -140,20 +140,20 @@ export const DuPontDecomposition: React.FC = () => {
               </div>
             </div>
             <p className="text-[11px] text-slate-400 leading-relaxed">
-              衡量每 1 元資產所能創造的營收動能，反映存貨、應收帳款與固定資產產能利用率。
+              衡量每 1 元資產所創造的營收動能，反映存貨、應收帳款與固定資產產能利用率。
             </p>
           </div>
         </div>
 
         {/* Multiply Sign 2 */}
-        <div className="lg:col-span-1 flex items-center justify-center py-2 lg:py-0">
-          <div className="w-9 h-9 rounded-2xl bg-slate-800/80 border border-slate-700/80 text-amber-400 font-bold flex items-center justify-center shadow-md">
+        <div className="lg:col-span-1 flex items-center justify-center py-1 lg:py-0">
+          <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl sm:rounded-2xl bg-slate-800/80 border border-slate-700/80 text-amber-400 font-bold flex items-center justify-center shadow-md">
             <X className="w-4 h-4" />
           </div>
         </div>
 
         {/* Factor 3: 權益乘數 */}
-        <div className="lg:col-span-3 bg-slate-950/70 border border-slate-800 hover:border-indigo-500/40 rounded-2xl p-5 transition flex flex-col justify-between text-left relative overflow-hidden group">
+        <div className="lg:col-span-3 bg-slate-950/70 border border-slate-800 hover:border-indigo-500/40 rounded-2xl p-4 sm:p-5 transition flex flex-col justify-between text-left relative overflow-hidden group">
           <div className="absolute top-0 right-0 w-24 h-24 bg-indigo-500/5 rounded-full blur-2xl group-hover:bg-indigo-500/10 transition" />
           
           <div>
@@ -161,14 +161,14 @@ export const DuPontDecomposition: React.FC = () => {
               <span className="text-[11px] font-bold text-indigo-400 uppercase tracking-wider font-mono">
                 因子 3 • 財務槓桿
               </span>
-              <span className="text-[10px] px-2 py-0.5 rounded-md bg-indigo-950/60 border border-indigo-800/60 text-indigo-300">
+              <span className="text-[10px] px-2 py-0.5 rounded-md bg-indigo-950/60 border border-indigo-800/60 text-indigo-300 font-medium">
                 槓桿倍數
               </span>
             </div>
-            <h4 className="text-sm font-bold text-slate-100 mt-2">權益乘數 (Equity Multiplier)</h4>
+            <h4 className="text-sm font-bold text-slate-100 mt-1.5">權益乘數 (Equity Multiplier)</h4>
             
-            <div className="text-3xl font-extrabold text-indigo-400 my-2.5 font-mono">
-              {equityMultiplier} <span className="text-xs font-normal text-slate-400">倍</span>
+            <div className="text-2xl sm:text-3xl font-extrabold text-indigo-400 my-2 sm:my-2.5 font-mono">
+              {equityMultiplier} <span className="text-xs font-normal text-slate-400 font-sans">倍</span>
             </div>
           </div>
 
@@ -193,13 +193,13 @@ export const DuPontDecomposition: React.FC = () => {
       </div>
 
       {/* Result equals box */}
-      <div className="mt-6 p-5 rounded-2xl bg-gradient-to-r from-amber-950/40 via-slate-900/90 to-amber-950/30 border border-amber-500/30 flex flex-col md:flex-row items-center justify-between gap-5 shadow-lg">
-        <div className="flex items-center space-x-4">
-          <div className="w-12 h-12 rounded-2xl bg-amber-500/20 text-amber-400 border border-amber-500/30 flex items-center justify-center flex-shrink-0">
-            <Equal className="w-6 h-6" />
+      <div className="mt-5 sm:mt-6 p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-amber-950/40 via-slate-900/90 to-amber-950/30 border border-amber-500/30 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 sm:gap-5 shadow-lg">
+        <div className="flex items-center space-x-3 sm:space-x-4">
+          <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl bg-amber-500/20 text-amber-400 border border-amber-500/30 flex items-center justify-center flex-shrink-0">
+            <Equal className="w-5 h-5 sm:w-6 sm:h-6" />
           </div>
           <div>
-            <div className="flex items-center space-x-2">
+            <div className="flex items-center space-x-2 flex-wrap gap-y-1">
               <span className="text-xs text-amber-300 font-semibold tracking-wide">
                 杜邦綜效結果：股東權益報酬率 (ROE)
               </span>
@@ -213,9 +213,9 @@ export const DuPontDecomposition: React.FC = () => {
           </div>
         </div>
 
-        <div className="text-xs text-slate-300 bg-slate-950/60 p-3.5 rounded-xl border border-slate-800/80 max-w-xl leading-relaxed">
+        <div className="text-xs text-slate-300 bg-slate-950/60 p-3 sm:p-3.5 rounded-xl border border-slate-800/80 max-w-xl leading-relaxed w-full md:w-auto">
           <div className="font-semibold text-amber-300 mb-1 flex items-center gap-1.5">
-            <TrendingUp className="w-3.5 h-3.5" />
+            <TrendingUp className="w-3.5 h-3.5 flex-shrink-0" />
             <span>管理決策與驅動解讀：</span>
           </div>
           {driverDesc}
