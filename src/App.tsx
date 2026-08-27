@@ -43,11 +43,18 @@ const DashboardContent: React.FC = () => {
       {/* Bento Sidebar Rail (Desktop) */}
       <aside className="hidden md:flex w-20 border-r border-slate-800 flex-col items-center py-6 space-y-7 bg-[#020617] sticky top-0 h-screen z-30 flex-shrink-0">
         {/* Bento Logo Symbol */}
-        <div className="w-11 h-11 bg-indigo-600 rounded-2xl flex items-center justify-center shadow-lg shadow-indigo-500/25 cursor-pointer hover:scale-105 transition-transform">
+        <button
+          onClick={() => {
+            setSelectedCategory('all');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }}
+          title="智析財策 AI 首頁 (回到全景大盤)"
+          className="w-11 h-11 bg-indigo-600 hover:bg-indigo-500 rounded-2xl flex items-center justify-center shadow-lg shadow-indigo-500/25 cursor-pointer hover:scale-105 active:scale-95 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-indigo-400"
+        >
           <div className="w-5 h-5 border-2 border-white rounded-sm rotate-45 flex items-center justify-center">
             <div className="w-1.5 h-1.5 bg-white rounded-full"></div>
           </div>
-        </div>
+        </button>
 
         {/* Bento Icon Dock */}
         <nav className="flex flex-col space-y-4">

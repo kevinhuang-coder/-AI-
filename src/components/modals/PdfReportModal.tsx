@@ -146,7 +146,7 @@ export const PdfReportModal: React.FC = () => {
                 <div>
                   <div className="flex items-center space-x-2 text-blue-400 font-bold text-xs uppercase tracking-wider mb-1">
                     <Building2 className="w-4 h-4" />
-                    <span>{activeCompany.industry} • 財務分析與決策系統報告</span>
+                    <span>{activeCompany.industry} • 智析財策 AI 財務分析與經營決策報告</span>
                   </div>
                   <h1 className="text-xl sm:text-2xl font-extrabold text-white tracking-tight">
                     {activeCompany.name}
@@ -318,7 +318,7 @@ export const PdfReportModal: React.FC = () => {
             {/* 7. Footer Sign-off & Disclaimer */}
             <div className="border-t border-slate-800 pt-3 space-y-1.5 text-[10px] text-slate-500">
               <div className="flex justify-between items-center">
-                <span>報告由「Finalyze AI 財務報表分析與決策系統」自動生成 • 企業內部機密文件</span>
+                <span>報告由「智析財策 AI (Finalyze AI) 企業財務報表分析與經營決策系統」自動生成 • 內部機密文件</span>
                 <span>頁碼 1 / 1</span>
               </div>
               <p className="text-[9px] text-slate-500/80 leading-normal">

@@ -41,36 +41,20 @@ export const Navbar: React.FC = () => {
             </div>
             <div>
               <div className="flex items-center space-x-2">
-                <span className="font-bold text-lg tracking-tight text-white">Finalyze AI</span>
-                <span className="text-[11px] font-mono text-indigo-400 bg-indigo-500/10 border border-indigo-500/20 px-2 py-0.5 rounded uppercase tracking-wider hidden sm:inline-block">
-                  Analytical Engine
+                <span className="font-bold text-base sm:text-lg tracking-tight text-white">智析財策 AI</span>
+                <span className="text-xs text-slate-400 font-medium hidden sm:inline-block">Finalyze AI</span>
+                <span className="text-[10px] font-mono text-indigo-400 bg-indigo-500/10 border border-indigo-500/20 px-2 py-0.5 rounded uppercase tracking-wider hidden md:inline-block">
+                  智慧決策引擎
                 </span>
               </div>
               <p className="text-xs text-slate-400 hidden lg:block">
-                Unified Financial Intelligence & Decision Matrix
+                全方位企業財務報表分析與經營決策系統
               </p>
             </div>
           </div>
 
-          {/* Center: Account Switcher with Entity Avatars */}
+          {/* Center: Account Switcher */}
           <div className="flex items-center space-x-3">
-            
-            {/* Entity Avatar Cluster (Bento Preview) */}
-            <div className="hidden sm:flex items-center -space-x-2">
-              <div className="w-7 h-7 rounded-full border-2 border-[#020617] bg-indigo-600 flex items-center justify-center text-[10px] font-bold text-white shadow-sm" title="台積電精密">
-                TS
-              </div>
-              <div className="w-7 h-7 rounded-full border-2 border-[#020617] bg-emerald-500 flex items-center justify-center text-[10px] font-bold text-white shadow-sm" title="聯發通訊">
-                MT
-              </div>
-              <div className="w-7 h-7 rounded-full border-2 border-[#020617] bg-cyan-600 flex items-center justify-center text-[10px] font-bold text-white shadow-sm" title="鴻揚智慧">
-                HY
-              </div>
-              <div className="w-7 h-7 rounded-full border-2 border-[#020617] bg-slate-800 flex items-center justify-center text-[10px] font-bold text-slate-300 shadow-sm">
-                +1
-              </div>
-            </div>
-
             {/* Account Selector Dropdown */}
             <div className="relative">
               <button
