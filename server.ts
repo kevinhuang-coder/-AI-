@@ -336,8 +336,10 @@ app.post('/api/financial/parse-pdf', async (req, res) => {
       return res.status(500).json({ success: false, error: '系統未設定 GEMINI_API_KEY，無法解析 PDF 財務報表' });
     }
 
-    // 去除 base64 前綴
-    const cleanBase64 = pdfBase64.replace(/^data:application\/pdf;base64,/, '');
+    // 強化清理 Base64 前綴與所有換行空白字元，防止 SDK 比對模式錯誤
+    const cleanBase64 = pdfBase64
+      .replace(/^data:[^;]+;base64,/, '')
+      .replace(/[\r\n\s]+/g, '');
 
     const prompt = `
 你是一位精通台灣公開資訊觀測站 (MOPS)、國際財務報導準則 (IFRS) 及美國 SEC GAAP 財務報表審計的資深會計師與財務長 (CFO)。
