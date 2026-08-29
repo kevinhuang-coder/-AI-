@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useFinancial } from '../../context/FinancialContext';
+import { BrandLogo } from '../brand/BrandLogo';
 import {
   TrendingUp,
   Building2,
@@ -11,6 +12,8 @@ import {
   Layers,
   SlidersHorizontal,
   Upload,
+  Globe,
+  ExternalLink,
 } from 'lucide-react';
 
 export const Navbar: React.FC = () => {
@@ -34,21 +37,22 @@ export const Navbar: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 gap-3">
           
-          {/* Left: Brand Logo & Title */}
+          {/* Left: Brand Logo & Personal Title */}
           <div className="flex items-center space-x-3">
-            <div className="w-9 h-9 bg-indigo-600 rounded-xl flex items-center justify-center shadow-md shadow-indigo-500/20 text-white flex-shrink-0 md:hidden">
-              <TrendingUp className="w-4 h-4" />
-            </div>
+            <BrandLogo size={36} />
             <div>
               <div className="flex items-center space-x-2">
-                <span className="font-bold text-base sm:text-lg tracking-tight text-white">智析財策 AI</span>
-                <span className="text-xs text-slate-400 font-medium hidden sm:inline-block">Finalyze AI</span>
-                <span className="text-[10px] font-mono text-indigo-400 bg-indigo-500/10 border border-indigo-500/20 px-2 py-0.5 rounded uppercase tracking-wider hidden md:inline-block">
-                  智慧決策引擎
+                <span className="font-bold text-base sm:text-lg tracking-tight bg-gradient-to-r from-white via-slate-100 to-slate-300 bg-clip-text text-transparent">
+                  凱文黃的價值投資智策
+                </span>
+                <span className="text-[10px] font-mono text-emerald-400 bg-emerald-950/60 border border-emerald-500/30 px-2 py-0.5 rounded uppercase tracking-wider hidden sm:inline-block font-semibold">
+                  審計防禦 × 護城河
                 </span>
               </div>
-              <p className="text-xs text-slate-400 hidden lg:block">
-                全方位企業財務報表分析與經營決策系統
+              <p className="text-[11px] text-slate-400 hidden lg:flex items-center gap-1.5">
+                <span>《凱文黃的知識天地》專屬工具</span>
+                <span className="text-slate-600">•</span>
+                <span className="text-slate-400">會計師高考及格・四大審計實務思維</span>
               </p>
             </div>
           </div>
@@ -209,6 +213,19 @@ export const Navbar: React.FC = () => {
             >
               <SlidersHorizontal className="w-4 h-4" />
             </button>
+
+            {/* Direct Blog Link Button */}
+            <a
+              href="https://kevin-huang-cpa.vercel.app"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hidden xl:flex items-center space-x-1.5 px-3 py-1.5 rounded-xl bg-emerald-950/40 hover:bg-emerald-900/50 text-emerald-300 border border-emerald-500/30 text-xs font-semibold transition min-h-[38px] cursor-pointer group"
+              title="前往《凱文黃的知識天地》個人官方部落格"
+            >
+              <Globe className="w-3.5 h-3.5 text-emerald-400" />
+              <span>凱文黃知識庫</span>
+              <ExternalLink className="w-3 h-3 text-emerald-400/70 group-hover:translate-x-0.5 transition-transform" />
+            </a>
           </div>
 
         </div>

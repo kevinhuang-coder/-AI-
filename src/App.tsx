@@ -16,6 +16,7 @@ import { AiInsightPanel } from './components/ai/AiInsightPanel';
 import { FloatingFinancialCopilot } from './components/ai/FloatingFinancialCopilot';
 import { DataEditorModal } from './components/modals/DataEditorModal';
 import { PdfReportModal } from './components/modals/PdfReportModal';
+import { BrandFooter } from './components/layout/BrandFooter';
 import { ShieldAlert } from 'lucide-react';
 
 const DashboardContent: React.FC = () => {
@@ -129,21 +130,8 @@ const DashboardContent: React.FC = () => {
           </div>
         </div>
 
-        {/* Bento Footer */}
-        <footer className="pt-4 pb-6 text-center text-xs text-slate-500">
-          <div className="flex flex-wrap items-center justify-center gap-2 font-medium text-slate-400">
-            <span className="text-indigo-400 font-semibold">Finalyze AI</span>
-            <span>•</span>
-            <span>統一財務智慧分析與決策系統 (Unified Financial Intelligence)</span>
-            <span>•</span>
-            <span className="bg-slate-800/80 text-slate-400 px-2 py-0.5 rounded-full border border-slate-700">
-              Bento Grid
-            </span>
-          </div>
-          <p className="mt-2 text-[11px] text-slate-500 max-w-xl mx-auto">
-            應收帳款週轉率 (AR) • 存貨週轉率 (Inventory) • 獲利能力三率 • 杜邦三因子拆解 • 多主體合併 • 預測模型
-          </p>
-        </footer>
+        {/* 凱文黃個人品牌與部落格專屬頁尾 */}
+        <BrandFooter />
       </main>
     </div>
   );
