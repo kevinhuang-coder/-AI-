@@ -535,72 +535,145 @@ app.get('/api/financial/fetch-stock', async (req, res) => {
     if (ai) {
       const prompt = `
 你是一位精通台灣證券交易所 (TWSE)、證券櫃檯買賣中心 (TPEx) 與公開資訊觀測站 (MOPS) 官方會計審計財報的資深會計師。
-請檢索並提取台灣上市公司/上櫃公司股票代號「${rawCode}」之官方審定財務報表數據。
+請檢索並提取台灣上市公司/上櫃公司股票代號「${rawCode}」之真實官方審定財務報表數據。
 
-包含：
-1. 公司官方中文全名 (例如: 2308 為 "台達電子工業 (Delta Electronics)"，2357 為 "華碩電腦 (ASUS)")
-2. 所屬產業別
-3. 幣別: "NTD (千元)"
-4. 歷年年度 (2023, 2024, 2025 全年) 與 最近連續季度 (2024Q3 ~ 2026 最新) 之官方四大表數值（金額單位：新台幣千元）。
+【嚴格規範】：
+1. 僅提供連續 5 年「純年度年報（2021、2022、2023、2024、2025 全年）」，絕不混雜任何單一季度 (Q) 數據。
+2. 幣別單位：新台幣千元 (NTD 千元)。
+3. 各期報表必須具備會計勾稽平衡：資產總計 = 負債總計 + 股東權益總計，營業毛利 = 營收 - 成本，營業利益 = 毛利 - 費用。
 
-【各期必填科目（金額統一為千元）】：
-- year (西元年份)
-- period (如 "114年度 (2025 全年)" 或 "2025 Q3")
-- isQuarterly (是否為季報)
-- quarter (季度 1~4)
-- revenue (營業收入)
-- costOfGoodsSold (營業成本)
-- grossProfit (營業毛利)
-- operatingExpenses (營業費用)
-- operatingIncome (營業利益)
-- netIncome (稅後淨利)
-- sharesOutstanding (流通在外股數，千股)
-- accountsReceivable (應收帳款及票據)
-- contractAssets (流動合約資產，若無填 0)
-- inventory (存貨)
-- accountsPayable (應付帳款及票據)
-- currentAssets (流動資產合計)
-- currentLiabilities (流動負債合計)
-- totalAssets (資產總計)
-- totalLiabilities (負債總計)
-- stockholdersEquity (股東權益總計)
-- cashAndEquivalents (現金及約當現金)
-- operatingCashFlow (營業活動現金流量)
-- capitalExpenditures (購置不動產廠房設備資本支出)
-- interestExpense (利息費用)
-
-請嚴格回傳純 JSON 格式（不含 markdown 標記）：
+【回傳 JSON 規格（嚴格純 JSON，不含 markdown 標記）】：
 {
-  "name": "公司名稱",
+  "name": "公司官方中文全名（如：聯華電子 (UMC)）",
   "code": "${rawCode}-TW",
-  "industry": "所屬產業",
+  "industry": "所屬產業別",
   "currency": "NTD (千元)",
-  "description": "企業概況與近期營運總結",
+  "description": "企業核心業務與競爭優勢簡介（約 50 字）",
   "periods": [
+    {
+      "year": 2021,
+      "period": "110年度 (2021 全年)",
+      "isQuarterly": false,
+      "revenue": 213000000,
+      "costOfGoodsSold": 140000000,
+      "grossProfit": 73000000,
+      "operatingExpenses": 20000000,
+      "operatingIncome": 53000000,
+      "netIncome": 55700000,
+      "sharesOutstanding": 12400000,
+      "accountsReceivable": 22000000,
+      "contractAssets": 0,
+      "inventory": 20000000,
+      "accountsPayable": 15000000,
+      "currentAssets": 150000000,
+      "currentLiabilities": 60000000,
+      "totalAssets": 380000000,
+      "totalLiabilities": 120000000,
+      "stockholdersEquity": 260000000,
+      "cashAndEquivalents": 90000000,
+      "operatingCashFlow": 78000000,
+      "capitalExpenditures": 35000000,
+      "interestExpense": 1200000
+    },
+    {
+      "year": 2022,
+      "period": "111年度 (2022 全年)",
+      "isQuarterly": false,
+      "revenue": 278000000,
+      "costOfGoodsSold": 170000000,
+      "grossProfit": 108000000,
+      "operatingExpenses": 25000000,
+      "operatingIncome": 83000000,
+      "netIncome": 87000000,
+      "sharesOutstanding": 12400000,
+      "accountsReceivable": 25000000,
+      "contractAssets": 0,
+      "inventory": 25000000,
+      "accountsPayable": 18000000,
+      "currentAssets": 190000000,
+      "currentLiabilities": 70000000,
+      "totalAssets": 420000000,
+      "totalLiabilities": 130000000,
+      "stockholdersEquity": 290000000,
+      "cashAndEquivalents": 120000000,
+      "operatingCashFlow": 110000000,
+      "capitalExpenditures": 45000000,
+      "interestExpense": 1500000
+    },
+    {
+      "year": 2023,
+      "period": "112年度 (2023 全年)",
+      "isQuarterly": false,
+      "revenue": 222500000,
+      "costOfGoodsSold": 155000000,
+      "grossProfit": 67500000,
+      "operatingExpenses": 24000000,
+      "operatingIncome": 43500000,
+      "netIncome": 60900000,
+      "sharesOutstanding": 12400000,
+      "accountsReceivable": 21000000,
+      "contractAssets": 0,
+      "inventory": 22000000,
+      "accountsPayable": 16000000,
+      "currentAssets": 180000000,
+      "currentLiabilities": 65000000,
+      "totalAssets": 410000000,
+      "totalLiabilities": 125000000,
+      "stockholdersEquity": 285000000,
+      "cashAndEquivalents": 110000000,
+      "operatingCashFlow": 85000000,
+      "capitalExpenditures": 40000000,
+      "interestExpense": 1400000
+    },
+    {
+      "year": 2024,
+      "period": "113年度 (2024 全年)",
+      "isQuarterly": false,
+      "revenue": 232000000,
+      "costOfGoodsSold": 160000000,
+      "grossProfit": 72000000,
+      "operatingExpenses": 25000000,
+      "operatingIncome": 47000000,
+      "netIncome": 62000000,
+      "sharesOutstanding": 12400000,
+      "accountsReceivable": 23000000,
+      "contractAssets": 0,
+      "inventory": 23000000,
+      "accountsPayable": 17000000,
+      "currentAssets": 195000000,
+      "currentLiabilities": 68000000,
+      "totalAssets": 430000000,
+      "totalLiabilities": 130000000,
+      "stockholdersEquity": 300000000,
+      "cashAndEquivalents": 125000000,
+      "operatingCashFlow": 92000000,
+      "capitalExpenditures": 38000000,
+      "interestExpense": 1300000
+    },
     {
       "year": 2025,
       "period": "114年度 (2025 全年)",
       "isQuarterly": false,
-      "revenue": 400000000,
-      "costOfGoodsSold": 280000000,
-      "grossProfit": 120000000,
-      "operatingExpenses": 60000000,
-      "operatingIncome": 60000000,
-      "netIncome": 48000000,
-      "sharesOutstanding": 2597500,
-      "accountsReceivable": 65000000,
-      "contractAssets": 5000000,
-      "inventory": 45000000,
-      "accountsPayable": 55000000,
+      "revenue": 245000000,
+      "costOfGoodsSold": 168000000,
+      "grossProfit": 77000000,
+      "operatingExpenses": 26000000,
+      "operatingIncome": 51000000,
+      "netIncome": 66000000,
+      "sharesOutstanding": 12400000,
+      "accountsReceivable": 24000000,
+      "contractAssets": 0,
+      "inventory": 24000000,
+      "accountsPayable": 18000000,
       "currentAssets": 210000000,
-      "currentLiabilities": 110000000,
-      "totalAssets": 380000000,
-      "totalLiabilities": 160000000,
-      "stockholdersEquity": 220000000,
-      "cashAndEquivalents": 75000000,
-      "operatingCashFlow": 52000000,
-      "capitalExpenditures": 22000000,
-      "interestExpense": 850000
+      "currentLiabilities": 70000000,
+      "totalAssets": 450000000,
+      "totalLiabilities": 135000000,
+      "stockholdersEquity": 315000000,
+      "cashAndEquivalents": 135000000,
+      "operatingCashFlow": 98000000,
+      "capitalExpenditures": 36000000,
+      "interestExpense": 1200000
     }
   ]
 }
