@@ -184,9 +184,10 @@ export const FloatingFinancialCopilot: React.FC = () => {
               </div>
               <div className="min-w-0">
                 <h4 className="text-xs sm:text-sm font-bold text-white tracking-tight flex items-center gap-1.5 truncate">
-                  <span>AI 財務戰略顧問</span>
-                  <span className="text-[10px] px-1.5 py-0.2 rounded-full bg-blue-500/20 text-blue-300 font-mono">
-                    Copilot
+                  <span>AI 財務顧問</span>
+                  <span className="text-[9px] px-2 py-0.5 rounded-full bg-emerald-950 text-emerald-300 font-mono border border-emerald-500/30 flex items-center gap-1">
+                    <Sparkles className="w-2.5 h-2.5 text-amber-300" />
+                    Powered by Gemini 2.5 Flash
                   </span>
                 </h4>
                 <p className="text-[10px] sm:text-[11px] text-slate-400 truncate flex items-center gap-1">

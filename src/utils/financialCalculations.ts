@@ -772,7 +772,19 @@ export function generateFinancialCopilotResponse(
     return `【財務長顧問分析】目前尚未載入「${companyName}」之財務數據，請先於上方選擇或匯入財務報表期別數據。`;
   }
 
-  const q = question.toLowerCase();
+  const q = question.toLowerCase().trim();
+
+  // 0. 日常問候語友善引導 (Greeting Handler)
+  if (['hi', 'hello', 'hey', '你好', '您好', '哈囉', '嗨', '早安', '午安', '晚安'].includes(q) || q === 'hi!' || q === 'hello!') {
+    return `您好！我是您的專屬「AI 數位財務顧問（Financial Copilot）」👋\n\n` +
+      `目前系統正在深入分析「${companyName}」在 ${latest.period} 的最新官方審計年報（毛利率 ${latest.ratios.grossMargin}%、ROE ${latest.ratios.roe}%）。\n\n` +
+      `您可以向我詢問例如：\n` +
+      `• 「這家公司具備長期的經濟護城河嗎？」\n` +
+      `• 「檢驗本期的獲利含金量與營業現金流」\n` +
+      `• 「分析 Altman Z 破產防禦指標與安全邊際」\n` +
+      `• 「多空投資論點 (Bull vs. Bear) 怎麼看？」\n\n` +
+      `請問今天想從哪一個財務維度開始深入探討呢？`;
+  }
   const r = latest.ratios;
   const dso = r.dso;
   const dsi = r.dsi;

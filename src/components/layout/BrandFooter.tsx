@@ -147,7 +147,9 @@ export const BrandFooter: React.FC = () => {
           </p>
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pt-2 text-slate-400">
             <span>© 2026 凱文黃的知識天地 (Kevin Huang). All Rights Reserved.</span>
-            <span className="font-mono text-[10px]">Version 2.5 • Powered by Vite & React</span>
+            <span className="font-mono text-[10px] text-slate-400">
+              Powered by Google Gemini 2.5 Flash • 凱文黃價值投資審計模型
+            </span>
           </div>
         </div>
 

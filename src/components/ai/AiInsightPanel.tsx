@@ -41,8 +41,9 @@ export const AiInsightPanel: React.FC = () => {
                 <h3 className="text-base sm:text-lg font-bold text-white tracking-tight">
                   AI 價值投資與基本面深度診斷報告
                 </h3>
-                <span className="text-[10px] sm:text-xs px-2.5 py-0.5 rounded-full font-mono font-bold bg-emerald-500/15 text-emerald-300 border border-emerald-500/30">
-                  凱文黃價值投資審計模型
+                <span className="text-[10px] sm:text-xs px-2.5 py-0.5 rounded-full font-mono font-semibold bg-emerald-500/15 text-emerald-300 border border-emerald-500/30 flex items-center gap-1.5">
+                  <Sparkles className="w-3 h-3 text-amber-300" />
+                  Powered by Google Gemini 2.5 Flash
                 </span>
                 <span className={`text-[10px] sm:text-xs px-2.5 py-0.5 rounded-full font-mono font-bold ${
                   aiReport.overallScore >= 80 ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30' :
@@ -53,7 +54,7 @@ export const AiInsightPanel: React.FC = () => {
                 </span>
               </div>
               <p className="text-xs text-slate-400 mt-0.5">
-                《凱文黃的知識天地》專屬體系 • 經濟護城河評級、核心獲利含金量、嚴謹自由現金流與 Altman Z 破產防禦
+                《凱文黃的知識天地》專屬體系 • 結合 Google Gemini 2.5 Flash 與會計審計查核演算法，深度拆解經濟護城河、核心獲利含金量與 Altman Z 破產防禦
               </p>
             </div>
           </div>
