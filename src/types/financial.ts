@@ -205,3 +205,5 @@ export interface FinancialChangeRecord {
   };
 }
 
+export type TimeFrequency = 'annual' | 'ttm' | 'quarterly';
+

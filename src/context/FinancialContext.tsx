@@ -8,6 +8,7 @@ import {
   FinancialChangeRecord,
   ChangeActionType,
   ViewMode,
+  TimeFrequency,
 } from '../types/financial';
 import { SAMPLE_COMPANIES, buildConsolidatedCompany } from '../data/sampleCompanies';
 import {
@@ -15,6 +16,7 @@ import {
   generateLocalAiReport,
 } from '../utils/financialCalculations';
 import { fetchTaiwanStockFinancials } from '../utils/stockFetcher';
+import { computeTtmRollingPeriods, getSingleQuarterPeriods } from '../utils/ttmEngine';
 
 interface FinancialContextType {
   companies: AccountEntity[];
@@ -28,6 +30,8 @@ interface FinancialContextType {
   selectedMetrics: string[];
   viewMode: ViewMode;
   setViewMode: (mode: ViewMode) => void;
+  timeFrequency: TimeFrequency;
+  setTimeFrequency: (freq: TimeFrequency) => void;
   aiReport: AiDiagnosticReport | null;
   isLoadingAi: boolean;
   aiError: string | null;
@@ -85,6 +89,7 @@ export const FinancialProvider: React.FC<{ children: React.ReactNode }> = ({ chi
   ]);
   const [selectedCategory, setSelectedCategory] = useState<MetricCategory>('all');
   const [viewMode, setViewMode] = useState<ViewMode>('manager');
+  const [timeFrequency, setTimeFrequency] = useState<TimeFrequency>('annual');
   const [selectedMetrics, setSelectedMetrics] = useState<string[]>([
     'arTurnover',
     'dso',
@@ -152,10 +157,16 @@ export const FinancialProvider: React.FC<{ children: React.ReactNode }> = ({ chi
     return found || allCompaniesWithConsolidated[0] || consolidatedCompany;
   }, [allCompaniesWithConsolidated, activeCompanyId, consolidatedCompany]);
 
-  // 當前選中公司的所有期間並計算財務比率
+  // 當前選中公司的期間（依 年度 / 近四季TTM / 單季 動態計算）並計算財務比率
   const activeCompanyPeriodsWithRatios = useMemo(() => {
-    return calculateAllPeriodsRatios(activeCompany.periods);
-  }, [activeCompany]);
+    let rawPeriods = activeCompany.periods;
+    if (timeFrequency === 'ttm') {
+      rawPeriods = computeTtmRollingPeriods(activeCompany.periods);
+    } else if (timeFrequency === 'quarterly') {
+      rawPeriods = getSingleQuarterPeriods(activeCompany.periods);
+    }
+    return calculateAllPeriodsRatios(rawPeriods);
+  }, [activeCompany, timeFrequency]);
 
   const latestPeriod = useMemo(() => {
     if (activeCompanyPeriodsWithRatios.length === 0) return undefined;
@@ -381,6 +392,8 @@ export const FinancialProvider: React.FC<{ children: React.ReactNode }> = ({ chi
         selectedMetrics,
         viewMode,
         setViewMode,
+        timeFrequency,
+        setTimeFrequency,
         aiReport,
         isLoadingAi,
         aiError,

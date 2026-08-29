@@ -21,6 +21,8 @@ export const Navbar: React.FC = () => {
     setActiveCompanyId,
     viewMode,
     setViewMode,
+    timeFrequency,
+    setTimeFrequency,
     runAiDiagnostic,
     isLoadingAi,
     setIsPdfModalOpen,
@@ -55,8 +57,8 @@ export const Navbar: React.FC = () => {
             </div>
           </div>
 
-          {/* Center: Account Switcher & Dual Perspective Toggle */}
-          <div className="flex items-center space-x-2 sm:space-x-3">
+          {/* Center: Account Switcher, Time Frequency Switcher & Dual Perspective Toggle */}
+          <div className="flex items-center space-x-2 sm:space-x-3 flex-wrap gap-y-1">
             {/* Account Selector Dropdown */}
             <div className="relative">
               <button
@@ -109,7 +111,7 @@ export const Navbar: React.FC = () => {
                               <div className="flex items-center justify-between">
                                 <span className="font-semibold text-xs sm:text-sm truncate">{comp.name}</span>
                                 {comp.isConsolidatedGroup && (
-                                  <span className="text-[9px] bg-cyan-950 text-cyan-400 border border-cyan-800/60 px-1.5 py-0.2 rounded font-mono ml-2">
+                                   <span className="text-[9px] bg-cyan-950 text-cyan-400 border border-cyan-800/60 px-1.5 py-0.2 rounded font-mono ml-2">
                                     集團合併
                                   </span>
                                 )}
@@ -152,6 +154,48 @@ export const Navbar: React.FC = () => {
                   </div>
                 </>
               )}
+            </div>
+
+            {/* Time Frequency Switcher: Annual vs TTM vs Quarterly */}
+            <div className="flex items-center bg-slate-950 p-1 rounded-xl border border-slate-800 text-xs font-medium">
+              <button
+                onClick={() => setTimeFrequency('annual')}
+                className={`px-2 sm:px-2.5 py-1.5 rounded-lg transition cursor-pointer min-h-[30px] ${
+                  timeFrequency === 'annual'
+                    ? 'bg-indigo-600 text-white shadow-sm shadow-indigo-600/30 font-bold'
+                    : 'text-slate-400 hover:text-slate-200'
+                }`}
+                title="歷年官方年度財報（消除短期雜音，綜觀 3~5 年資本配置）"
+              >
+                <span>歷年年報</span>
+              </button>
+
+              <button
+                onClick={() => setTimeFrequency('ttm')}
+                className={`px-2 sm:px-2.5 py-1.5 rounded-lg transition cursor-pointer min-h-[30px] flex items-center gap-1 ${
+                  timeFrequency === 'ttm'
+                    ? 'bg-gradient-to-r from-cyan-600 to-blue-600 text-white shadow-sm shadow-cyan-600/30 font-bold'
+                    : 'text-slate-400 hover:text-slate-200'
+                }`}
+                title="近四季滾動累計 TTM（以 4 季加總換算類整年，兼具最新時效與淡旺季平滑）"
+              >
+                <span>近4季 TTM</span>
+                <span className="text-[9px] px-1 py-0.2 rounded bg-cyan-900/60 text-cyan-200 font-mono hidden md:inline">
+                  類整年
+                </span>
+              </button>
+
+              <button
+                onClick={() => setTimeFrequency('quarterly')}
+                className={`px-2 sm:px-2.5 py-1.5 rounded-lg transition cursor-pointer min-h-[30px] ${
+                  timeFrequency === 'quarterly'
+                    ? 'bg-purple-600 text-white shadow-sm shadow-purple-600/30 font-bold'
+                    : 'text-slate-400 hover:text-slate-200'
+                }`}
+                title="單季獨立數據（檢視最新一季存貨與毛利突發轉折）"
+              >
+                <span>單季動態</span>
+              </button>
             </div>
 
             {/* Dual Perspective Mode Switcher */}
