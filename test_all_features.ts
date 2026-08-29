@@ -54,7 +54,7 @@ async function runSystemSelfTest() {
     assert(!!localReport.executiveSummary, '成功生成執行長級高階摘要');
     assert(localReport.strengths.length >= 2, `生成 ${localReport.strengths.length} 條看好亮點`);
     assert(localReport.weaknessesAndRisks.length >= 2, `生成 ${localReport.weaknessesAndRisks.length} 條風險提示`);
-    assert(localReport.overallScore > 0, `綜合健康度評分: ${localReport.overallScore} 分 (${localReport.overallRating})`);
+    assert(localReport.overallScore > 0, `綜合健康度評分: ${localReport.overallScore} 分 (${localReport.healthRating})`);
   }
 
   // 4. 檢測 Financial Copilot 智能問答引擎 (本地推演與降級保底)

@@ -1,5 +1,12 @@
-import type { VercelRequest, VercelResponse } from '@vercel/node';
+import type { IncomingMessage, ServerResponse } from 'http';
 import { GoogleGenAI } from '@google/genai';
+
+type VercelRequest = IncomingMessage & { query?: any; body?: any; cookies?: any };
+type VercelResponse = ServerResponse & {
+  status: (code: number) => VercelResponse;
+  json: (data: any) => VercelResponse;
+  send: (body: any) => VercelResponse;
+};
 
 function getGeminiClient(): GoogleGenAI | null {
   const apiKey =
@@ -159,6 +166,14 @@ ${JSON.stringify(contextData || {}, null, 2)}
 2. 結合給予的毛利率、ROE、自由現金流 (FCF)、純計息負債比與 Altman Z 數值進行具體論證，勿空洞泛談。
 3. 若涉及存股、估值或風險，請以專業審計與資本配置角度提出具體檢驗指標。
 `;
+
+      const textResponse = await generateWithFallback(ai, prompt, false);
+      return res.json({ success: true, text: textResponse });
+    } catch (e: any) {
+      console.error('Vercel ai-chat error:', e);
+      return res.status(500).json({ error: e.message || '財務助手對話分析失敗' });
+    }
+  }
 
   // 3. 全台股上市櫃 2000+ 股票代號即時查詢 API (嚴格 5 年官方年報四大表)
   if (url.includes('/api/financial/fetch-stock')) {
