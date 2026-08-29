@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useFinancial } from '../../context/FinancialContext';
+import { generateFinancialCopilotResponse } from '../../utils/financialCalculations';
 import {
   Sparkles,
   AlertTriangle,
@@ -24,51 +25,65 @@ export const AiInsightPanel: React.FC = () => {
   const [chatHistory, setChatHistory] = useState<Array<{ role: 'user' | 'assistant'; text: string }>>([
     {
       role: 'assistant',
-      text: `您好！我是您的 AI 財務戰略顧問。我已深度剖析「${activeCompany.name}」的歷年財報、應收帳款與存貨週轉效率及獲利能力。您可以隨時向我提出任何關於營運資本優化、成本定價策略或預測趨勢之問題！`,
+      text: `您好！我是您的 AI 財務戰略顧問（Financial Copilot）。我已深度剖析「${activeCompany.name}」的歷年財報、應收帳款與存貨週轉效率、杜邦拆解及獲利能力。您可以隨時點選上方快捷問題，或向我提出任何關於營運資本優化、成本定價策略、風險防範或未來預測之問題！`,
     },
   ]);
 
   if (!aiReport) return null;
 
-  const handleAskQuestion = async (e?: React.FormEvent) => {
+  const handleAskQuestion = async (e?: React.FormEvent, directText?: string) => {
     if (e) e.preventDefault();
-    if (!question.trim() || isAsking) return;
+    const query = (directText || question).trim();
+    if (!query || isAsking) return;
 
-    const userText = question.trim();
     setQuestion('');
-    setChatHistory((prev) => [...prev, { role: 'user', text: userText }]);
+    setChatHistory((prev) => [...prev, { role: 'user', text: query }]);
     setIsAsking(true);
 
     try {
-      const res = await fetch('/api/financial/ai-chat', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          question: userText,
-          companyName: activeCompany.name,
-          contextData: {
-            latestPeriod: latestPeriod?.period,
-            revenue: latestPeriod?.revenue,
-            ratios: latestPeriod?.ratios,
-            aiReportSummary: aiReport.executiveSummary,
-            strengths: aiReport.strengths,
-            risks: aiReport.weaknessesAndRisks,
-          },
-        }),
-      });
+      let answer = '';
+      try {
+        const res = await fetch('/api/financial/ai-chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            question: query,
+            companyName: activeCompany.name,
+            contextData: {
+              latestPeriod: latestPeriod?.period,
+              revenue: latestPeriod?.revenue,
+              ratios: latestPeriod?.ratios,
+              aiReportSummary: aiReport.executiveSummary,
+              strengths: aiReport.strengths,
+              risks: aiReport.weaknessesAndRisks,
+            },
+          }),
+        });
 
-      const json = await res.json();
+        if (res.ok) {
+          const json = await res.json();
+          if (json.answer && typeof json.answer === 'string' && json.answer.trim().length > 10) {
+            answer = json.answer.trim();
+          }
+        }
+      } catch (apiErr) {
+        console.warn('Remote AI Chat API unavailable or offline, activating in-browser CFO inference engine:', apiErr);
+      }
+
+      // 若 API 未回傳或處於離線/Vercel SPA 狀態，調用高階專業財務推演引擎
+      if (!answer) {
+        answer = generateFinancialCopilotResponse(query, activeCompany.name, latestPeriod, aiReport);
+      }
+
       setChatHistory((prev) => [
         ...prev,
-        { role: 'assistant', text: json.answer || '目前 AI 諮詢暫未返回內容，請稍後重試。' },
+        { role: 'assistant', text: answer },
       ]);
     } catch (err: any) {
+      const fallbackAnswer = generateFinancialCopilotResponse(query, activeCompany.name, latestPeriod, aiReport);
       setChatHistory((prev) => [
         ...prev,
-        {
-          role: 'assistant',
-          text: `【分析提示】針對「${userText}」：根據當前財報數據，最新應收帳款週轉率為 ${latestPeriod?.ratios.arTurnover} 次（天數 ${latestPeriod?.ratios.dso} 天），存貨週轉率為 ${latestPeriod?.ratios.inventoryTurnover} 次（天數 ${latestPeriod?.ratios.dsi} 天），整體毛利率為 ${latestPeriod?.ratios.grossMargin}%。建議依據本期健康指標採取相應營運資金優化措施。`,
-        },
+        { role: 'assistant', text: fallbackAnswer },
       ]);
     } finally {
       setIsAsking(false);
@@ -254,18 +269,17 @@ export const AiInsightPanel: React.FC = () => {
           {sampleQuestions.map((q, idx) => (
             <button
               key={idx}
-              onClick={() => {
-                setQuestion(q);
-              }}
-              className="text-xs bg-slate-800/70 hover:bg-slate-700 text-slate-300 hover:text-white px-2.5 sm:px-3 py-1.5 rounded-lg sm:rounded-xl border border-slate-700/50 transition text-left min-h-[32px]"
+              onClick={() => handleAskQuestion(undefined, q)}
+              disabled={isAsking}
+              className="text-xs bg-slate-800/70 hover:bg-slate-750 hover:border-indigo-500/50 text-slate-300 hover:text-white px-2.5 sm:px-3 py-1.5 rounded-lg sm:rounded-xl border border-slate-700/50 transition text-left min-h-[32px] cursor-pointer active:scale-98 disabled:opacity-50"
             >
-              {q}
+              💬 {q}
             </button>
           ))}
         </div>
 
         {/* Chat History Box */}
-        <div className="max-h-60 overflow-y-auto space-y-3 p-3.5 sm:p-4 bg-slate-950/70 rounded-xl sm:rounded-2xl border border-slate-800 mb-3 text-xs">
+        <div className="max-h-80 overflow-y-auto space-y-3 p-3.5 sm:p-4 bg-slate-950/70 rounded-xl sm:rounded-2xl border border-slate-800 mb-3 text-xs">
           {chatHistory.map((msg, i) => (
             <div
               key={i}
@@ -274,15 +288,15 @@ export const AiInsightPanel: React.FC = () => {
               }`}
             >
               {msg.role === 'assistant' && (
-                <div className="w-6 h-6 rounded-full bg-indigo-600 flex items-center justify-center text-white flex-shrink-0 mt-0.5">
+                <div className="w-6 h-6 rounded-full bg-indigo-600 flex items-center justify-center text-white flex-shrink-0 mt-0.5 shadow-sm shadow-indigo-500/30">
                   <Bot className="w-3.5 h-3.5" />
                 </div>
               )}
               <div
-                className={`p-3 sm:p-3.5 rounded-2xl max-w-[88%] sm:max-w-[85%] leading-relaxed ${
+                className={`p-3 sm:p-4 rounded-2xl max-w-[92%] sm:max-w-[88%] leading-relaxed whitespace-pre-line font-sans ${
                   msg.role === 'user'
-                    ? 'bg-blue-600 text-white rounded-tr-none'
-                    : 'bg-slate-900 text-slate-200 border border-slate-800 rounded-tl-none'
+                    ? 'bg-blue-600 text-white rounded-tr-none shadow-md shadow-blue-600/20'
+                    : 'bg-slate-900 text-slate-100 border border-slate-800 rounded-tl-none shadow-sm'
                 }`}
               >
                 {msg.text}
