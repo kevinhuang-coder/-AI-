@@ -311,7 +311,7 @@ export function calculatePeriodRatios(period: FinancialPeriod, previousPeriod?: 
   let earningsQualityScore = 75;
   if (netIncome <= 0) {
     if (period.operatingCashFlow < 0) {
-      earningsQualityScore = 15; // 雙重失血：帳面虧損且營運現金大幅淨流出
+      earningsQualityScore = 15; // 雙重承壓：帳面虧損且營運現金大幅淨流出
     } else {
       earningsQualityScore = 45; // 帳面虧損但營運現金勉力維持正向
     }
@@ -517,7 +517,7 @@ export function generateLocalAiReport(companyName: string, periodsWithRatios: Pe
   if (isNetLoss) {
     weaknesses.push(`本期呈顯著虧損：稅後淨損 NT$ ${(Math.abs(latest.netIncome)/1000).toLocaleString()} 百萬元（淨利率 ${latest.ratios.netMargin}%，每股虧損 NT$ ${latest.ratios.eps}），本業獲利嚴重受壓，需急迫推動成本瘦身與事業重整。`);
     if (isOperatingLoss) {
-      weaknesses.push(`本業營業利益轉負：營業淨損 NT$ ${(Math.abs(latest.operatingIncome)/1000).toLocaleString()} 百萬元，顯示毛利無法覆蓋龐大營業費用，核心本業失去造血功能。`);
+      weaknesses.push(`本業營業利益轉負：營業淨損 NT$ ${(Math.abs(latest.operatingIncome)/1000).toLocaleString()} 百萬元，顯示毛利無法覆蓋龐大營業費用，核心本業營運資金顯著承壓。`);
     }
   } else if (latest.ratios.grossMargin >= 30) {
     strengths.push(`高產品附加價值：毛利率達 ${latest.ratios.grossMargin}%，具備堅實的定價能力與技術防護盾。`);
@@ -860,7 +860,7 @@ export function generateFinancialCopilotResponse(
       `• ➔ 淨現金轉換循環 (CCC)：【 ${ccc} 天 】（營業淨現金流入：NT$ ${ocfMillions} 百萬元）\n\n` +
       `🔍 2. 資金效率診斷：\n` +
       (isSuperEfficient
-        ? `• 🏆 企業展現極高之營運資金效率，從採購投入到銷售現金落袋僅需 ${ccc} 天，具備極強的自我造血與擴張底氣！`
+        ? `• 🏆 企業展現極高之營運資金效率，從採購投入到銷售現金落袋僅需 ${ccc} 天，具備極強的營運資金自主性與擴張實力！`
         : `• 💡 當前 CCC 為 ${ccc} 天，代表每筆營運資本需在外流動 ${ccc} 天後才能回收，具備顯著優化空間。`) +
       `\n\n🎯 3. 雙管齊下優化行動方案：\n` +
       `• 【下游端】：加速應收帳款入帳速度，鎖定前 20% 主要營收來源進行早鳥折扣。\n` +
@@ -956,7 +956,7 @@ export function generateFinancialCopilotResponse(
       `🟢 【多方看好理由 (Bull Case)】：\n` +
       `• 優異股東權益報酬率：ROE 錄得 ${roe}%，每股盈餘 EPS NT$ ${eps}，具備優異資本複利動能。\n` +
       `• 護城河與定價權：營業毛利率達 ${gm}%，產品具備定價優勢，抗通膨能力堅實。\n` +
-      `• 現金造血能力：營業現金流達 NT$ ${ocfMillions} 百萬元，為股息發放與研發擴產提供厚實底氣。\n\n` +
+      `• 營業現金流充沛：營業現金流達 NT$ ${ocfMillions} 百萬元，為股息發放與研發擴產提供厚實底氣。\n\n` +
       `🔴 【空方風險隱憂 (Bear Case)】：\n` +
       `• 資本支出折舊挑戰：本期資本支出 NT$ ${capexMillions} 百萬元，需追蹤新產能利用率以防折舊侵蝕淨利。\n` +
       `• 外部景氣與匯率敏感度：外銷比重高時需防範匯率逆風及終端需求降溫風險。\n\n` +

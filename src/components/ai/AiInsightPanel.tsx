@@ -121,7 +121,7 @@ export const AiInsightPanel: React.FC = () => {
           <p className="font-sans text-slate-300 leading-relaxed">
             {isInvestor ? (
               latestPeriod.netIncome < 0 ? (
-                `【價值投資視角總評】${activeCompany.name} 在 ${latestPeriod.period} 處於「營運虧損與基本面承壓期」，稅後淨損達 NT$ ${(Math.abs(latestPeriod.netIncome) / 1000).toLocaleString()} 百萬元（ROE 錄得 ${r.roe}%，每股虧損 NT$ ${r.eps}）。雖然營業毛利率錄得 ${r.grossMargin}%，但嚴謹自由現金流為實質赤字 NT$ ${(r.rigorousFcf / 1000).toLocaleString(undefined, { maximumFractionDigits: 1 })} 百萬元，且 Altman Z 破產防禦分數僅 ${r.altmanZScore} 分（落入 ${r.altmanZZone === 'distress' ? '財務困境警戒區' : '灰色考驗區'}），整體缺乏價值投資安全邊際，應嚴密防範營運失血與流動性風險。`
+                `【價值投資視角總評】${activeCompany.name} 在 ${latestPeriod.period} 處於「營運虧損與基本面承壓期」，稅後淨損達 NT$ ${(Math.abs(latestPeriod.netIncome) / 1000).toLocaleString()} 百萬元（ROE 錄得 ${r.roe}%，每股虧損 NT$ ${r.eps}）。雖然營業毛利率錄得 ${r.grossMargin}%，但嚴謹自由現金流為實質赤字 NT$ ${(r.rigorousFcf / 1000).toLocaleString(undefined, { maximumFractionDigits: 1 })} 百萬元，且 Altman Z 破產防禦分數僅 ${r.altmanZScore} 分（落入 ${r.altmanZZone === 'distress' ? '財務困境警戒區' : '灰色考驗區'}），整體缺乏價值投資安全邊際，應嚴密防範營運現金持續消耗與流動性風險。`
               ) : r.economicMoat === 'wide' ? (
                 `【價值投資視角總評】${activeCompany.name} 在 ${latestPeriod.period} 展現出「寬廣經濟護城河 (Wide Moat)」，營業毛利率 ${r.grossMargin}% 與 ROE ${r.roe}% 展現出強大的定價自主權與長期資本複利潛力。核心本業現金轉換率達 ${r.coreCashConversionRatio}%，創造嚴謹自由現金流 NT$ ${(r.rigorousFcf / 1000).toLocaleString(undefined, { maximumFractionDigits: 1 })} 百萬元，Altman Z 錄得 ${r.altmanZScore} 分（處於 安全堡壘區），具備極高基本面安全邊際。`
               ) : (
@@ -176,7 +176,7 @@ export const AiInsightPanel: React.FC = () => {
                     </li>
                     <li className="flex items-start space-x-2">
                       <span className="text-emerald-400 mt-0.5">•</span>
-                      <span><strong>真金白銀本業造血：</strong>核心現金轉換率 {r.coreCashConversionRatio}%，營業現金流遠高於帳面利潤，盈餘品質極佳。</span>
+                      <span><strong>營運現金流入扎實：</strong>核心現金轉換率 {r.coreCashConversionRatio}%，營業現金流高於帳面利潤，盈餘品質優良。</span>
                     </li>
                     <li className="flex items-start space-x-2">
                       <span className="text-emerald-400 mt-0.5">•</span>
@@ -211,7 +211,7 @@ export const AiInsightPanel: React.FC = () => {
                     </li>
                     <li className="flex items-start space-x-2">
                       <span className="text-amber-400 mt-0.5">•</span>
-                      <span><strong>自由現金流失血赤字：</strong>嚴謹自由現金流為淨流出 NT$ ${(Math.abs(r.rigorousFcf) / 1000).toLocaleString(undefined, { maximumFractionDigits: 1 })} 百萬元，現金失血且不具備配發股息能力。</span>
+                      <span><strong>自由現金流淨流出赤字：</strong>嚴謹自由現金流為淨流出 NT$ ${(Math.abs(r.rigorousFcf) / 1000).toLocaleString(undefined, { maximumFractionDigits: 1 })} 百萬元，營運現金持續消耗，短期缺乏配發股息之財務實力。</span>
                     </li>
                     <li className="flex items-start space-x-2">
                       <span className="text-amber-400 mt-0.5">•</span>
@@ -269,7 +269,7 @@ export const AiInsightPanel: React.FC = () => {
           <div className="bg-slate-950/50 p-3.5 sm:p-4 rounded-xl sm:rounded-2xl border border-slate-800">
             <span className="text-xs font-semibold text-emerald-300 flex items-center gap-1.5 mb-2">
               <TrendingUp className="w-3.5 h-3.5 flex-shrink-0" />
-              {isInvestor ? '核心現金轉換與自由現金流造血' : '獲利能力與杜邦驅動拆解'}
+              {isInvestor ? '核心現金轉換與自由現金流產生能力' : '獲利能力與杜邦驅動拆解'}
             </span>
             <p className="text-xs text-slate-300 leading-relaxed">
               {isInvestor
@@ -329,13 +329,13 @@ export const AiInsightPanel: React.FC = () => {
                           ? 'bg-blue-950/80 text-blue-300 border border-blue-800/60'
                           : 'bg-slate-800 text-slate-300 border border-slate-700'
                       }`}>
-                        {r.rigorousFcf <= 0 ? '評級: 失血吃緊' : r.rigorousFcf > 0 && r.coreCashConversionRatio >= 90 ? '評級: 充沛造血' : '評級: 尚可維持'}
+                        {r.rigorousFcf <= 0 ? '評級: 現金流吃緊' : r.rigorousFcf > 0 && r.coreCashConversionRatio >= 90 ? '評級: 現金流充沛' : '評級: 尚可維持'}
                       </span>
                     </div>
                     <p className="text-xs text-slate-300 font-medium leading-relaxed">
                       {r.rigorousFcf <= 0
-                        ? `自由現金流為淨流出 (NT$ ${(r.rigorousFcf / 1000).toLocaleString(undefined, { maximumFractionDigits: 1 })}M)，現金處於失血狀態，短期內不具備股息發放底氣。`
-                        : `自由現金流充沛，具備持續穩定配發現金股息之造血底氣，下行防禦性高。`}
+                        ? `自由現金流為淨流出 (NT$ ${(r.rigorousFcf / 1000).toLocaleString(undefined, { maximumFractionDigits: 1 })}M)，營運現金處於淨消耗狀態，短期內缺乏實質現金股息支撐力。`
+                        : `自由現金流充沛，具備持續穩定配發現金股息之財務實力，下行防禦性高。`}
                     </p>
                   </div>
                   <div className="mt-3 pt-2.5 border-t border-slate-800 text-[11px] text-blue-300">

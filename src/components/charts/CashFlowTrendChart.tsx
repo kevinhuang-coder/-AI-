@@ -61,7 +61,7 @@ export const CashFlowTrendChart: React.FC = () => {
           <p className="text-xs text-slate-400 mt-1">
             {isInvestor
               ? '嚴謹扣除 PP&E、無形資產研發與 IFRS 16 租賃本金，還原真實業主盈餘與本業現金轉化率'
-              : '監控本業營運造血 (OCF)、資本支出 (CapEx) 投資節奏與自由現金轉換率'}
+              : '監控本業營業現金流入 (OCF)、資本支出 (CapEx) 投資節奏與自由現金轉換率'}
           </p>
         </div>
 

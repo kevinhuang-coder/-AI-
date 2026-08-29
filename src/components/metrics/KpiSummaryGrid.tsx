@@ -133,7 +133,7 @@ export const KpiSummaryGrid: React.FC = () => {
               curRatios.rigorousFcf > 0 ? 'bg-emerald-500/10 text-emerald-300 border border-emerald-500/20' :
               'bg-rose-500/10 text-rose-300 border border-rose-500/20'
             }`}>
-              {curRatios.rigorousFcf > 0 ? '真造血' : '赤字'}
+              {curRatios.rigorousFcf > 0 ? '實質淨流入' : '淨赤字'}
             </span>
           </div>
 
