@@ -15,6 +15,7 @@ import { AiInsightPanel } from './components/ai/AiInsightPanel';
 import { FloatingFinancialCopilot } from './components/ai/FloatingFinancialCopilot';
 import { DataEditorModal } from './components/modals/DataEditorModal';
 import { PdfReportModal } from './components/modals/PdfReportModal';
+import { WelcomeDisclaimerModal } from './components/modals/WelcomeDisclaimerModal';
 import { BrandFooter } from './components/layout/BrandFooter';
 import { ShieldAlert } from 'lucide-react';
 
@@ -141,6 +142,7 @@ export default function App() {
         <FloatingFinancialCopilot />
         <DataEditorModal />
         <PdfReportModal />
+        <WelcomeDisclaimerModal />
       </div>
     </FinancialProvider>
   );

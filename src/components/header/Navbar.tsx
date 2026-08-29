@@ -13,6 +13,7 @@ import {
   ExternalLink,
   Search,
   Check,
+  ShieldCheck,
 } from 'lucide-react';
 
 export const Navbar: React.FC = () => {
@@ -25,6 +26,7 @@ export const Navbar: React.FC = () => {
     isLoadingAi,
     setIsPdfModalOpen,
     setIsDataEditorOpen,
+    setIsDisclaimerOpen,
     setEditingCompany,
     resetToSampleData,
   } = useFinancial();
@@ -132,6 +134,16 @@ export const Navbar: React.FC = () => {
 
           {/* Right: Clean Unified Action Buttons */}
           <div className="flex items-center space-x-2">
+            {/* Disclaimer Modal Trigger */}
+            <button
+              onClick={() => setIsDisclaimerOpen(true)}
+              className="flex items-center space-x-1.5 px-3 py-1.5 rounded-xl bg-slate-900/80 hover:bg-slate-800 border border-slate-800 text-slate-300 hover:text-white text-xs font-medium transition cursor-pointer"
+              title="查看使用須知與法律免責聲明"
+            >
+              <ShieldCheck className="w-3.5 h-3.5 text-amber-400" />
+              <span className="hidden sm:inline">使用須知</span>
+            </button>
+
             {/* Search/Import Trigger */}
             <button
               id="import-pdf-csv-btn"
