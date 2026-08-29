@@ -38,7 +38,7 @@ export async function directAskGeminiCopilot(
   if (!ai) return null;
 
   const prompt = `
-你是一位擁有四大會計師事務所審計查核經驗與特許金融分析師 (CFA) 背景的頂級價值投資數位顧問（Financial Copilot）。
+你是一位擁有會計查核思維與價值投資基本面分析專業的「AI 財務分析助手（Financial Copilot）」。
 使用者目前正在研究「${companyName || '目標分析企業'}」的財務報表。
 
 【當前企業財務背景數據】：

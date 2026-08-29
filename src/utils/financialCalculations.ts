@@ -759,8 +759,8 @@ export function generateLocalAiReport(companyName: string, periodsWithRatios: Pe
 }
 
 /**
- * 智慧型 AI 財務顧問即時諮詢推演引擎 (Financial Copilot Inference Engine)
- * 根據使用者具體問題意圖與最新多維財報數據，動態產生具備深度戰略價值之 CFO 級分析回答
+ * 智慧型 AI 財務分析助手即時諮詢推演引擎 (Financial Copilot Inference Engine)
+ * 根據使用者具體問題意圖與最新多維財報數據，動態產生具備深度基本面價值之分析推演
  */
 export function generateFinancialCopilotResponse(
   question: string,
@@ -769,14 +769,14 @@ export function generateFinancialCopilotResponse(
   aiReport?: AiDiagnosticReport | null
 ): string {
   if (!latest) {
-    return `【財務長顧問分析】目前尚未載入「${companyName}」之財務數據，請先於上方選擇或匯入財務報表期別數據。`;
+    return `【AI 財務分析助手】目前尚未載入「${companyName}」之財務數據，請先於上方選擇或匯入財務報表期別數據。`;
   }
 
   const q = question.toLowerCase().trim();
 
   // 0. 日常問候語友善引導 (Greeting Handler)
   if (['hi', 'hello', 'hey', '你好', '您好', '哈囉', '嗨', '早安', '午安', '晚安'].includes(q) || q === 'hi!' || q === 'hello!') {
-    return `您好！我是「AI 數位財務顧問（Financial Copilot）」👋\n\n` +
+    return `您好！我是「AI 財務分析助手（Financial Copilot）」👋\n\n` +
       `目前系統正在深入分析「${companyName}」在 ${latest.period} 的最新官方審計年報（毛利率 ${latest.ratios.grossMargin}%、ROE ${latest.ratios.roe}%）。\n\n` +
       `您可以向我詢問例如：\n` +
       `• 「這家公司具備長期的經濟護城河嗎？」\n` +
@@ -807,7 +807,7 @@ export function generateFinancialCopilotResponse(
     const isWarning = dso > 85;
     const cashRelease = Math.round(latest.revenue * (5 / 365) / 1000).toLocaleString();
 
-    return `【財務長顧問分析・應收帳款與信用政策策略】\n\n` +
+    return `【AI 財務分析助手・應收帳款與信用政策策略】\n\n` +
       `📊 1. 核心數據現況（基準期：${period}）：\n` +
       `• 應收帳款週轉率：${arTurnover} 次 / 年\n` +
       `• 平均收現天數 (DSO)：${dso} 天（行業標準優質區間約 45～65 天）\n` +
@@ -818,7 +818,7 @@ export function generateFinancialCopilotResponse(
         : isHealthy
         ? `• ✅ 目前 DSO 為 ${dso} 天，款項回收節奏極為流暢，顯示對下游客戶具備良好議價力與信用控管紀律。`
         : `• ⚖️ 當前收現天數 ${dso} 天處於中等可控水位，但面對景氣變數仍需防範帳期拖延。`) +
-      `\n\n🎯 3. 具體戰略行動指引（CFO Action Plan）：\n` +
+      `\n\n🎯 3. 具體策略指引：\n` +
       `• 實施客戶信用分級與「2/10, net 30」早鳥付款現金折扣方案，加速優質客戶回款節奏。\n` +
       `• 對帳齡逾期 30 天以上之客戶啟動滾動預警，必要時運用應收帳款承購（Factoring）或信用保險鎖定資金。\n` +
       `• 💡 財務效益：若能將 DSO 壓縮 5 天，預估可為「${companyName}」即時釋放約 NT$ ${cashRelease} 百萬元 之自由營運現金！`;
@@ -830,7 +830,7 @@ export function generateFinancialCopilotResponse(
     const isHigh = dsi > 85;
     const workingCapitalSaving = Math.round(latest.costOfGoodsSold * (8 / 365) / 1000).toLocaleString();
 
-    return `【財務長顧問分析・存貨去化與供應鏈效能評估】\n\n` +
+    return `【AI 財務分析助手・存貨去化與供應鏈效能評估】\n\n` +
       `📊 1. 核心數據現況（基準期：${period}）：\n` +
       `• 存貨週轉率：${invTurnover} 次 / 年\n` +
       `• 存貨週轉天數 (DSI)：${dsi} 天（健康基準通常為 50～75 天）\n` +
@@ -841,7 +841,7 @@ export function generateFinancialCopilotResponse(
         : isLean
         ? `• ✅ 存貨天數 ${dsi} 天表現優異（精實庫存），生產排程與終端出貨動能配合極為緊密。`
         : `• ⚖️ 存貨天數 ${dsi} 天維持在標準常態區間，需持續追蹤產品生命週期變化。`) +
-      `\n\n🎯 3. 具體戰略行動指引（CFO Action Plan）：\n` +
+      `\n\n🎯 3. 具體策略指引：\n` +
       `• 導入 S&OP（銷售與營運規劃）跨部門看板，以終端訂單即時驅動拉貨排程。\n` +
       `• 實施 ABC 庫存分類管理，針對週轉天數超過 90 天之慢速品項進行專案促銷或組合搭售出清。\n` +
       `• 💡 財務效益：若能縮短存貨天數 8 天，預計可降低約 NT$ ${workingCapitalSaving} 百萬元 之營運資金佔用！`;
@@ -852,13 +852,13 @@ export function generateFinancialCopilotResponse(
     const isSuperEfficient = ccc <= 45;
     const cashPerDay = Math.round(latest.revenue / 365 / 1000).toLocaleString();
 
-    return `【財務長顧問分析・現金轉換循環 (CCC) 與資金槓桿】\n\n` +
+    return `【AI 財務分析助手・現金轉換循環 (CCC) 與資金槓桿】\n\n` +
       `📊 1. 現金循環拆解矩陣（基準期：${period}）：\n` +
       `• 應收帳款天數 (DSO)：${dso} 天\n` +
       `• 加上 存貨週轉天數 (DSI)：${dsi} 天\n` +
       `• 減去 應付帳款天數 (DPO)：約 ${(dso + dsi - ccc).toFixed(1)} 天\n` +
       `• ➔ 淨現金轉換循環 (CCC)：【 ${ccc} 天 】（營業淨現金流入：NT$ ${ocfMillions} 百萬元）\n\n` +
-      `🔍 2. 戰略槓桿與資金效率診斷：\n` +
+      `🔍 2. 資金效率診斷：\n` +
       (isSuperEfficient
         ? `• 🏆 企業展現極高之營運資金效率，從採購投入到銷售現金落袋僅需 ${ccc} 天，具備極強的自我造血與擴張底氣！`
         : `• 💡 當前 CCC 為 ${ccc} 天，代表每筆營運資本需在外流動 ${ccc} 天後才能回收，具備顯著優化空間。`) +
@@ -872,7 +872,7 @@ export function generateFinancialCopilotResponse(
   if (q.includes('roe') || q.includes('杜邦') || q.includes('獲利') || q.includes('毛利') || q.includes('淨利') || q.includes('純益') || q.includes('驅動')) {
     const isHighRoe = roe >= 18;
 
-    return `【財務長顧問分析・杜邦分析三因子歸因與 ROE 驅動力】\n\n` +
+    return `【AI 財務分析助手・杜邦分析三因子歸因與 ROE 驅動力】\n\n` +
       `📊 1. 杜邦分析三因子拆解公式（基準期：${period}）：\n` +
       `• 【稅後純益率】：${r.dupontNetMargin}% （營業毛利率 ${gm}%、營益率 ${om}%）\n` +
       `• 【總資產週轉率】：${r.dupontAssetTurnover} 次 / 年 （資產營運效率）\n` +
@@ -882,7 +882,7 @@ export function generateFinancialCopilotResponse(
       (isHighRoe
         ? `• 🌟 本期 ROE 達 ${roe}% 表現極為亮眼！核心優勢來自「高稅後純益率 (${r.dupontNetMargin}%)」與穩健資產週轉，展現強大之產品定價權與技術壁壘。`
         : `• ⚖️ 本期 ROE 為 ${roe}%，若欲進一步突破，需聚焦於提升高毛利專案滲透率並優化固定資產產能利用率。`) +
-      `\n\n🎯 3. 股東價值最大化策略建議：\n` +
+      `\n\n🎯 3. 股東價值最大化建議：\n` +
       `• 產品線優化：聚焦毛利率高於 ${gm}% 之核心產品，淘汰低毛利代工訂單。\n` +
       `• 資本結構優化：在負債比率安全範圍內，善用低成本綠色債券或中長期融資，適度維持財務乘數效益。`;
   }
@@ -893,7 +893,7 @@ export function generateFinancialCopilotResponse(
     const moatLabel = moatType === 'wide' ? '👑 寬廣經濟護城河 (Wide Moat)' : moatType === 'narrow' ? '🛡️ 窄經濟護城河 (Narrow Moat)' : '⚠️ 無顯著護城河 (No Moat)';
     const fcfMillions = (r.freeCashFlow / 1000).toLocaleString('zh-TW', { maximumFractionDigits: 1 });
 
-    return `【價值投資顧問・企業經濟護城河 (Economic Moat) 深度評級】\n\n` +
+    return `【AI 財務分析助手・企業經濟護城河 (Economic Moat) 深度評級】\n\n` +
       `🏰 1. 護城河評級結果：【 ${moatLabel} 】（基準期：${period}）\n` +
       `• 營業毛利率：${gm}% （反映定價權與技術/品牌溢價防護盾）\n` +
       `• 股東權益報酬率 (ROE)：${roe}% （反映股東資本複利累積效應）\n` +
@@ -915,7 +915,7 @@ export function generateFinancialCopilotResponse(
     const isGold = ocfRatio >= 100;
     const isWarning = ocfRatio < 70;
 
-    return `【價值投資顧問・獲利含金量與盈餘品質檢驗】\n\n` +
+    return `【AI 財務分析助手・獲利含金量與盈餘品質檢驗】\n\n` +
       `💎 1. 核心含金量指標矩陣（基準期：${period}）：\n` +
       `• 營業活動現金流 (OCF)：NT$ ${ocfMillions} 百萬元\n` +
       `• 帳面稅後淨利 (Net Income)：NT$ ${(latest.netIncome / 1000).toLocaleString()} 百萬元\n` +
@@ -925,8 +925,8 @@ export function generateFinancialCopilotResponse(
         ? `• 🏆 【真金白銀落袋】：獲利含金量達 ${ocfRatio}%（超過 100%），代表公司每賺 1 元帳面利潤，實際上流進超過 1 元的真實營運現金！獲利品質極為扎實，絕無應收帳款虛胖灌水之嫌！`
         : isWarning
         ? `• ⚠️ 【警訊：利潤現金轉化不足】：獲利含金量僅 ${ocfRatio}%（低於 70% 警戒線），部分帳面利潤被應收帳款或未售存貨積壓，投資人應提防「紙上富貴」與流動性隱憂。`
-        : `• ⚖️ 獲利含金量為 ${ocfRatio}%，處於正常合理區間，營業現金流入與淨利走勢基本同步。`) +
-      `\n\n🎯 3. 投資人決策關注點：\n` +
+        : `• ⚖️ 獲利含金量為 ${ocfRatio}%，處於正常合理區解，營業現金流入與淨利走勢基本同步。`) +
+      `\n\n🎯 3. 決策關注點：\n` +
       `• 檢視應收帳款收現天數 (DSO ${dso} 天) 是否持續穩定，杜絕盈餘操縱風險。`;
   }
 
@@ -936,7 +936,7 @@ export function generateFinancialCopilotResponse(
     const zone = r.altmanZZone;
     const zoneLabel = zone === 'safe' ? '🏰 安全堡壘區 (Safe Zone - 破產風險極低)' : zone === 'grey' ? '⚖️ 灰色觀察區 (Grey Zone - 體質尚可)' : '🚨 財務困境區 (Distress Zone - 高風險警戒)';
 
-    return `【價值投資顧問・Altman Z-Score 破產防禦與財務健全度】\n\n` +
+    return `【AI 財務分析助手・Altman Z-Score 破產防禦與財務健全度】\n\n` +
       `🛡️ 1. 華爾街經典 Altman Z-Score 評分：【 ${z} 分 】\n` +
       `• 判定等級：【 ${zoneLabel} 】\n` +
       `• 流動比率：${r.currentRatio}% ｜ 負債比率：${r.debtRatio}% ｜ 利息保障倍數：${r.interestCoverageRatio} 倍\n\n` +
@@ -946,13 +946,13 @@ export function generateFinancialCopilotResponse(
         : zone === 'grey'
         ? `• ⚖️ Z 分數為 ${z} 分處於灰色區間，財務槓桿適中，但需持續監控短期償債資金儲備與負債到期結構。`
         : `• ⚠️ Z 分數僅 ${z} 分（低於 1.81 警戒線），顯示槓桿過高或營運資金吃緊，投資人應高度注意下行風險。`) +
-      `\n\n🎯 3. 投資人防禦清單：\n` +
+      `\n\n🎯 3. 防禦清單：\n` +
       `• 檢查負債比率是否低於 50%，並確認自由現金流能持續覆蓋資本支出與利息負擔。`;
   }
 
   // 8. 價值投資 / 存股 / 多空投資論點 (Bull vs Bear)
   if (q.includes('存股') || q.includes('投資') || q.includes('多空') || q.includes('價值') || q.includes('買進') || q.includes('長期')) {
-    return `【價值投資顧問・多空戰略觀點 (Bull vs. Bear Thesis)】\n\n` +
+    return `【AI 財務分析助手・多空戰略觀點 (Bull vs. Bear Thesis)】\n\n` +
       `🟢 【多方看好理由 (Bull Case)】：\n` +
       `• 優異股東權益報酬率：ROE 錄得 ${roe}%，每股盈餘 EPS NT$ ${eps}，具備優異資本複利動能。\n` +
       `• 護城河與定價權：營業毛利率達 ${gm}%，產品具備定價優勢，抗通膨能力堅實。\n` +
@@ -960,11 +960,11 @@ export function generateFinancialCopilotResponse(
       `🔴 【空方風險隱憂 (Bear Case)】：\n` +
       `• 資本支出折舊挑戰：本期資本支出 NT$ ${capexMillions} 百萬元，需追蹤新產能利用率以防折舊侵蝕淨利。\n` +
       `• 外部景氣與匯率敏感度：外銷比重高時需防範匯率逆風及終端需求降溫風險。\n\n` +
-      `💡 綜合投資評估：整體財務體質健康，具備長期基本面支撐，適合採取「逢低分批佈局、長期價值投資」之投資策略！`;
+      `💡 綜合財務評估：整體財務體質健康，具備長期基本面支撐，適合採取「逢低分批佈局、長期價值投資」之策略！`;
   }
 
   // 9. 自由提問與綜合諮詢通用高階解答
-  return `【財務長顧問分析・經營與投資決策診斷】\n\n` +
+  return `【AI 財務分析助手・經營與決策診斷】\n\n` +
     `針對您詢問「${question}」，結合「${companyName}」在 ${period} 的核心財務指標：\n\n` +
     `📊 1. 關鍵經營指標速覽：\n` +
     `• 營業收入：NT$ ${revMillions} 百萬元｜營業毛利率：${gm}%｜稅後淨利率：${nm}%\n` +
@@ -972,7 +972,7 @@ export function generateFinancialCopilotResponse(
     `• 獲利含金量：${r.ocfToNetIncome}% ｜ Altman Z 破產防禦分：${r.altmanZScore} (${r.altmanZZone === 'safe' ? '安全堡壘' : '穩定'})\n` +
     `• 收現天數 (DSO)：${dso} 天｜存貨天數 (DSI)：${dsi} 天｜現金循環 (CCC)：${ccc} 天\n\n` +
     `💡 2. 核心診斷結論：\n` +
-    `無論從「企業經營者（營運資金效率）」或「價值投資者（護城河與真實獲利含金量）」視角來看，整體體質均展現優異韌性。建議持續追蹤自由現金流與毛利率穩定度！`;
+    `無論從「營運資金效率」或「價值投資護城河與真實獲利含金量」視角來看，整體體質均展現優異韌性。建議持續追蹤自由現金流與毛利率穩定度！`;
 }
 
 

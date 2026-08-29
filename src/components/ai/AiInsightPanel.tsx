@@ -116,7 +116,7 @@ export const AiInsightPanel: React.FC = () => {
         <div className="p-4 sm:p-5 rounded-2xl bg-slate-950/70 border border-slate-800 text-slate-200 text-xs sm:text-sm leading-relaxed mb-4 sm:mb-6 shadow-inner">
           <div className="flex items-center gap-1.5 text-xs font-bold text-indigo-300 uppercase tracking-wider mb-1.5">
             <Bot className="w-4 h-4 text-indigo-400" />
-            <span>AI 財務長/投資顧問 核心結論總評</span>
+            <span>AI 財務分析助手 核心結論總評</span>
           </div>
           <p className="font-sans text-slate-300 leading-relaxed">
             {isInvestor ? (
@@ -404,11 +404,11 @@ export const AiInsightPanel: React.FC = () => {
             <Bot className="w-4 h-4 text-indigo-400" />
             <span>
               {isInvestor
-                ? '想了解更多估值與長期存股潛力？點擊右下角「AI 財務顧問」進行投資人問答 ➔'
-                : '需要更多情境推演或細部諮詢？點擊右下角「AI 財務顧問」隨時開展 CFO 對話 ➔'}
+                ? '想了解更多估值與長期存股潛力？點擊右下角「AI 財務分析助手」進行深度問答 ➔'
+                : '需要更多情境推演或細部諮詢？點擊右下角「AI 財務分析助手」隨時開展對話 ➔'}
             </span>
           </div>
-          <span className="text-[10px] text-slate-500 font-mono">{isInvestor ? 'Investor Copilot' : 'CFO Copilot'}</span>
+          <span className="text-[10px] text-slate-500 font-mono">Financial Assistant</span>
         </div>
 
       </div>
