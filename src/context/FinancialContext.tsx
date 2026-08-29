@@ -157,13 +157,11 @@ export const FinancialProvider: React.FC<{ children: React.ReactNode }> = ({ chi
     return found || allCompaniesWithConsolidated[0] || consolidatedCompany;
   }, [allCompaniesWithConsolidated, activeCompanyId, consolidatedCompany]);
 
-  // 當前選中公司的期間（依 年度 / 近四季TTM / 單季 動態計算）並計算財務比率
+  // 當前選中公司的期間（依 歷年年度 / 近四季TTM類整年 動態計算）並計算財務比率
   const activeCompanyPeriodsWithRatios = useMemo(() => {
     let rawPeriods = activeCompany.periods;
     if (timeFrequency === 'ttm') {
       rawPeriods = computeTtmRollingPeriods(activeCompany.periods);
-    } else if (timeFrequency === 'quarterly') {
-      rawPeriods = getSingleQuarterPeriods(activeCompany.periods);
     }
     return calculateAllPeriodsRatios(rawPeriods);
   }, [activeCompany, timeFrequency]);

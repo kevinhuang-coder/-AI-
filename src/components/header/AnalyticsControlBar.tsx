@@ -58,7 +58,7 @@ export const AnalyticsControlBar: React.FC = () => {
 
           <div className="hidden sm:block w-px h-6 bg-slate-800"></div>
 
-          {/* 2. Time Frequency Switcher: Annual vs TTM vs Quarterly */}
+          {/* 2. Time Frequency Switcher: Annual vs TTM */}
           <div className="flex items-center bg-slate-950/90 p-1 rounded-xl border border-slate-800 text-xs font-medium shadow-inner">
             <button
               onClick={() => setTimeFrequency('annual')}
@@ -87,19 +87,6 @@ export const AnalyticsControlBar: React.FC = () => {
               <span className="text-[9px] px-1.5 py-0.2 rounded bg-cyan-900/80 text-cyan-200 font-mono border border-cyan-700/50">
                 類整年
               </span>
-            </button>
-
-            <button
-              onClick={() => setTimeFrequency('quarterly')}
-              className={`flex items-center space-x-1.5 px-3 py-1.5 rounded-lg transition-all cursor-pointer min-h-[32px] ${
-                timeFrequency === 'quarterly'
-                  ? 'bg-purple-600 text-white shadow-md shadow-purple-600/30 font-bold'
-                  : 'text-slate-400 hover:text-slate-200 hover:bg-slate-900'
-              }`}
-              title="單季獨立數據（檢視最新一季存貨與毛利突發轉折）"
-            >
-              <Layers className="w-3.5 h-3.5 flex-shrink-0" />
-              <span>單季動態</span>
             </button>
           </div>
 
