@@ -20,7 +20,50 @@ export const AiInsightPanel: React.FC = () => {
   const { aiReport, activeCompany, runAiDiagnostic, isLoadingAi, latestPeriod, viewMode } =
     useFinancial();
 
-  if (!aiReport || !latestPeriod) return null;
+  if (!latestPeriod) return null;
+
+  // 當尚未執行 AI 診斷時，呈現精緻的「點擊啟動」引導卡片
+  if (!aiReport) {
+    return (
+      <div className="rounded-2xl border border-slate-800/80 bg-gradient-to-r from-slate-900/90 via-slate-900/50 to-emerald-950/20 p-4.5 sm:p-6 backdrop-blur-md shadow-sm relative overflow-hidden">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div className="flex items-start space-x-3.5">
+            <div className="w-10 h-10 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400 flex-shrink-0 mt-0.5">
+              <Sparkles className={`w-5 h-5 text-amber-300 ${isLoadingAi ? 'animate-spin' : ''}`} />
+            </div>
+            <div>
+              <div className="flex items-center gap-2 flex-wrap">
+                <h3 className="text-sm sm:text-base font-bold text-white tracking-tight">
+                  AI 價值投資與基本面深度診斷
+                </h3>
+                <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-emerald-950 text-emerald-300 border border-emerald-500/30 font-semibold">
+                  Powered by Google Gemini 2.5 Flash
+                </span>
+              </div>
+              <p className="text-xs text-slate-400 mt-1">
+                尚未執行分析。點擊右側按鈕，啟動大模型針對「{activeCompany.name}」進行經濟護城河、獲利現金含金量與 Altman Z 破產防禦之全面審計診斷。
+              </p>
+              <div className="flex flex-wrap gap-2 mt-2 text-[11px] text-slate-400">
+                <span className="px-2 py-0.5 rounded-md bg-slate-800/60 border border-slate-700/50">👑 護城河定價權</span>
+                <span className="px-2 py-0.5 rounded-md bg-slate-800/60 border border-slate-700/50">💎 獲利現金含金量</span>
+                <span className="px-2 py-0.5 rounded-md bg-slate-800/60 border border-slate-700/50">🏰 Altman Z 安全邊際</span>
+                <span className="px-2 py-0.5 rounded-md bg-slate-800/60 border border-slate-700/50">📈 多空投資論點</span>
+              </div>
+            </div>
+          </div>
+
+          <button
+            onClick={runAiDiagnostic}
+            disabled={isLoadingAi}
+            className="flex items-center justify-center space-x-2 px-4.5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs sm:text-sm font-bold shadow-md shadow-emerald-900/30 transition disabled:opacity-50 cursor-pointer flex-shrink-0 self-start md:self-center"
+          >
+            <Sparkles className={`w-4 h-4 ${isLoadingAi ? 'animate-spin' : 'text-amber-300'}`} />
+            <span>{isLoadingAi ? 'AI 正在精算診斷中...' : '✨ 立即啟動 AI 深度診斷'}</span>
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   const r = latestPeriod.ratios;
   const isInvestor = viewMode === 'investor';
