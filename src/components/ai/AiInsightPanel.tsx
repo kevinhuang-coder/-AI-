@@ -81,9 +81,17 @@ export const AiInsightPanel: React.FC = () => {
             <span>AI 財務長/投資顧問 核心結論總評</span>
           </div>
           <p className="font-sans text-slate-300 leading-relaxed">
-            {isInvestor
-              ? `【價值投資視角總評】${activeCompany.name} 在 ${latestPeriod.period} 展現出「${r.economicMoat === 'wide' ? '寬廣經濟護城河 (Wide Moat)' : r.economicMoat === 'narrow' ? '中度競爭壁壘' : '一般競爭結構'}」，營業毛利率 ${r.grossMargin}% 展現良好定價能力。獲利含金量達 ${r.ocfToNetIncome}%（真實現金流落袋扎實），自由現金流為 NT$ ${(r.freeCashFlow / 1000).toLocaleString(undefined, { maximumFractionDigits: 1 })} 百萬元，Altman Z 破產防禦分數錄得 ${r.altmanZScore} 分（處於 ${r.altmanZZone === 'safe' ? '安全堡壘區' : '穩定區'}），整體具備高度基本面防禦韌性。`
-              : aiReport.executiveSummary}
+            {isInvestor ? (
+              latestPeriod.netIncome < 0 ? (
+                `【價值投資視角總評】${activeCompany.name} 在 ${latestPeriod.period} 處於「營運虧損與基本面承壓期」，稅後淨損達 NT$ ${(Math.abs(latestPeriod.netIncome) / 1000).toLocaleString()} 百萬元（ROE 錄得 ${r.roe}%，每股虧損 NT$ ${r.eps}）。雖然營業毛利率錄得 ${r.grossMargin}%，但審計嚴謹自由現金流為實質赤字 NT$ ${(r.rigorousFcf / 1000).toLocaleString(undefined, { maximumFractionDigits: 1 })} 百萬元，且 Altman Z 破產防禦分數僅 ${r.altmanZScore} 分（落入 ${r.altmanZZone === 'distress' ? '財務困境警戒區' : '灰色考驗區'}），整體缺乏價值投資安全邊際，應嚴密防範營運失血與流動性風險。`
+              ) : r.economicMoat === 'wide' ? (
+                `【價值投資視角總評】${activeCompany.name} 在 ${latestPeriod.period} 展現出「寬廣經濟護城河 (Wide Moat)」，營業毛利率 ${r.grossMargin}% 與 ROE ${r.roe}% 展現出強大的定價自主權與長期資本複利潛力。核心本業現金轉換率達 ${r.coreCashConversionRatio}%，創造審計嚴謹版自由現金流 NT$ ${(r.rigorousFcf / 1000).toLocaleString(undefined, { maximumFractionDigits: 1 })} 百萬元，Altman Z 錄得 ${r.altmanZScore} 分（處於 安全堡壘區），具備極高基本面安全邊際。`
+              ) : (
+                `【價值投資視角總評】${activeCompany.name} 在 ${latestPeriod.period} 展現出「${r.economicMoat === 'narrow' ? '中度競爭壁壘' : '一般競爭結構'}」，營業毛利率 ${r.grossMargin}%，ROE 錄得 ${r.roe}%。核心本業現金轉換率達 ${r.coreCashConversionRatio}%，自由現金流為 NT$ ${(r.rigorousFcf / 1000).toLocaleString(undefined, { maximumFractionDigits: 1 })} 百萬元，Altman Z 破產防禦分數為 ${r.altmanZScore} 分（處於 ${r.altmanZZone === 'safe' ? '安全堡壘區' : r.altmanZZone === 'grey' ? '灰色過渡區' : '警戒區'}）。`
+              )
+            ) : (
+              aiReport.executiveSummary
+            )}
           </p>
         </div>
 
@@ -94,24 +102,50 @@ export const AiInsightPanel: React.FC = () => {
           <div className="p-4 sm:p-5 rounded-xl sm:rounded-2xl bg-emerald-950/20 border border-emerald-900/30">
             <div className="flex items-center space-x-2 text-emerald-400 text-xs font-bold uppercase tracking-wider mb-2.5 sm:mb-3">
               <CheckCircle2 className="w-4 h-4 flex-shrink-0" />
-              <span>{isInvestor ? '🟢 多方看好理由 (Bull Case Thesis)' : '核心財務優勢與經營亮點'}</span>
+              <span>{isInvestor ? (latestPeriod.netIncome < 0 ? '🟢 潛在轉機契機與防禦亮點' : '🟢 多方看好理由 (Bull Case Thesis)') : '核心財務優勢與經營亮點'}</span>
             </div>
             <ul className="space-y-2 text-xs text-slate-300">
               {isInvestor ? (
-                <>
-                  <li className="flex items-start space-x-2">
-                    <span className="text-emerald-400 mt-0.5">•</span>
-                    <span><strong>卓越資本回報力：</strong>ROE 達 {r.roe}%，每股盈餘 EPS 達 NT$ {r.eps}，展現長期複利滾動潛力。</span>
-                  </li>
-                  <li className="flex items-start space-x-2">
-                    <span className="text-emerald-400 mt-0.5">•</span>
-                    <span><strong>真金白銀獲利：</strong>獲利含金量 {r.ocfToNetIncome}%（&gt;100%），營業現金流遠高於帳面淨利，盈餘品質極佳。</span>
-                  </li>
-                  <li className="flex items-start space-x-2">
-                    <span className="text-emerald-400 mt-0.5">•</span>
-                    <span><strong>安全堡壘防禦：</strong>Altman Z-Score {r.altmanZScore} 分，破產風險極低，具備穿越景氣週期的抗風險底氣。</span>
-                  </li>
-                </>
+                latestPeriod.netIncome < 0 ? (
+                  <>
+                    <li className="flex items-start space-x-2">
+                      <span className="text-emerald-400 mt-0.5">•</span>
+                      <span>
+                        <strong>日常本業現金流入：</strong>
+                        {latestPeriod.operatingCashFlow >= 0
+                          ? `本期營業活動現金流仍錄得 NT$ ${(latestPeriod.operatingCashFlow / 1000).toLocaleString()} 百萬元，日常營運未全面斷流。`
+                          : `日常營運現金目前呈流出狀態，需密切關注流動性融資支撐。`}
+                      </span>
+                    </li>
+                    <li className="flex items-start space-x-2">
+                      <span className="text-emerald-400 mt-0.5">•</span>
+                      <span>
+                        <strong>基礎產品銷貨毛利：</strong>營業毛利率維持在 {r.grossMargin}%，仍具備基礎銷貨毛利空間。
+                      </span>
+                    </li>
+                    <li className="flex items-start space-x-2">
+                      <span className="text-emerald-400 mt-0.5">•</span>
+                      <span>
+                        <strong>轉型重整契機：</strong>若能加速處分虧損事業、優化費用結構與倉儲物流，未來具備潛在轉虧為盈之轉機題材。
+                      </span>
+                    </li>
+                  </>
+                ) : (
+                  <>
+                    <li className="flex items-start space-x-2">
+                      <span className="text-emerald-400 mt-0.5">•</span>
+                      <span><strong>卓越資本回報力：</strong>ROE 達 {r.roe}%，每股盈餘 EPS 達 NT$ {r.eps}，展現長期複利滾動潛力。</span>
+                    </li>
+                    <li className="flex items-start space-x-2">
+                      <span className="text-emerald-400 mt-0.5">•</span>
+                      <span><strong>真金白銀本業造血：</strong>核心現金轉換率 {r.coreCashConversionRatio}%，營業現金流遠高於帳面利潤，盈餘品質極佳。</span>
+                    </li>
+                    <li className="flex items-start space-x-2">
+                      <span className="text-emerald-400 mt-0.5">•</span>
+                      <span><strong>安全堡壘防禦：</strong>Altman Z-Score {r.altmanZScore} 分，純計息負債比僅 {r.interestBearingDebtRatio}%，具備穿越景氣週期的抗風險底氣。</span>
+                    </li>
+                  </>
+                )
               ) : (
                 aiReport.strengths.map((st, i) => (
                   <li key={i} className="flex items-start space-x-2">
@@ -127,24 +161,41 @@ export const AiInsightPanel: React.FC = () => {
           <div className="p-4 sm:p-5 rounded-xl sm:rounded-2xl bg-amber-950/20 border border-amber-900/30">
             <div className="flex items-center space-x-2 text-amber-400 text-xs font-bold uppercase tracking-wider mb-2.5 sm:mb-3">
               <AlertTriangle className="w-4 h-4 flex-shrink-0" />
-              <span>{isInvestor ? '🔴 空方隱憂與風險提示 (Bear Case Risks)' : '潛在風險警訊與改善空間'}</span>
+              <span>{isInvestor ? '🔴 空方隱憂與風險地雷提示 (Bear Case Risks)' : '潛在風險警訊與改善空間'}</span>
             </div>
             <ul className="space-y-2 text-xs text-slate-300">
               {isInvestor ? (
-                <>
-                  <li className="flex items-start space-x-2">
-                    <span className="text-amber-400 mt-0.5">•</span>
-                    <span><strong>資本支出折舊壓力：</strong>本期資本支出 NT$ ${(latestPeriod.capitalExpenditures / 1000).toLocaleString()} 百萬元，需追蹤未來新產能投產後的毛利支撐力。</span>
-                  </li>
-                  <li className="flex items-start space-x-2">
-                    <span className="text-amber-400 mt-0.5">•</span>
-                    <span><strong>同業競爭與毛利防禦：</strong>面對全球供應鏈景氣波動，需嚴密防範毛利率是否出現逐季下滑跡象。</span>
-                  </li>
-                  <li className="flex items-start space-x-2">
-                    <span className="text-amber-400 mt-0.5">•</span>
-                    <span><strong>估值防禦與市場預期：</strong>若市場給予過高評價，需確保營收成長率能如期兌現以支撐本益比。</span>
-                  </li>
-                </>
+                latestPeriod.netIncome < 0 ? (
+                  <>
+                    <li className="flex items-start space-x-2">
+                      <span className="text-amber-400 mt-0.5">•</span>
+                      <span><strong>實質虧損侵蝕淨值：</strong>稅後淨損達 NT$ ${(Math.abs(latestPeriod.netIncome) / 1000).toLocaleString()} 百萬元（EPS NT$ ${r.eps}），股東權益持續遭到實質減損。</span>
+                    </li>
+                    <li className="flex items-start space-x-2">
+                      <span className="text-amber-400 mt-0.5">•</span>
+                      <span><strong>自由現金流失血赤字：</strong>審計嚴謹自由現金流為淨流出 NT$ ${(Math.abs(r.rigorousFcf) / 1000).toLocaleString(undefined, { maximumFractionDigits: 1 })} 百萬元，現金失血且不具備配發股息能力。</span>
+                    </li>
+                    <li className="flex items-start space-x-2">
+                      <span className="text-amber-400 mt-0.5">•</span>
+                      <span><strong>破產防禦落入警戒區：</strong>Altman Z 分數僅 {r.altmanZScore} 分（處於困境警戒區），財務結構脆弱，需高度防範債務展延與流動性風險。</span>
+                    </li>
+                  </>
+                ) : (
+                  <>
+                    <li className="flex items-start space-x-2">
+                      <span className="text-amber-400 mt-0.5">•</span>
+                      <span><strong>資本支出折舊壓力：</strong>本期資本支出 NT$ ${(latestPeriod.capitalExpenditures / 1000).toLocaleString()} 百萬元，需追蹤未來新產能投產後的毛利支撐力。</span>
+                    </li>
+                    <li className="flex items-start space-x-2">
+                      <span className="text-amber-400 mt-0.5">•</span>
+                      <span><strong>同業競爭與毛利防禦：</strong>面對產業價格戰，需嚴密防範毛利率是否出現逐季下滑跡象。</span>
+                    </li>
+                    <li className="flex items-start space-x-2">
+                      <span className="text-amber-400 mt-0.5">•</span>
+                      <span><strong>估值防禦與市場預期：</strong>若市場給予高評價，需確保營收成長率能如期兌現以支撐估值倍數。</span>
+                    </li>
+                  </>
+                )
               ) : (
                 aiReport.weaknessesAndRisks.map((wk, i) => (
                   <li key={i} className="flex items-start space-x-2">
@@ -169,7 +220,9 @@ export const AiInsightPanel: React.FC = () => {
             </span>
             <p className="text-xs text-slate-300 leading-relaxed">
               {isInvestor
-                ? `毛利率達 ${r.grossMargin}%，代表企業對下游客戶具備堅實的定價自主權，技術或品牌護城河深度評定為「${r.economicMoat === 'wide' ? '寬廣護城河' : '中度護城河'}」，具備長期抗通膨能力。`
+                ? (latestPeriod.netIncome < 0
+                    ? `目前本業呈虧損狀態，毛利率為 ${r.grossMargin}%，尚未形成堅實之長期經濟護城河，面對激烈市場競爭缺乏定價保護。`
+                    : `毛利率達 ${r.grossMargin}%，技術或品牌護城河深度評定為「${r.economicMoat === 'wide' ? '寬廣護城河' : r.economicMoat === 'narrow' ? '中度護城河' : '一般結構'}」，具備相應定價能力。`)
                 : aiReport.turnoverAnalysis.arAssessment}
             </p>
           </div>
@@ -178,11 +231,13 @@ export const AiInsightPanel: React.FC = () => {
           <div className="bg-slate-950/50 p-3.5 sm:p-4 rounded-xl sm:rounded-2xl border border-slate-800">
             <span className="text-xs font-semibold text-emerald-300 flex items-center gap-1.5 mb-2">
               <TrendingUp className="w-3.5 h-3.5 flex-shrink-0" />
-              {isInvestor ? '獲利含金量與自由現金流造血' : '獲利能力與杜邦驅動拆解'}
+              {isInvestor ? '核心現金轉換與自由現金流造血' : '獲利能力與杜邦驅動拆解'}
             </span>
             <p className="text-xs text-slate-300 leading-relaxed">
               {isInvestor
-                ? `營業現金流對淨利比為 ${r.ocfToNetIncome}%，產生自由現金流 NT$ ${(r.freeCashFlow / 1000).toLocaleString(undefined, { maximumFractionDigits: 1 })} 百萬元，為未來股息發放、再投資研發提供了堅實無虞的現金後盾。`
+                ? (r.rigorousFcf < 0
+                    ? `審計嚴謹自由現金流為赤字 NT$ ${(r.rigorousFcf / 1000).toLocaleString(undefined, { maximumFractionDigits: 1 })} 百萬元，本期未能產生實質自由現金流，需提防後續營運資金調度壓力。`
+                    : `核心本業現金轉換率為 ${r.coreCashConversionRatio}%，產生自由現金流 NT$ ${(r.rigorousFcf / 1000).toLocaleString(undefined, { maximumFractionDigits: 1 })} 百萬元，為未來營運再投資提供現金後盾。`)
                 : aiReport.profitabilityAnalysis.dupontDrivers}
             </p>
           </div>
@@ -203,15 +258,25 @@ export const AiInsightPanel: React.FC = () => {
                   <div>
                     <div className="flex items-center justify-between mb-2">
                       <span className="text-xs font-semibold text-slate-200">長線複利潛力</span>
-                      <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-950/80 text-emerald-300 border border-emerald-800/60">評級: 優質</span>
+                      <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
+                        latestPeriod.netIncome < 0
+                          ? 'bg-rose-950/80 text-rose-300 border border-rose-800/60'
+                          : r.roe >= 15
+                          ? 'bg-emerald-950/80 text-emerald-300 border border-emerald-800/60'
+                          : 'bg-blue-950/80 text-blue-300 border border-blue-800/60'
+                      }`}>
+                        {latestPeriod.netIncome < 0 ? '評級: 承壓虧損' : r.roe >= 15 ? '評級: 優質複利' : '評級: 穩健平平'}
+                      </span>
                     </div>
                     <p className="text-xs text-slate-300 font-medium leading-relaxed">
-                      具備長期高 ROE ({r.roe}%) 與高獲利含金量，適合價值型投資者逢回檔分批建立長期核心持股。
+                      {latestPeriod.netIncome < 0
+                        ? `當前 ROE 為負值 (${r.roe}%)，本業實質虧損，完全不具備長期複利滾動條件，價值投資人應避免盲目抄底，嚴防價值陷阱。`
+                        : `具備長期高 ROE (${r.roe}%) 與良好獲利能力，適合價值型投資者逢回檔分批評估長期持有價值。`}
                     </p>
                   </div>
                   <div className="mt-3 pt-2.5 border-t border-slate-800 text-[11px] text-emerald-300">
                     <span className="font-semibold text-slate-400">關鍵關注: </span>
-                    追蹤每季毛利率與 EPS 成長性
+                    {latestPeriod.netIncome < 0 ? '追蹤何時由虧轉盈及毛利回升' : '追蹤每季毛利率與 EPS 成長性'}
                   </div>
                 </div>
 
@@ -219,15 +284,25 @@ export const AiInsightPanel: React.FC = () => {
                   <div>
                     <div className="flex items-center justify-between mb-2">
                       <span className="text-xs font-semibold text-slate-200">股息與自由現金保護</span>
-                      <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-blue-950/80 text-blue-300 border border-blue-800/60">評級: 充沛</span>
+                      <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
+                        r.rigorousFcf <= 0
+                          ? 'bg-rose-950/80 text-rose-300 border border-rose-800/60'
+                          : r.rigorousFcf > 0 && r.coreCashConversionRatio >= 90
+                          ? 'bg-blue-950/80 text-blue-300 border border-blue-800/60'
+                          : 'bg-slate-800 text-slate-300 border border-slate-700'
+                      }`}>
+                        {r.rigorousFcf <= 0 ? '評級: 失血吃緊' : r.rigorousFcf > 0 && r.coreCashConversionRatio >= 90 ? '評級: 充沛造血' : '評級: 尚可維持'}
+                      </span>
                     </div>
                     <p className="text-xs text-slate-300 font-medium leading-relaxed">
-                      自由現金流充沛，具備持續穩定配發高額現金股息之強大造血底氣，下行防禦性高。
+                      {r.rigorousFcf <= 0
+                        ? `自由現金流為淨流出 (NT$ ${(r.rigorousFcf / 1000).toLocaleString(undefined, { maximumFractionDigits: 1 })}M)，現金處於失血狀態，短期內不具備股息發放底氣。`
+                        : `自由現金流充沛，具備持續穩定配發現金股息之造血底氣，下行防禦性高。`}
                     </p>
                   </div>
                   <div className="mt-3 pt-2.5 border-t border-slate-800 text-[11px] text-blue-300">
                     <span className="font-semibold text-slate-400">關鍵關注: </span>
-                    檢驗資本支出對 FCF 之佔用比率
+                    {r.rigorousFcf <= 0 ? '防範再籌資稀釋與現金存量消耗' : '檢驗資本支出對 FCF 之佔用比率'}
                   </div>
                 </div>
 
@@ -235,15 +310,27 @@ export const AiInsightPanel: React.FC = () => {
                   <div>
                     <div className="flex items-center justify-between mb-2">
                       <span className="text-xs font-semibold text-slate-200">破產防禦與安全邊際</span>
-                      <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-purple-950/80 text-purple-300 border border-purple-800/60">評級: 堡壘級</span>
+                      <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
+                        r.altmanZZone === 'safe'
+                          ? 'bg-purple-950/80 text-purple-300 border border-purple-800/60'
+                          : r.altmanZZone === 'grey'
+                          ? 'bg-amber-950/80 text-amber-300 border border-amber-800/60'
+                          : 'bg-rose-950/80 text-rose-300 border border-rose-800/60'
+                      }`}>
+                        {r.altmanZZone === 'safe' ? '評級: 堡壘級' : r.altmanZZone === 'grey' ? '評級: 觀察區' : '評級: 困境警戒'}
+                      </span>
                     </div>
                     <p className="text-xs text-slate-300 font-medium leading-relaxed">
-                      Altman Z-Score 達 {r.altmanZScore} 分，負債結構穩固，即使遭遇大環境逆風亦無財務危機隱憂。
+                      {r.altmanZZone === 'safe'
+                        ? `Altman Z-Score 達 ${r.altmanZScore} 分，負債結構穩固，即使遭遇大環境逆風亦無財務危機隱憂。`
+                        : r.altmanZZone === 'grey'
+                        ? `Altman Z 分數為 ${r.altmanZScore} 分（處於灰色過渡區），需密切留意營運資金週轉與短期借款展延能力。`
+                        : `Altman Z-Score 僅 ${r.altmanZScore} 分（落入破產困境警戒區），缺乏安全邊際，需高度防範債務違約風險。`}
                     </p>
                   </div>
                   <div className="mt-3 pt-2.5 border-t border-slate-800 text-[11px] text-purple-300">
                     <span className="font-semibold text-slate-400">關鍵關注: </span>
-                    確保流動比率維持在 200% 以上
+                    {r.altmanZZone === 'distress' ? '嚴密防範流動性危機與信用風險' : '確保流動比率維持在 180% 以上'}
                   </div>
                 </div>
               </>
