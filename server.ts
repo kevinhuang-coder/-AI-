@@ -548,39 +548,45 @@ app.get('/api/financial/fetch-stock', async (req, res) => {
     });
 
     const sortedDates = Object.keys(dateGroups).sort();
-    const periods = sortedDates.slice(-3).map((d, idx) => {
+    const periods = sortedDates.slice(-8).map((d) => {
       const row = dateGroups[d];
-      const year = parseInt(d.substring(0, 4), 10) || (2024 + idx);
-      const rev = Number(row.Revenue || row.TotalRevenue || 10000000);
-      const cogs = Number(row.CostOfGoodsSold || rev * 0.75);
+      const year = parseInt(d.substring(0, 4), 10) || 2025;
+      const month = parseInt(d.substring(5, 7), 10) || 12;
+      const quarter = month <= 3 ? 1 : month <= 6 ? 2 : month <= 9 ? 3 : 4;
+      const isQ = month !== 12 || d.includes('-03-') || d.includes('-06-') || d.includes('-09-');
+
+      const rev = Number(row.Revenue || row.TotalRevenue || 0);
+      const cogs = Number(row.CostOfGoodsSold || 0);
       const gross = Number(row.GrossProfit || (rev - cogs));
-      const opExp = Number(row.OperatingExpenses || rev * 0.15);
+      const opExp = Number(row.OperatingExpenses || 0);
       const opInc = Number(row.OperatingIncome || (gross - opExp));
-      const netInc = Number(row.IncomeAfterTaxes || row.NetIncome || opInc * 0.85);
+      const netInc = Number(row.IncomeAfterTaxes || row.NetIncome || 0);
 
       return {
-        id: `api-stock-${rawCode}-${year}`,
+        id: `api-stock-${rawCode}-${d}`,
         year,
-        period: `${year} 年度 (${year - 1911}年)`,
+        period: isQ ? `${year} Q${quarter} (${year - 1911}Q${quarter})` : `${year} 年度 (${year - 1911}年)`,
+        isQuarterly: isQ,
+        quarter: quarter as any,
         revenue: rev,
         costOfGoodsSold: cogs,
         grossProfit: gross,
         operatingExpenses: opExp,
         operatingIncome: opInc,
         netIncome: netInc,
-        sharesOutstanding: 200000,
-        accountsReceivable: Number(row.AccountsReceivable || rev * 0.12),
-        inventory: Number(row.Inventories || cogs * 0.15),
-        accountsPayable: Number(row.AccountsPayable || cogs * 0.14),
-        currentAssets: Number(row.CurrentAssets || rev * 0.45),
-        currentLiabilities: Number(row.CurrentLiabilities || rev * 0.25),
-        totalAssets: Number(row.TotalAssets || rev * 0.9),
-        totalLiabilities: Number(row.TotalLiabilities || rev * 0.4),
-        stockholdersEquity: Number(row.TotalEquity || rev * 0.5),
-        cashAndEquivalents: Number(row.CashAndCashEquivalents || rev * 0.25),
-        operatingCashFlow: Number(row.CashFlowsFromOperatingActivities || netInc * 1.1),
-        capitalExpenditures: Number(row.CapitalExpenditure || rev * 0.08),
-        interestExpense: Number(row.InterestExpense || 10000),
+        sharesOutstanding: Number(row.TotalShares || 200000),
+        accountsReceivable: Number(row.AccountsReceivable || row.NotesAndAccountsReceivable || 0),
+        inventory: Number(row.Inventories || row.Inventory || 0),
+        accountsPayable: Number(row.AccountsPayable || row.NotesAndAccountsPayable || 0),
+        currentAssets: Number(row.CurrentAssets || 0),
+        currentLiabilities: Number(row.CurrentLiabilities || 0),
+        totalAssets: Number(row.TotalAssets || 0),
+        totalLiabilities: Number(row.TotalLiabilities || 0),
+        stockholdersEquity: Number(row.TotalEquity || row.StockholdersEquity || 0),
+        cashAndEquivalents: Number(row.CashAndCashEquivalents || 0),
+        operatingCashFlow: Number(row.CashFlowsFromOperatingActivities || 0),
+        capitalExpenditures: Number(row.CapitalExpenditure || 0),
+        interestExpense: Number(row.InterestExpense || 0),
       };
     });
 
