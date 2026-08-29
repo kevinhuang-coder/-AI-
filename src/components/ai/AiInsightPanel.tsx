@@ -246,97 +246,17 @@ export const AiInsightPanel: React.FC = () => {
           </div>
         </div>
 
-      </div>
-
-      {/* 2. Interactive AI Financial Advisor Copilot */}
-      <div className="rounded-2xl sm:rounded-3xl border border-slate-800 bg-slate-900/60 backdrop-blur-sm p-4.5 sm:p-6 shadow-sm">
-        <div className="flex items-center space-x-2.5 mb-3.5 sm:mb-4">
-          <div className="w-9 h-9 rounded-xl bg-indigo-600/30 text-indigo-400 border border-indigo-500/30 flex items-center justify-center flex-shrink-0">
-            <Bot className="w-5 h-5" />
+        {/* Floating Copilot Guide Notice */}
+        <div className="mt-4 pt-3.5 border-t border-slate-800/80 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-slate-400">
+          <div className="flex items-center space-x-2">
+            <Bot className="w-4 h-4 text-indigo-400" />
+            <span>需要更多情境推演或細部諮詢？點擊右下角懸浮按鈕 <strong>「AI 財務顧問」</strong> 隨時開展 CFO 對話！</span>
           </div>
-          <div>
-            <h4 className="text-sm font-bold text-white tracking-tight">
-              AI 財務顧問即時諮詢 (Financial Copilot)
-            </h4>
-            <p className="text-xs text-slate-400">
-              針對當前公司數據進行深度提問、推演不同情境或索取客製化管理建議
-            </p>
-          </div>
-        </div>
-
-        {/* Quick Suggestion Chips */}
-        <div className="flex flex-wrap gap-1.5 sm:gap-2 mb-3.5 sm:mb-4">
-          {sampleQuestions.map((q, idx) => (
-            <button
-              key={idx}
-              onClick={() => handleAskQuestion(undefined, q)}
-              disabled={isAsking}
-              className="text-xs bg-slate-800/70 hover:bg-slate-750 hover:border-indigo-500/50 text-slate-300 hover:text-white px-2.5 sm:px-3 py-1.5 rounded-lg sm:rounded-xl border border-slate-700/50 transition text-left min-h-[32px] cursor-pointer active:scale-98 disabled:opacity-50"
-            >
-              💬 {q}
-            </button>
-          ))}
-        </div>
-
-        {/* Chat History Box */}
-        <div className="max-h-80 overflow-y-auto space-y-3 p-3.5 sm:p-4 bg-slate-950/70 rounded-xl sm:rounded-2xl border border-slate-800 mb-3 text-xs">
-          {chatHistory.map((msg, i) => (
-            <div
-              key={i}
-              className={`flex items-start space-x-2 sm:space-x-2.5 ${
-                msg.role === 'user' ? 'justify-end' : 'justify-start'
-              }`}
-            >
-              {msg.role === 'assistant' && (
-                <div className="w-6 h-6 rounded-full bg-indigo-600 flex items-center justify-center text-white flex-shrink-0 mt-0.5 shadow-sm shadow-indigo-500/30">
-                  <Bot className="w-3.5 h-3.5" />
-                </div>
-              )}
-              <div
-                className={`p-3 sm:p-4 rounded-2xl max-w-[92%] sm:max-w-[88%] leading-relaxed whitespace-pre-line font-sans ${
-                  msg.role === 'user'
-                    ? 'bg-blue-600 text-white rounded-tr-none shadow-md shadow-blue-600/20'
-                    : 'bg-slate-900 text-slate-100 border border-slate-800 rounded-tl-none shadow-sm'
-                }`}
-              >
-                {msg.text}
-              </div>
-            </div>
-          ))}
-          {isAsking && (
-            <div className="flex items-center space-x-2 text-indigo-400 text-xs italic">
-              <Sparkles className="w-3.5 h-3.5 animate-spin flex-shrink-0" />
-              <span>AI 顧問正在精算財報數據並推演回答...</span>
-            </div>
-          )}
-        </div>
-
-        {/* Input Form */}
-        <form onSubmit={handleAskQuestion} className="flex items-center gap-2">
-          <input
-            type="text"
-            value={question}
-            onChange={(e) => setQuestion(e.target.value)}
-            placeholder="請輸入財務分析問題（例：若存貨天數縮短 10 天，對現金流量有何影響？）"
-            className="flex-1 bg-slate-950/80 border border-slate-800 rounded-xl sm:rounded-2xl px-3.5 sm:px-4 py-2.5 text-sm sm:text-xs text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500 min-h-[42px]"
-          />
-          <button
-            type="submit"
-            disabled={!question.trim() || isAsking}
-            className="flex items-center space-x-1.5 px-4 sm:px-5 py-2.5 rounded-xl sm:rounded-2xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold transition disabled:opacity-50 shadow-md shadow-blue-600/20 min-h-[42px] flex-shrink-0"
-          >
-            <Send className="w-3.5 h-3.5" />
-            <span className="hidden sm:inline">發送</span>
-          </button>
-        </form>
-
-        {/* AI Disclaimer Footnote */}
-        <div className="mt-3 flex flex-col sm:flex-row sm:items-center justify-between gap-1 text-[10px] text-slate-500 pt-2 border-t border-slate-800/60">
-          <span>※ AI 顧問分析與預測數值係供管理決策模擬參考，不構成實質投資或審計擔保。</span>
-          <span className="text-slate-600">模型架構：多因子財務診斷引擎</span>
+          <span className="text-[10px] text-slate-500 font-mono">24/7 CFO Copilot Ready</span>
         </div>
 
       </div>
     </div>
   );
 };
+

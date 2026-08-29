@@ -11,6 +11,7 @@ import { MultiAccountComparison } from './components/charts/MultiAccountComparis
 import { AiForecastChart } from './components/charts/AiForecastChart';
 import { FinancialDataTable } from './components/tables/FinancialDataTable';
 import { AiInsightPanel } from './components/ai/AiInsightPanel';
+import { FloatingFinancialCopilot } from './components/ai/FloatingFinancialCopilot';
 import { DataEditorModal } from './components/modals/DataEditorModal';
 import { PdfReportModal } from './components/modals/PdfReportModal';
 import {
@@ -355,6 +356,7 @@ export default function App() {
     <FinancialProvider>
       <div className="min-h-screen bg-[#020617] text-slate-50 antialiased">
         <DashboardContent />
+        <FloatingFinancialCopilot />
         <DataEditorModal />
         <PdfReportModal />
       </div>
