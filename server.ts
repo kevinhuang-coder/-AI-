@@ -14,7 +14,10 @@ app.use(express.urlencoded({ extended: true, limit: '50mb' }));
 
 // 初始化 Gemini API 客戶端
 function getGeminiClient(): GoogleGenAI | null {
-  const apiKey = process.env.GEMINI_API_KEY;
+  const apiKey =
+    process.env.GEMINI_API_KEY ||
+    process.env.GEMINI_API_KEY_FS ||
+    process.env.VITE_GEMINI_API_KEY;
   if (!apiKey) {
     return null;
   }
