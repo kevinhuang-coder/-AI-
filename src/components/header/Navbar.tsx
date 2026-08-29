@@ -3,7 +3,6 @@ import { useFinancial } from '../../context/FinancialContext';
 import { BrandLogo } from '../brand/BrandLogo';
 import {
   Building2,
-  FileText,
   Sparkles,
   ChevronDown,
   Layers,
@@ -24,7 +23,6 @@ export const Navbar: React.FC = () => {
     setActiveCompanyId,
     runAiDiagnostic,
     isLoadingAi,
-    setIsPdfModalOpen,
     setIsDataEditorOpen,
     setIsDisclaimerOpen,
     setEditingCompany,
@@ -167,17 +165,6 @@ export const Navbar: React.FC = () => {
             >
               <Sparkles className={`w-3.5 h-3.5 ${isLoadingAi ? 'animate-spin' : ''}`} />
               <span>{isLoadingAi ? '診斷中...' : 'AI 深度診斷'}</span>
-            </button>
-
-            {/* Export PDF Button */}
-            <button
-              id="export-pdf-btn"
-              onClick={() => setIsPdfModalOpen(true)}
-              className="hidden md:flex items-center space-x-1.5 px-3 py-1.5 rounded-xl bg-slate-900/80 hover:bg-slate-800 border border-slate-800 text-slate-300 hover:text-white text-xs font-medium transition cursor-pointer"
-              title="匯出專業 PDF 報告"
-            >
-              <FileText className="w-3.5 h-3.5 text-slate-400" />
-              <span>匯出 PDF</span>
             </button>
 
             {/* Blog Portal Link */}
