@@ -16,7 +16,6 @@ import { FloatingFinancialCopilot } from './components/ai/FloatingFinancialCopil
 import { DataEditorModal } from './components/modals/DataEditorModal';
 import { PdfReportModal } from './components/modals/PdfReportModal';
 import { BrandFooter } from './components/layout/BrandFooter';
-import { AuthorBanner } from './components/brand/AuthorBanner';
 import { ShieldAlert } from 'lucide-react';
 
 const DashboardContent: React.FC = () => {
@@ -27,9 +26,6 @@ const DashboardContent: React.FC = () => {
       <Navbar />
 
       <main className="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8 space-y-4 sm:space-y-6">
-        {/* Top Author Credential Capsule Bar (方案 A) */}
-        <AuthorBanner />
-
         {/* Category Navigation (Segmented Control) */}
         <MetricFilterTabs />
 
