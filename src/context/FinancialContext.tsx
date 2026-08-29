@@ -84,7 +84,7 @@ export const FinancialProvider: React.FC<{ children: React.ReactNode }> = ({ chi
     'company-ecommerce-retail',
   ]);
   const [selectedCategory, setSelectedCategory] = useState<MetricCategory>('all');
-  const [viewMode, setViewMode] = useState<ViewMode>('manager');
+  const [viewMode, setViewMode] = useState<ViewMode>('investor');
   const [selectedMetrics, setSelectedMetrics] = useState<string[]>([
     'arTurnover',
     'dso',
