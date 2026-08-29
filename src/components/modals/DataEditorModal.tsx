@@ -76,6 +76,9 @@ export const DataEditorModal: React.FC = () => {
 
     try {
       const company = await fetchTaiwanStockFinancials(codeToSearch);
+      if (!company) {
+        throw new Error(`找不到股票代號「${codeToSearch}」之官方標準財報數據，請確認代號是否正確。`);
+      }
       setName(company.name);
       setCode(company.code);
       setIndustry(company.industry);
