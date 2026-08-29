@@ -77,6 +77,10 @@ export const PdfReportModal: React.FC = () => {
     const doc = iframe.contentWindow?.document;
     if (!doc) return;
 
+    const styles = Array.from(document.querySelectorAll('style, link[rel="stylesheet"]'))
+      .map((el) => el.outerHTML)
+      .join('\n');
+
     doc.open();
     doc.write(`
       <!DOCTYPE html>
@@ -84,7 +88,7 @@ export const PdfReportModal: React.FC = () => {
         <head>
           <meta charset="utf-8">
           <title>${activeCompany.code || ''}_${activeCompany.name}_財務分析報告_${latestPeriod.period}</title>
-          <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
+          ${styles}
           <style>
             @page {
               size: A4 portrait;
@@ -126,11 +130,11 @@ export const PdfReportModal: React.FC = () => {
     `);
     doc.close();
 
-    // 等待樣式載入後喚醒列印對話框
+    // 等待樣式渲染後喚醒列印對話框
     setTimeout(() => {
       iframe.contentWindow?.focus();
       iframe.contentWindow?.print();
-    }, 450);
+    }, 250);
   };
 
   /**
