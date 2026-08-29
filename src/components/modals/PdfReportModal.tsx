@@ -253,7 +253,7 @@ export const PdfReportModal: React.FC = () => {
                 </h2>
                 <p className="text-[10.5px] text-slate-800 leading-relaxed font-normal">
                   {isInvestor
-                    ? `【價值投資視角總評】${activeCompany.name} 在 ${latestPeriod.period} 展現出「${curRatios.economicMoat === 'wide' ? '寬廣經濟護城河 (Wide Moat)' : curRatios.economicMoat === 'narrow' ? '中度競爭壁壘' : '一般競爭結構'}」，營業毛利率 ${curRatios.grossMargin}% 展現良好定價能力。獲利含金量達 ${curRatios.ocfToNetIncome}%（真實現金流落袋扎實），自由現金流為 NT$ ${(curRatios.freeCashFlow / 1000).toLocaleString(undefined, { maximumFractionDigits: 1 })} 百萬元，Altman Z 破產防禦分數錄得 ${curRatios.altmanZScore} 分（處於 ${curRatios.altmanZZone === 'safe' ? '安全堡壘區' : '穩定區'}），整體具備高度基本面防禦韌性。`
+                    ? `【價值投資視角總評】${activeCompany.name} 在 ${latestPeriod.period} 展現出「${curRatios.economicMoat === 'wide' ? '寬廣經濟護城河 (Wide Moat)' : curRatios.economicMoat === 'narrow' ? '中度競爭壁壘' : '一般競爭結構'}」，營業毛利率 ${curRatios.grossMargin}% 展現良好定價能力。獲利含金量達 ${curRatios.ocfToNetIncome}%（真實現金流落袋扎實），自由現金流為 NT$ ${(curRatios.freeCashFlow / 1000).toLocaleString(undefined, { maximumFractionDigits: 1 })} 百萬元，Altman Z 評分達 ${curRatios.altmanZScore} 分（處於 ${curRatios.altmanZZone === 'safe' ? '安全堡壘區' : '穩定區'}），整體具備高度基本面防禦韌性。`
                     : aiReport.executiveSummary}
                 </p>
               </div>

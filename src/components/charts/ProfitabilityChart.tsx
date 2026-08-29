@@ -188,7 +188,7 @@ export const ProfitabilityChart: React.FC = () => {
             <span className="text-slate-400 block text-[10px] sm:text-[11px] font-semibold uppercase tracking-wider">股東報酬率 (ROE)</span>
             <span className="text-sm sm:text-base font-bold text-amber-400 mt-1 block font-mono">{latest.ratios.roe}%</span>
             <span className="text-[10px] sm:text-[11px] text-slate-500 block mt-0.5">
-              每股盈餘 EPS 錄得 ${latest.ratios.eps} 元
+              每股盈餘 EPS 為 ${latest.ratios.eps} 元
             </span>
           </div>
         </div>

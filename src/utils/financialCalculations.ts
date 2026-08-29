@@ -531,7 +531,7 @@ export function generateLocalAiReport(companyName: string, periodsWithRatios: Pe
   if (!isNetLoss && latest.ratios.roe >= 15) {
     strengths.push(`股東回報優異：ROE 達 ${latest.ratios.roe}%，資金配置效率與資本報酬率卓越。`);
   } else if (latest.ratios.roe < 0) {
-    weaknesses.push(`權益報酬呈負值：ROE 錄得 ${latest.ratios.roe}%，股東權益持續遭到虧損侵蝕。`);
+    weaknesses.push(`權益報酬呈負值：ROE 為 ${latest.ratios.roe}%，股東權益持續遭到虧損侵蝕。`);
   } else if (latest.ratios.roe < 8) {
     weaknesses.push(`權益報酬偏低：ROE 僅 ${latest.ratios.roe}%，資產轉化為股東實質利潤的能力有待提升。`);
   } else {
@@ -599,7 +599,7 @@ export function generateLocalAiReport(companyName: string, periodsWithRatios: Pe
 
   // 執行摘要
   const executiveSummary = isNetLoss
-    ? `【經營全景診斷】「${companyName}」在 ${latest.period} 面臨嚴峻之營運挑戰與本業虧損，本期稅後淨損達 NT$ ${(Math.abs(latest.netIncome)/1000).toLocaleString()} 百萬元（每股虧損 NT$ ${latest.ratios.eps}），營業利益率為 ${latest.ratios.operatingMargin}%。毛利率錄得 ${latest.ratios.grossMargin}%，顯示受同業價格競爭與成本上升削弱。營運活動現金流量為 NT$ ${(latest.operatingCashFlow/1000).toLocaleString()} 百萬元，當前首要任務為精簡固定營業費用、提升核心通路獲利率，並嚴密監控短期償債與現金儲備。`
+    ? `【經營全景診斷】「${companyName}」在 ${latest.period} 面臨嚴峻之營運挑戰與本業虧損，本期稅後淨損達 NT$ ${(Math.abs(latest.netIncome)/1000).toLocaleString()} 百萬元（每股虧損 NT$ ${latest.ratios.eps}），營業利益率為 ${latest.ratios.operatingMargin}%。毛利率為 ${latest.ratios.grossMargin}%，顯示受同業價格競爭與成本上升削弱。營運活動現金流量為 NT$ ${(latest.operatingCashFlow/1000).toLocaleString()} 百萬元，當前首要任務為精簡固定營業費用、提升核心通路獲利率，並嚴密監控短期償債與現金儲備。`
     : `【經營全景診斷】「${companyName}」在 ${latest.period} 綜合財務健康總體評估為「${health.rating}」（綜合指標得分 ${health.totalScore} 分）。本期營業收入達 NT$ ${(latest.revenue / 1000).toLocaleString()} 百萬元（YoY 成長率 ${revGrowth >= 0 ? '+' : ''}${revGrowth.toFixed(1)}%），營業毛利率為 ${latest.ratios.grossMargin}%、營業利益率為 ${latest.ratios.operatingMargin}%、股東權益報酬率 (ROE) 達 ${latest.ratios.roe}%。整體營運資金循環 (CCC) 為 ${latest.ratios.cashConversionCycle} 天，展現均衡穩健的營運效率。`;
 
   // 3. 應收帳款天數 (DSO) 與信用管理
@@ -705,7 +705,7 @@ export function generateLocalAiReport(companyName: string, periodsWithRatios: Pe
     overallScore: health.totalScore,
     healthRating: health.rating,
     executiveSummary: `本期 ${companyName} 綜合財務健康評分為 ${health.totalScore} 分，評級為「${health.rating}」。` +
-      `營業收入錄得 ${(latest.revenue / 1000).toLocaleString('zh-TW', { maximumFractionDigits: 1 })} 百萬元（YoY ${revGrowth >= 0 ? '+' : ''}${revGrowth.toFixed(1)}%），` +
+      `營業收入達 ${(latest.revenue / 1000).toLocaleString('zh-TW', { maximumFractionDigits: 1 })} 百萬元（YoY ${revGrowth >= 0 ? '+' : ''}${revGrowth.toFixed(1)}%），` +
       `毛利率 ${latest.ratios.grossMargin}%、營業利益率 ${latest.ratios.operatingMargin}%、稅後淨利率 ${latest.ratios.netMargin}%。` +
       `在營運資金方面，應收帳款週轉率為 ${latest.ratios.arTurnover} 次（天數 ${latest.ratios.dso} 天），存貨週轉率為 ${latest.ratios.inventoryTurnover} 次（天數 ${latest.ratios.dsi} 天），` +
       `現金轉換循環 (CCC) 為 ${latest.ratios.cashConversionCycle} 天。`,
@@ -954,7 +954,7 @@ export function generateFinancialCopilotResponse(
   if (q.includes('存股') || q.includes('投資') || q.includes('多空') || q.includes('價值') || q.includes('買進') || q.includes('長期')) {
     return `【AI 財務分析助手・多空戰略觀點 (Bull vs. Bear Thesis)】\n\n` +
       `🟢 【多方看好理由 (Bull Case)】：\n` +
-      `• 優異股東權益報酬率：ROE 錄得 ${roe}%，每股盈餘 EPS NT$ ${eps}，具備優異資本複利動能。\n` +
+      `• 優異股東權益報酬率：ROE 達 ${roe}%，每股盈餘 EPS NT$ ${eps}，具備優異資本複利動能。\n` +
       `• 護城河與定價權：營業毛利率達 ${gm}%，產品具備定價優勢，抗通膨能力堅實。\n` +
       `• 營業現金流充沛：營業現金流達 NT$ ${ocfMillions} 百萬元，為股息發放與研發擴產提供厚實底氣。\n\n` +
       `🔴 【空方風險隱憂 (Bear Case)】：\n` +

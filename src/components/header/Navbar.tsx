@@ -3,7 +3,6 @@ import { useFinancial } from '../../context/FinancialContext';
 import { BrandLogo } from '../brand/BrandLogo';
 import {
   Building2,
-  Sparkles,
   ChevronDown,
   Layers,
   SlidersHorizontal,
@@ -21,8 +20,6 @@ export const Navbar: React.FC = () => {
     activeCompanyId,
     activeCompany,
     setActiveCompanyId,
-    runAiDiagnostic,
-    isLoadingAi,
     setIsDataEditorOpen,
     setIsDisclaimerOpen,
     setEditingCompany,
@@ -154,17 +151,6 @@ export const Navbar: React.FC = () => {
             >
               <Upload className="w-3.5 h-3.5 text-slate-400" />
               <span className="hidden sm:inline">搜尋/載入</span>
-            </button>
-
-            {/* AI Diagnose Action */}
-            <button
-              id="run-ai-btn"
-              onClick={runAiDiagnostic}
-              disabled={isLoadingAi}
-              className="flex items-center space-x-1.5 px-3.5 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-semibold shadow-sm transition disabled:opacity-50 cursor-pointer whitespace-nowrap"
-            >
-              <Sparkles className={`w-3.5 h-3.5 ${isLoadingAi ? 'animate-spin' : ''}`} />
-              <span>{isLoadingAi ? '診斷中...' : 'AI 深度診斷'}</span>
             </button>
 
             {/* Blog Portal Link */}
