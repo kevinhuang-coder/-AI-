@@ -48,8 +48,6 @@ interface FinancialContextType {
   ) => void;
   deleteChangeRecord: (recordId: string) => void;
   clearChangeHistory: () => void;
-  isPdfModalOpen: boolean;
-  setIsPdfModalOpen: (open: boolean) => void;
   isDataEditorOpen: boolean;
   setIsDataEditorOpen: (open: boolean) => void;
   isDisclaimerOpen: boolean;
@@ -103,7 +101,6 @@ export const FinancialProvider: React.FC<{ children: React.ReactNode }> = ({ chi
   const [isLoadingAi, setIsLoadingAi] = useState<boolean>(false);
   const [aiError, setAiError] = useState<string | null>(null);
 
-  const [isPdfModalOpen, setIsPdfModalOpen] = useState(false);
   const [isDataEditorOpen, setIsDataEditorOpen] = useState(false);
   const [isDisclaimerOpen, setIsDisclaimerOpen] = useState(false);
   const [editingCompany, setEditingCompany] = useState<AccountEntity | null>(null);
@@ -407,8 +404,6 @@ export const FinancialProvider: React.FC<{ children: React.ReactNode }> = ({ chi
         addChangeRecord,
         deleteChangeRecord,
         clearChangeHistory,
-        isPdfModalOpen,
-        setIsPdfModalOpen,
         isDataEditorOpen,
         setIsDataEditorOpen,
         isDisclaimerOpen,
