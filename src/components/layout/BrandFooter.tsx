@@ -143,7 +143,7 @@ export const BrandFooter: React.FC = () => {
             <strong className="text-slate-400">免責聲明與使用須知：</strong>
           </div>
           <p className="leading-relaxed">
-            本工具為《凱文黃的知識天地》個人原創之財報分析與價值投資研究輔助系統，旨在推廣以會計師審計查核邏輯進行企業基本面分析。筆者現為會計師高考及格、任職於四大事務所，<strong>本系統非以執業會計師名義提供審計簽證、稅務確信、法律意見或特定個股之投資買賣建議</strong>。使用者在進行任何重大商業投資決策前，應審慎獨立評估市場風險。
+            本系統為基本面分析研究輔助工具，旨在推廣以會計師查核思維進行企業基本面分析。筆者現為會計師高考及格、任職於四大事務所，<strong>本系統非以執業會計師名義提供審計簽證、稅務確信、法律意見或特定個股之投資買賣建議</strong>。使用者在進行任何重大商業投資決策前，應審慎獨立評估市場風險。
           </p>
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pt-2 text-slate-400">
             <span>© 2026 凱文黃的知識天地 (Kevin Huang). All Rights Reserved.</span>

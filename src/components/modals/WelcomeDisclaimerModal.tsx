@@ -157,7 +157,7 @@ export const WelcomeDisclaimerModal: React.FC = () => {
             </div>
             <ul className="space-y-1.5 text-[11.5px] text-slate-300 list-disc list-inside">
               <li>
-                <strong>非執業審計簽證或法律意見：</strong>本系統為《凱文黃的知識天地》個人原創之基本面分析研究輔助工具。筆者現為會計師高考及格、任職於四大事務所，<strong>本系統非以執業會計師名義提供法定財務簽證、稅務確信、法律意見或特定個股投資買賣建議</strong>。
+                <strong>非執業審計簽證或法律意見：</strong>本系統為基本面分析研究輔助工具。筆者現為會計師高考及格、任職於四大事務所，<strong>本系統非以執業會計師名義提供法定財務簽證、稅務確信、法律意見或特定個股投資買賣建議</strong>。
               </li>
               <li>
                 <strong>資料來源與審慎評估：</strong>報表數據彙整自公開發行公司官方公告，系統雖力求勾稽嚴謹，使用者在進行重大商業投資決策前，仍應參閱公開資訊觀測站最新公告並獨立評估市場風險。
