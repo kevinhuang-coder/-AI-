@@ -215,6 +215,3 @@ export interface FinancialChangeRecord {
     periods: FinancialPeriod[];
   };
 }
-
-export type TimeFrequency = 'annual' | 'ttm';
-

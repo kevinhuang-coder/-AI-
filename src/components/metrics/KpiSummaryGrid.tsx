@@ -14,7 +14,7 @@ import {
 } from 'lucide-react';
 
 export const KpiSummaryGrid: React.FC = () => {
-  const { activeCompanyPeriodsWithRatios, latestPeriod, viewMode, timeFrequency } = useFinancial();
+  const { activeCompanyPeriodsWithRatios, latestPeriod, viewMode } = useFinancial();
 
   if (!latestPeriod || activeCompanyPeriodsWithRatios.length === 0) {
     return (
