@@ -55,7 +55,7 @@ export const CashFlowTrendChart: React.FC = () => {
               <Layers className="w-4 h-4 text-emerald-200" />
             </div>
             <h3 className="text-base font-bold text-white tracking-tight">
-              {isInvestor ? '審計級自由現金流與核心獲利含金量' : '現金流量品質與資本支出結構'}
+              {isInvestor ? '嚴謹自由現金流與核心獲利含金量' : '現金流量品質與資本支出結構'}
             </h3>
           </div>
           <p className="text-xs text-slate-400 mt-1">
@@ -204,7 +204,7 @@ export const CashFlowTrendChart: React.FC = () => {
               </span>
             ) : (
               <span>
-                <strong className="text-slate-300">審計級自由現金流 (Rigorous FCF) 完整公式：</strong>
+                <strong className="text-slate-300">嚴謹自由現金流 (Rigorous FCF) 完整公式：</strong>
                 <span className="font-mono text-cyan-300">
                   營業現金流 (OCF) - 資本支出 (PP&E CapEx) - 無形資產研發支出 - IFRS 16 租賃本金償付
                 </span>

@@ -48,7 +48,7 @@ export const Navbar: React.FC = () => {
                 價值投資智策
               </span>
               <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 font-medium hidden md:inline">
-                5年審計年報
+                5年官方年報
               </span>
             </div>
           </div>
