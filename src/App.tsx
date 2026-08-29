@@ -1,7 +1,6 @@
 import React from 'react';
 import { FinancialProvider, useFinancial } from './context/FinancialContext';
 import { Navbar } from './components/header/Navbar';
-import { AnalyticsControlBar } from './components/header/AnalyticsControlBar';
 import { MetricFilterTabs } from './components/metrics/MetricFilterTabs';
 import { KpiSummaryGrid } from './components/metrics/KpiSummaryGrid';
 import { TurnoverAnalysisChart } from './components/charts/TurnoverAnalysisChart';
@@ -23,17 +22,14 @@ const DashboardContent: React.FC = () => {
   const { selectedCategory } = useFinancial();
 
   return (
-    <div className="min-h-screen bg-[#020617] text-slate-50 font-sans flex flex-col">
+    <div className="min-h-screen bg-[#080c14] text-slate-50 font-sans flex flex-col">
       <Navbar />
 
-      <main className="flex-1 max-w-7xl w-full mx-auto p-3.5 sm:p-6 lg:p-8 space-y-4 sm:space-y-5">
-        {/* Analytics Dimension Control Hub (Perspective & Time Switchers) */}
-        <AnalyticsControlBar />
-
-        {/* Bento Category Navigation Header */}
+      <main className="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8 space-y-4 sm:space-y-6">
+        {/* Category Navigation (Segmented Control) */}
         <MetricFilterTabs />
 
-        {/* Bento Primary Metric Cards */}
+        {/* Primary Value Investing Metric Cards */}
         <KpiSummaryGrid />
 
         {/* Dynamic Bento Modules based on selected category */}

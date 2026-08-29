@@ -2,18 +2,17 @@ import React, { useState } from 'react';
 import { useFinancial } from '../../context/FinancialContext';
 import { BrandLogo } from '../brand/BrandLogo';
 import {
-  TrendingUp,
   Building2,
   FileText,
   Sparkles,
-  Plus,
-  RotateCcw,
   ChevronDown,
   Layers,
   SlidersHorizontal,
   Upload,
   Globe,
   ExternalLink,
+  Search,
+  Check,
 } from 'lucide-react';
 
 export const Navbar: React.FC = () => {
@@ -33,144 +32,118 @@ export const Navbar: React.FC = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-40 bg-[#020617]/90 backdrop-blur-md border-b border-slate-800 text-slate-50 shadow-sm">
+    <header className="sticky top-0 z-40 bg-[#080c14]/80 backdrop-blur-xl border-b border-slate-800/60 text-slate-100">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16 gap-3">
+        <div className="flex items-center justify-between h-15 gap-4">
           
-          {/* Left: Brand Logo & Personal Title */}
-          <div className="flex items-center space-x-3">
-            <BrandLogo size={36} />
-            <div>
-              <div className="flex items-center space-x-2">
-                <span className="font-bold text-base sm:text-lg tracking-tight bg-gradient-to-r from-white via-slate-100 to-slate-300 bg-clip-text text-transparent">
-                  凱文黃的價值投資智策
-                </span>
-                <span className="text-[10px] font-mono text-emerald-400 bg-emerald-950/60 border border-emerald-500/30 px-2 py-0.5 rounded uppercase tracking-wider hidden sm:inline-block font-semibold">
-                  審計防禦 × 護城河
-                </span>
-              </div>
-              <p className="text-[11px] text-slate-400 hidden lg:flex items-center gap-1.5">
-                <span>《凱文黃的知識天地》專屬工具</span>
-                <span className="text-slate-600">•</span>
-                <span className="text-slate-400">會計師高考及格・四大審計實務思維</span>
-              </p>
+          {/* Left: Clean Brand Logo & Title */}
+          <div className="flex items-center space-x-3 flex-shrink-0">
+            <BrandLogo size={32} />
+            <div className="flex items-center space-x-2">
+              <span className="font-bold text-sm sm:text-base text-white tracking-tight">
+                凱文黃
+              </span>
+              <span className="text-slate-500 text-xs hidden xs:inline">•</span>
+              <span className="text-slate-300 text-xs font-medium hidden xs:inline">
+                價值投資智策
+              </span>
+              <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 font-medium hidden md:inline">
+                5年審計年報
+              </span>
             </div>
           </div>
 
-          {/* Center: Company Selector (Clean & Uncrowded) */}
-          <div className="flex items-center">
-            <div className="relative">
-              <button
-                id="company-selector-btn"
-                onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                className="flex items-center space-x-2 px-3 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-800 text-xs sm:text-sm font-medium transition text-left focus:outline-none focus:ring-2 focus:ring-indigo-500/50 min-h-[38px] cursor-pointer shadow-sm"
-              >
-                {activeCompany.isConsolidatedGroup ? (
-                  <Layers className="w-4 h-4 text-cyan-400 flex-shrink-0" />
-                ) : (
-                  <Building2 className="w-4 h-4 text-indigo-400 flex-shrink-0" />
-                )}
-                <div className="max-w-[120px] xs:max-w-[160px] sm:max-w-[220px] truncate">
-                  <span className="text-slate-200 font-semibold block truncate text-xs sm:text-sm">{activeCompany.name}</span>
-                  <span className="text-[10px] text-slate-400 block font-mono leading-none">{activeCompany.code}</span>
-                </div>
-                <ChevronDown className="w-3.5 h-3.5 text-slate-400 flex-shrink-0" />
-              </button>
-
-              {/* Dropdown Menu */}
-              {isDropdownOpen && (
-                <>
-                  <div
-                    className="fixed inset-0 z-40 bg-black/40 backdrop-blur-xs sm:bg-transparent"
-                    onClick={() => setIsDropdownOpen(false)}
-                  />
-                  <div className="fixed sm:absolute left-4 right-4 sm:left-1/2 sm:-translate-x-1/2 top-16 sm:top-full mt-2 sm:w-84 rounded-2xl bg-slate-900 border border-slate-800 shadow-2xl z-50 py-2 divide-y divide-slate-800 max-h-[80vh] flex flex-col">
-                    <div className="px-3.5 py-2 text-[11px] font-semibold text-slate-400 uppercase tracking-wider">
-                      切換分析帳戶 / 集團合併實體
-                    </div>
-
-                    <div className="py-1 overflow-y-auto max-h-56 sm:max-h-64">
-                      {allCompaniesWithConsolidated.map((comp) => {
-                        const isSelected = comp.id === activeCompanyId;
-                        return (
-                          <button
-                            key={comp.id}
-                            onClick={() => {
-                              setActiveCompanyId(comp.id);
-                              setIsDropdownOpen(false);
-                            }}
-                            className={`w-full text-left px-3.5 py-2.5 flex items-start space-x-3 transition cursor-pointer ${
-                              isSelected
-                                ? 'bg-indigo-600/20 text-white'
-                                : 'text-slate-300 hover:bg-slate-800/60'
-                            }`}
-                          >
-                            <Building2 className={`w-4 h-4 mt-0.5 flex-shrink-0 ${isSelected ? 'text-indigo-400' : 'text-slate-500'}`} />
-                            <div className="min-w-0 flex-1">
-                              <div className="flex items-center justify-between">
-                                <span className="font-semibold text-xs sm:text-sm truncate">{comp.name}</span>
-                                {comp.isConsolidatedGroup && (
-                                   <span className="text-[9px] bg-cyan-950 text-cyan-400 border border-cyan-800/60 px-1.5 py-0.2 rounded font-mono ml-2">
-                                    集團合併
-                                  </span>
-                                )}
-                              </div>
-                              <div className="text-[11px] text-slate-400 flex items-center space-x-2 mt-0.5 font-mono">
-                                <span>{comp.code}</span>
-                                <span>•</span>
-                                <span>{comp.industry}</span>
-                              </div>
-                            </div>
-                          </button>
-                        );
-                      })}
-                    </div>
-
-                    {/* Actions in Dropdown */}
-                    <div className="p-2 space-y-1 bg-slate-950/80 mt-auto">
-                      <button
-                        onClick={() => {
-                          setEditingCompany(null);
-                          setIsDataEditorOpen(true);
-                          setIsDropdownOpen(false);
-                        }}
-                        className="w-full flex items-center space-x-2 px-3 py-2 text-xs font-semibold text-blue-400 hover:bg-slate-800 rounded-xl transition cursor-pointer"
-                      >
-                        <Upload className="w-3.5 h-3.5" />
-                        <span>載入財報 (台股代號 / CSV)</span>
-                      </button>
-                      <button
-                        onClick={() => {
-                          resetToSampleData();
-                          setIsDropdownOpen(false);
-                        }}
-                        className="w-full flex items-center space-x-2 px-3 py-2 text-xs font-medium text-slate-400 hover:text-slate-200 hover:bg-slate-800 rounded-xl transition cursor-pointer"
-                      >
-                        <RotateCcw className="w-3.5 h-3.5" />
-                        <span>重設回預設示範數據</span>
-                      </button>
-                    </div>
-                  </div>
-                </>
+          {/* Center: Company Selector */}
+          <div className="relative">
+            <button
+              id="company-selector-btn"
+              onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+              className="flex items-center space-x-2 px-3 py-1.5 rounded-xl bg-slate-900/90 hover:bg-slate-850 border border-slate-700/60 text-xs font-medium transition cursor-pointer shadow-xs max-w-[200px] sm:max-w-[280px]"
+            >
+              {activeCompany.isConsolidatedGroup ? (
+                <Layers className="w-3.5 h-3.5 text-cyan-400 flex-shrink-0" />
+              ) : (
+                <Building2 className="w-3.5 h-3.5 text-indigo-400 flex-shrink-0" />
               )}
-            </div>
+              <span className="text-slate-200 font-semibold truncate text-xs">
+                {activeCompany.name}
+              </span>
+              <span className="text-[10px] text-slate-500 font-mono hidden sm:inline">
+                {activeCompany.code}
+              </span>
+              <ChevronDown className="w-3 h-3 text-slate-400 flex-shrink-0 ml-auto" />
+            </button>
+
+            {/* Dropdown Menu */}
+            {isDropdownOpen && (
+              <>
+                <div
+                  className="fixed inset-0 z-40"
+                  onClick={() => setIsDropdownOpen(false)}
+                />
+                <div className="absolute left-1/2 -translate-x-1/2 top-full mt-2 w-72 sm:w-80 rounded-2xl bg-slate-900/95 backdrop-blur-2xl border border-slate-800 shadow-2xl z-50 py-1.5 divide-y divide-slate-800/80">
+                  <div className="px-3.5 py-2 text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+                    選擇分析企業
+                  </div>
+
+                  <div className="py-1 max-h-64 overflow-y-auto">
+                    {allCompaniesWithConsolidated.map((comp) => {
+                      const isSelected = comp.id === activeCompanyId;
+                      return (
+                        <button
+                          key={comp.id}
+                          onClick={() => {
+                            setActiveCompanyId(comp.id);
+                            setIsDropdownOpen(false);
+                          }}
+                          className={`w-full text-left px-3.5 py-2 flex items-center justify-between text-xs transition cursor-pointer ${
+                            isSelected
+                              ? 'bg-emerald-500/10 text-emerald-300 font-semibold'
+                              : 'text-slate-300 hover:bg-slate-800/60'
+                          }`}
+                        >
+                          <div className="truncate mr-2">
+                            <span className="block truncate">{comp.name}</span>
+                            <span className="text-[10px] text-slate-500 font-mono">{comp.code}</span>
+                          </div>
+                          {isSelected && <Check className="w-3.5 h-3.5 text-emerald-400 flex-shrink-0" />}
+                        </button>
+                      );
+                    })}
+                  </div>
+
+                  <div className="p-1.5 space-y-1">
+                    <button
+                      onClick={() => {
+                        setEditingCompany(null);
+                        setIsDataEditorOpen(true);
+                        setIsDropdownOpen(false);
+                      }}
+                      className="w-full flex items-center space-x-2 px-3 py-1.5 text-xs text-indigo-400 hover:bg-slate-800/60 rounded-lg transition cursor-pointer font-medium"
+                    >
+                      <Search className="w-3.5 h-3.5" />
+                      <span>搜尋台股代號 / 匯入 CSV</span>
+                    </button>
+                  </div>
+                </div>
+              </>
+            )}
           </div>
 
-          {/* Right: Action Buttons */}
-          <div className="flex items-center space-x-1.5 sm:space-x-2">
-            {/* Import Financial Report Button */}
+          {/* Right: Clean Unified Action Buttons */}
+          <div className="flex items-center space-x-2">
+            {/* Search/Import Trigger */}
             <button
               id="import-pdf-csv-btn"
               onClick={() => {
                 setEditingCompany(null);
                 setIsDataEditorOpen(true);
               }}
-              className="flex items-center space-x-1.5 px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-xl bg-blue-600/20 hover:bg-blue-600/30 text-blue-300 border border-blue-500/30 text-xs font-semibold transition min-h-[38px] cursor-pointer"
-              title="輸入 4 碼台股代號或匯入標準 CSV 財務數據"
+              className="flex items-center space-x-1.5 px-3 py-1.5 rounded-xl bg-slate-900/80 hover:bg-slate-800 border border-slate-800 text-slate-300 hover:text-white text-xs font-medium transition cursor-pointer"
+              title="搜尋台股 4 碼代號或上傳 CSV"
             >
-              <Upload className="w-3.5 h-3.5 text-blue-400 flex-shrink-0" />
-              <span className="hidden md:inline">載入財報 (台股代號/CSV)</span>
-              <span className="md:hidden">載入</span>
+              <Upload className="w-3.5 h-3.5 text-slate-400" />
+              <span className="hidden sm:inline">搜尋/載入</span>
             </button>
 
             {/* AI Diagnose Action */}
@@ -178,53 +151,34 @@ export const Navbar: React.FC = () => {
               id="run-ai-btn"
               onClick={runAiDiagnostic}
               disabled={isLoadingAi}
-              className="flex items-center space-x-1.5 px-3 sm:px-3.5 py-1.5 sm:py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs sm:text-sm font-semibold shadow-lg shadow-indigo-900/30 transition disabled:opacity-50 min-h-[38px] cursor-pointer"
+              className="flex items-center space-x-1.5 px-3.5 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-semibold shadow-sm transition disabled:opacity-50 cursor-pointer whitespace-nowrap"
             >
-              <Sparkles className={`w-4 h-4 ${isLoadingAi ? 'animate-spin text-amber-300' : 'text-amber-300'}`} />
-              <span className="hidden sm:inline">
-                {isLoadingAi ? 'AI 運算中...' : 'AI 智能診斷'}
-              </span>
-              <span className="sm:hidden">
-                {isLoadingAi ? '運算中' : 'AI 診斷'}
-              </span>
+              <Sparkles className={`w-3.5 h-3.5 ${isLoadingAi ? 'animate-spin' : ''}`} />
+              <span>{isLoadingAi ? '診斷中...' : 'AI 深度診斷'}</span>
             </button>
 
             {/* Export PDF Button */}
             <button
               id="export-pdf-btn"
               onClick={() => setIsPdfModalOpen(true)}
-              className="flex items-center space-x-1.5 px-2.5 sm:px-3.5 py-1.5 sm:py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-200 border border-slate-800 text-xs sm:text-sm font-medium transition min-h-[38px] cursor-pointer"
-              title="匯出專業財務 PDF 報告"
+              className="hidden md:flex items-center space-x-1.5 px-3 py-1.5 rounded-xl bg-slate-900/80 hover:bg-slate-800 border border-slate-800 text-slate-300 hover:text-white text-xs font-medium transition cursor-pointer"
+              title="匯出專業 PDF 報告"
             >
-              <FileText className="w-4 h-4 text-emerald-400 flex-shrink-0" />
-              <span className="hidden sm:inline">匯出 PDF</span>
-              <span className="sm:hidden">PDF</span>
+              <FileText className="w-3.5 h-3.5 text-slate-400" />
+              <span>匯出 PDF</span>
             </button>
 
-            {/* Data Management Modal Toggle */}
-            <button
-              id="data-manage-btn"
-              onClick={() => {
-                setEditingCompany(activeCompany.isConsolidatedGroup ? null : activeCompany);
-                setIsDataEditorOpen(true);
-              }}
-              className="p-2 sm:p-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-800 transition min-h-[38px] min-w-[38px] flex items-center justify-center cursor-pointer"
-              title="編輯/檢視財務數據"
-            >
-              <SlidersHorizontal className="w-4 h-4" />
-            </button>
-
-            {/* Direct Blog Link Button */}
+            {/* Blog Portal Link */}
             <a
               href="https://kevin-huang-cpa.vercel.app"
               target="_blank"
               rel="noopener noreferrer"
-              className="hidden xl:flex items-center space-x-1.5 px-3 py-1.5 rounded-xl bg-emerald-950/40 hover:bg-emerald-900/50 text-emerald-300 border border-emerald-500/30 text-xs font-semibold transition min-h-[38px] cursor-pointer group"
-              title="前往《凱文黃的知識天地》個人官方部落格"
+              className="flex items-center space-x-1.5 px-3 py-1.5 rounded-xl bg-slate-900/80 hover:bg-slate-800 border border-slate-800 text-slate-300 hover:text-emerald-400 text-xs font-medium transition cursor-pointer group"
+              title="前往《凱文黃的知識天地》部落格"
             >
-              <Globe className="w-3.5 h-3.5 text-emerald-400" />
-              <span>凱文黃知識庫</span>
-              <ExternalLink className="w-3 h-3 text-emerald-400/70 group-hover:translate-x-0.5 transition-transform" />
+              <Globe className="w-3.5 h-3.5 text-slate-400 group-hover:text-emerald-400" />
+              <span className="hidden lg:inline">部落格</span>
+              <ExternalLink className="w-2.5 h-2.5 text-slate-500 group-hover:text-emerald-400" />
             </a>
           </div>
 
@@ -233,5 +187,3 @@ export const Navbar: React.FC = () => {
     </header>
   );
 };
-
-
