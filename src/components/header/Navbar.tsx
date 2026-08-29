@@ -136,7 +136,7 @@ export const Navbar: React.FC = () => {
                         className="w-full flex items-center space-x-2 px-3 py-2 text-xs font-semibold text-blue-400 hover:bg-slate-800 rounded-xl transition"
                       >
                         <Upload className="w-3.5 h-3.5" />
-                        <span>載入財報 (台股代號 / PDF / CSV)</span>
+                        <span>載入財報 (台股代號 / CSV)</span>
                       </button>
                       <button
                         onClick={() => {
@@ -195,10 +195,10 @@ export const Navbar: React.FC = () => {
                 setIsDataEditorOpen(true);
               }}
               className="flex items-center space-x-1.5 px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-xl bg-blue-600/20 hover:bg-blue-600/30 text-blue-300 border border-blue-500/30 text-xs font-semibold transition min-h-[38px]"
-              title="輸入台股代號、上傳 PDF 或 CSV 財務報告書"
+              title="輸入 4 碼台股代號或匯入標準 CSV 財務數據"
             >
               <Upload className="w-3.5 h-3.5 text-blue-400 flex-shrink-0" />
-              <span className="hidden md:inline">載入財報 (台股代號/PDF/CSV)</span>
+              <span className="hidden md:inline">載入財報 (台股代號/CSV)</span>
               <span className="md:hidden">載入財報</span>
             </button>
 

@@ -49,15 +49,11 @@ export const DataEditorModal: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [restoreToast, setRestoreToast] = useState<string | null>(null);
 
-  // PDF & Import states
-  const [isParsingPdf, setIsParsingPdf] = useState(false);
-  const [pdfParseStep, setPdfParseStep] = useState('');
   const [importSuccessInfo, setImportSuccessInfo] = useState<{
     companyName: string;
     periodsCount: number;
     filename: string;
   } | null>(null);
-  const [isDragOver, setIsDragOver] = useState(false);
 
   // 台股即時聯網搜尋狀態
   const [stockCodeInput, setStockCodeInput] = useState('');
@@ -401,140 +397,18 @@ export const DataEditorModal: React.FC = () => {
     link.click();
   };
 
-  // PDF Import via Gemini Multimodal Analysis with Intelligent Fallback
-  const handlePdfUpload = async (file: File) => {
-    if (!file) return;
-    if (file.type !== 'application/pdf' && !file.name.toLowerCase().endsWith('.pdf')) {
-      setError('請選擇標準 PDF 財務報告書檔案 (*.pdf)');
-      return;
-    }
-
-    setIsParsingPdf(true);
-    setError(null);
-    setPdfParseStep('正在讀取並解析 PDF 檔案數據...');
-
-    try {
-      const base64Data = await new Promise<string>((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onload = () => resolve(reader.result as string);
-        reader.onerror = (err) => reject(err);
-        reader.readAsDataURL(file);
-      });
-
-      setPdfParseStep('智析 AI 會計師正在掃描損益表、資產負債表與現金流量表...');
-
-      let parsedCompany: any = null;
-
-      try {
-        const response = await fetch('/api/financial/parse-pdf', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            pdfBase64: base64Data,
-            filename: file.name,
-          }),
-        });
-
-        if (response.ok) {
-          const result = await response.json();
-          if (result.success && result.company && Array.isArray(result.company.periods) && result.company.periods.length > 0) {
-            parsedCompany = result.company;
-          }
-        }
-      } catch (networkOrApiErr) {
-        console.warn('API PDF Parse fetch failed or returned non-JSON:', networkOrApiErr);
-      }
-
-      if (!parsedCompany) {
-        throw new Error(
-          `無法直接從「${file.name}」提取財務文字數據。\n\n【原因說明】：公開資訊觀測站 (MOPS) 的會計師查核報告 PDF 屬於印刷向量圖層或影像掃描檔（無法複製選取純文字），純前端解析無法精準定位科目金額。\n\n【建議解決方式】：\n1. 點選下方「下載標準 CSV 範本」，填寫 6~8 個核心科目後上傳 CSV 檔（100% 精確、絕不產生數字幻覺）。\n2. 或於下方數據編輯表格直接填寫/核算。\n3. 系統已內建「網路家庭 (PChome 8044)」民國113與114年度官方會計師查核數據，您可直接於頂部切換選取！`
-        );
-      }
-
-      setPdfParseStep('正在核算千元幣別單位與財務平衡校驗...');
-
-      if (parsedCompany.name) setName(parsedCompany.name);
-      if (parsedCompany.code) setCode(parsedCompany.code);
-      if (parsedCompany.industry) setIndustry(parsedCompany.industry);
-      if (parsedCompany.currency) setCurrency(parsedCompany.currency);
-      if (parsedCompany.description) setDescription(parsedCompany.description);
-
-      if (Array.isArray(parsedCompany.periods) && parsedCompany.periods.length > 0) {
-        const sorted = [...parsedCompany.periods].sort((a: any, b: any) => a.year - b.year);
-        setPeriods(sorted);
-        setImportSuccessInfo({
-          companyName: parsedCompany.name || file.name,
-          periodsCount: sorted.length,
-          filename: file.name,
-        });
-
-        // Add history log for PDF import
-        addChangeRecord(
-          {
-            id: editingCompany ? editingCompany.id : `company-${Date.now()}`,
-            name: parsedCompany.name || file.name,
-            code: parsedCompany.code || 'PDF-IMPORT',
-            industry: parsedCompany.industry || '綜合產業',
-            currency: parsedCompany.currency || 'NTD (千元)',
-            description: parsedCompany.description || `PDF 財報匯入：${file.name}`,
-            periods: sorted,
-          },
-          'import_pdf',
-          'PDF 財報智慧匯入',
-          `從「${file.name}」提取出 ${sorted.length} 個財務期別`
-        );
-      } else {
-        throw new Error('PDF 辨識完成但未發現足夠的財務期間數據。');
-      }
-    } catch (err: any) {
-      console.error('PDF Parse failed:', err);
-      setError(err.message || 'PDF 解析失敗，請檢查檔案格式或改用 CSV 檔案上傳。');
-    } finally {
-      setIsParsingPdf(false);
-      setPdfParseStep('');
-      if (fileInputRef.current) {
-        fileInputRef.current.value = '';
-      }
-    }
-  };
-
   const handleFileInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    if (file.name.toLowerCase().endsWith('.pdf') || file.type === 'application/pdf') {
-      handlePdfUpload(file);
-    } else if (file.name.toLowerCase().endsWith('.csv') || file.type === 'text/csv') {
+    if (file.name.toLowerCase().endsWith('.csv') || file.type === 'text/csv') {
       handleCsvUploadFile(file);
     } else {
-      setError('不支援的檔案格式，請上傳 PDF (*.pdf) 或 CSV (*.csv) 財務文件。');
+      setError('請選擇標準 CSV 格式之財務資料檔案 (*.csv)。');
     }
-  };
-
-  const handleDrop = (e: React.DragEvent) => {
-    e.preventDefault();
-    setIsDragOver(false);
-    const file = e.dataTransfer.files?.[0];
-    if (!file) return;
-
-    if (file.name.toLowerCase().endsWith('.pdf') || file.type === 'application/pdf') {
-      handlePdfUpload(file);
-    } else if (file.name.toLowerCase().endsWith('.csv') || file.type === 'text/csv') {
-      handleCsvUploadFile(file);
-    } else {
-      setError('請拖放 PDF 或 CSV 格式之財務報表檔案。');
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
     }
-  };
-
-  const handleDragOver = (e: React.DragEvent) => {
-    e.preventDefault();
-    setIsDragOver(true);
-  };
-
-  const handleDragLeave = () => {
-    setIsDragOver(false);
   };
 
   // CSV Import helper
@@ -908,83 +782,39 @@ export const DataEditorModal: React.FC = () => {
                 </div>
               </div>
 
-              {/* Smart PDF & CSV Upload Dropzone */}
-              <div
-                onDrop={handleDrop}
-                onDragOver={handleDragOver}
-                onDragLeave={handleDragLeave}
-                className={`relative rounded-2xl border-2 border-dashed transition-all p-5 text-center ${
-                  isDragOver
-                    ? 'border-blue-500 bg-blue-950/40 scale-[1.005]'
-                    : 'border-slate-700/80 bg-slate-950/60 hover:border-slate-600'
-                }`}
-              >
-                {isParsingPdf ? (
-                  <div className="py-6 flex flex-col items-center justify-center space-y-3">
-                    <div className="relative">
-                      <div className="w-12 h-12 rounded-2xl bg-blue-600/20 border border-blue-500/40 flex items-center justify-center animate-pulse">
-                        <Sparkles className="w-6 h-6 text-blue-400" />
-                      </div>
-                      <Loader2 className="w-6 h-6 text-blue-400 animate-spin absolute -top-1 -right-1" />
-                    </div>
-                    <div className="space-y-1">
-                      <h4 className="text-sm font-bold text-white">Gemini Multimodal 財報智慧解析中...</h4>
-                      <p className="text-xs text-blue-300 font-mono animate-pulse">
-                        {pdfParseStep || '正在讀取報表科目並換算標準千元數值...'}
-                      </p>
-                    </div>
-                    <p className="text-[11px] text-slate-400 max-w-md">
-                      支援台灣公開資訊觀測站 (MOPS) 財報、上市櫃年報/季報、IFRS 與 GAAP 損益表與資產負債表
-                    </p>
-                  </div>
-                ) : (
-                  <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-                    <div className="flex items-center space-x-3 text-left">
-                      <div className="w-11 h-11 rounded-2xl bg-gradient-to-br from-blue-600/20 to-indigo-600/20 border border-blue-500/30 text-blue-400 flex items-center justify-center flex-shrink-0">
-                        <Sparkles className="w-5 h-5" />
-                      </div>
-                      <div>
-                        <h4 className="text-sm font-bold text-white flex items-center gap-1.5">
-                          <span>智慧財報解析與上傳</span>
-                          <span className="px-2 py-0.5 rounded-full bg-blue-500/20 text-blue-300 text-[10px] font-semibold">
-                            支援 PDF & CSV
-                          </span>
-                        </h4>
-                        <p className="text-xs text-slate-400 mt-0.5">
-                          拖放公開資訊觀測站 PDF 財報或 CSV 文件，AI 自動提取科目並校驗千元單位
-                        </p>
-                      </div>
-                    </div>
-
-                    <div className="flex items-center space-x-2 flex-shrink-0">
-                      <input
-                        ref={fileInputRef}
-                        type="file"
-                        accept=".pdf,.csv,application/pdf,text/csv"
-                        className="hidden"
-                        onChange={handleFileInputChange}
-                      />
-                      
-                      <button
-                        type="button"
-                        onClick={downloadTemplate}
-                        className="flex items-center space-x-1.5 px-3 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-800 text-xs font-medium transition"
-                      >
-                        <Download className="w-3.5 h-3.5 text-slate-400" />
-                        <span>下載 CSV 範本</span>
-                      </button>
-
-                      <button
-                        type="button"
-                        onClick={() => fileInputRef.current?.click()}
-                        className="flex items-center space-x-1.5 px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold transition shadow-md shadow-blue-600/25"
-                      >
-                        <Upload className="w-3.5 h-3.5" />
-                        <span>選擇 PDF/CSV 上傳</span>
-                      </button>
-                    </div>
-                  </div>
-                )}
+              {/* Standard CSV Import Toolbar for Custom / Unlisted Companies */}
+              <div className="flex flex-col sm:flex-row items-center justify-between gap-3 p-3.5 sm:p-4 rounded-2xl bg-slate-950/60 border border-slate-800">
+                <div className="flex items-center space-x-2.5">
+                  <FileSpreadsheet className="w-4 h-4 text-emerald-400 flex-shrink-0" />
+                  <span className="text-xs text-slate-300">
+                    如需分析未上市 / 內部私有企業數據，可使用標準 CSV 格式：
+                  </span>
+                </div>
+                <div className="flex items-center space-x-2 w-full sm:w-auto justify-end">
+                  <input
+                    ref={fileInputRef}
+                    type="file"
+                    accept=".csv,text/csv"
+                    className="hidden"
+                    onChange={handleFileInputChange}
+                  />
+                  <button
+                    type="button"
+                    onClick={downloadTemplate}
+                    className="flex items-center space-x-1.5 px-3 py-1.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-800 text-xs font-medium transition min-h-[32px]"
+                  >
+                    <Download className="w-3.5 h-3.5 text-slate-400" />
+                    <span>下載 CSV 範本</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => fileInputRef.current?.click()}
+                    className="flex items-center space-x-1.5 px-3.5 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 text-xs font-semibold transition min-h-[32px]"
+                  >
+                    <Upload className="w-3.5 h-3.5 text-emerald-400" />
+                    <span>匯入 CSV 數據</span>
+                  </button>
+                </div>
               </div>
 
               {/* Company Metadata Inputs */}
