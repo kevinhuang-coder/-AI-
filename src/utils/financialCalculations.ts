@@ -212,15 +212,21 @@ export function calculatePeriodRatios(period: FinancialPeriod, previousPeriod?: 
   const opIncome = period.operatingIncome || (grossProfit - (period.operatingExpenses || 0));
   const netIncome = period.netIncome || 0;
 
-  // 平均資產/應收/存貨計算
-  const avgAR = previousPeriod ? (period.accountsReceivable + previousPeriod.accountsReceivable) / 2 : period.accountsReceivable;
+  // 平均資產/應收(含合約資產)/存貨/應付計算
+  const currentTotalReceivables = period.accountsReceivable + (period.contractAssets || 0);
+  const prevTotalReceivables = previousPeriod 
+    ? (previousPeriod.accountsReceivable + (previousPeriod.contractAssets || 0)) 
+    : currentTotalReceivables;
+  const avgAR = (currentTotalReceivables + prevTotalReceivables) / 2;
+
   const avgInv = previousPeriod ? (period.inventory + previousPeriod.inventory) / 2 : period.inventory;
   const avgAP = previousPeriod ? (period.accountsPayable + previousPeriod.accountsPayable) / 2 : period.accountsPayable;
   const totalAssets = period.totalAssets || 1;
   const equity = period.stockholdersEquity || 1;
   const curLiab = period.currentLiabilities || 1;
+  const totalLiab = period.totalLiabilities || 0;
 
-  // 1. 週轉能力
+  // 1. 週轉能力 (包含 IFRS 15 合約資產之真實債權天數)
   const arTurnover = avgAR > 0 ? Number((rev / avgAR).toFixed(2)) : 0;
   const dso = arTurnover > 0 ? Number((365 / arTurnover).toFixed(1)) : 0;
 
@@ -248,18 +254,36 @@ export function calculatePeriodRatios(period: FinancialPeriod, previousPeriod?: 
   const dupontEquityMultiplier = Number((totalAssets / equity).toFixed(2));
   const dupontRoe = Number(((dupontNetMargin / 100) * dupontAssetTurnover * dupontEquityMultiplier * 100).toFixed(2));
 
-  // 4. 償債能力
+  // 4. 償債能力與資本結構拆解 (計息負債 vs 營運無息負債 Float)
   const currentRatio = Number(((period.currentAssets / curLiab) * 100).toFixed(2));
   const quickRatio = Number((((period.currentAssets - period.inventory) / curLiab) * 100).toFixed(2));
-  const debtRatio = Number(((period.totalLiabilities / totalAssets) * 100).toFixed(2));
-  const debtToEquity = Number(((period.totalLiabilities / equity) * 100).toFixed(2));
+  const debtRatio = Number(((totalLiab / totalAssets) * 100).toFixed(2));
+  const debtToEquity = Number(((totalLiab / equity) * 100).toFixed(2));
   const interestCoverageRatio = period.interestExpense && period.interestExpense > 0 
     ? Number((opIncome / period.interestExpense).toFixed(2))
     : Number((opIncome / 100).toFixed(2));
 
-  // 5. 現金流品質
+  // 純計息負債 (短期借款+長債+公司債) 與 營運無息負債 (應付帳款+合約負債)
+  const interestBearingDebt = period.interestBearingDebt !== undefined
+    ? period.interestBearingDebt
+    : Math.max(0, totalLiab - (period.accountsPayable || 0) * 1.3);
+  const interestBearingDebtRatio = Number(((interestBearingDebt / totalAssets) * 100).toFixed(2));
+  const operatingFloat = Math.max(0, totalLiab - interestBearingDebt);
+  const netDebt = interestBearingDebt - (period.cashAndEquivalents || 0);
+
+  // 5. 現金流品質與嚴謹版 FCF (扣除無形資產CapEx與IFRS 16租賃本金)
+  const ppeCapEx = period.capitalExpenditures || 0;
+  const intangibleCapEx = period.intangibleCapEx || 0;
+  const leasePrincipal = period.leasePrincipalRepayment || 0;
+  const freeCashFlow = period.operatingCashFlow - ppeCapEx;
+  const rigorousFcf = period.operatingCashFlow - ppeCapEx - intangibleCapEx - leasePrincipal;
+  
   const ocfToNetIncome = netIncome !== 0 ? Number(((period.operatingCashFlow / netIncome) * 100).toFixed(1)) : 0;
-  const freeCashFlow = period.operatingCashFlow - (period.capitalExpenditures || 0);
+  const effectiveTaxRate = 0.20; // 台灣法定營所稅率 20%
+  const afterTaxOpIncome = Math.max(1, opIncome * (1 - effectiveTaxRate));
+  const coreCashConversionRatio = opIncome > 0
+    ? Number((((period.operatingCashFlow - leasePrincipal) / afterTaxOpIncome) * 100).toFixed(1))
+    : (period.operatingCashFlow > 0 ? 100 : 0);
 
   // 6. 價值投資者指標 (Value Investor Metrics)
   // Altman Z-Score: 1.2*X1 + 1.4*X2 + 3.3*X3 + 0.6*X4 + 0.999*X5
@@ -267,7 +291,7 @@ export function calculatePeriodRatios(period: FinancialPeriod, previousPeriod?: 
   const x1 = workingCapital / totalAssets;
   const x2 = netIncome / totalAssets;
   const x3 = opIncome / totalAssets;
-  const x4 = equity / (period.totalLiabilities || 1);
+  const x4 = equity / (totalLiab || 1);
   const x5 = rev / totalAssets;
   const rawZ = 1.2 * x1 + 1.4 * x2 + 3.3 * x3 + 0.6 * x4 + 0.999 * x5;
   const altmanZScore = Number(rawZ.toFixed(2));
@@ -275,7 +299,7 @@ export function calculatePeriodRatios(period: FinancialPeriod, previousPeriod?: 
 
   // 經濟護城河 (Economic Moat)
   let economicMoat: 'wide' | 'narrow' | 'none' = 'none';
-  if (netIncome > 0 && grossMargin >= 38 && roe >= 16 && freeCashFlow > 0) {
+  if (netIncome > 0 && grossMargin >= 38 && roe >= 16 && rigorousFcf > 0) {
     economicMoat = 'wide';
   } else if (netIncome > 0 && grossMargin >= 22 && roe >= 10) {
     economicMoat = 'narrow';
@@ -292,10 +316,10 @@ export function calculatePeriodRatios(period: FinancialPeriod, previousPeriod?: 
       earningsQualityScore = 45; // 帳面虧損但營運現金勉力維持正向
     }
   } else {
-    if (ocfToNetIncome >= 110) earningsQualityScore = 95;
-    else if (ocfToNetIncome >= 90) earningsQualityScore = 88;
-    else if (ocfToNetIncome >= 70) earningsQualityScore = 75;
-    else if (ocfToNetIncome >= 50) earningsQualityScore = 60;
+    if (coreCashConversionRatio >= 100) earningsQualityScore = 95;
+    else if (coreCashConversionRatio >= 80) earningsQualityScore = 88;
+    else if (coreCashConversionRatio >= 60) earningsQualityScore = 75;
+    else if (coreCashConversionRatio >= 40) earningsQualityScore = 60;
     else earningsQualityScore = 40;
   }
 
@@ -324,8 +348,13 @@ export function calculatePeriodRatios(period: FinancialPeriod, previousPeriod?: 
     debtRatio,
     debtToEquity,
     interestCoverageRatio,
+    interestBearingDebtRatio,
+    operatingFloat,
+    netDebt,
     ocfToNetIncome,
     freeCashFlow,
+    rigorousFcf,
+    coreCashConversionRatio,
     altmanZScore,
     altmanZZone,
     economicMoat,

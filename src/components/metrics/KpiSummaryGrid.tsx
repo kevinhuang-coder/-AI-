@@ -102,40 +102,32 @@ export const KpiSummaryGrid: React.FC = () => {
           </div>
         </div>
 
-        {/* 2. 獲利含金量 (Earnings Quality) */}
+        {/* 2. 核心本業獲利含金量 (Core Cash Conversion) */}
         <div className="bg-slate-900/50 border border-slate-800 hover:border-blue-500/50 rounded-2xl sm:rounded-3xl p-4.5 sm:p-6 transition-all shadow-sm flex flex-col justify-between group backdrop-blur-sm">
           <div>
             <div className="flex items-center justify-between mb-3 gap-2">
               <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider flex items-center gap-1.5 truncate">
                 <Gem className="w-4 h-4 text-cyan-400 flex-shrink-0" />
-                獲利含金量 (OCF/Net)
+                核心本業獲利含金量
               </span>
               <span className={`text-[10px] sm:text-[11px] font-bold px-2 sm:px-2.5 py-0.5 rounded-full flex-shrink-0 ${
-                curRatios.ocfToNetIncome >= 100 ? 'bg-emerald-500/10 text-emerald-300 border border-emerald-500/30' :
-                curRatios.ocfToNetIncome >= 70 ? 'bg-blue-500/10 text-blue-300 border border-blue-500/30' :
+                curRatios.coreCashConversionRatio >= 100 ? 'bg-emerald-500/10 text-emerald-300 border border-emerald-500/30' :
+                curRatios.coreCashConversionRatio >= 70 ? 'bg-blue-500/10 text-blue-300 border border-blue-500/30' :
                 'bg-amber-500/10 text-amber-300 border border-amber-500/30'
               }`}>
-                {curRatios.ocfToNetIncome >= 100 ? '💎 真金白銀' : curRatios.ocfToNetIncome >= 70 ? '正常落袋' : '⚠️ 利潤滯留'}
+                {curRatios.coreCashConversionRatio >= 100 ? '💎 真金白銀' : curRatios.coreCashConversionRatio >= 70 ? '正常落袋' : '⚠️ 獲利滯留'}
               </span>
             </div>
 
             <div className="flex items-baseline justify-between mt-1 sm:mt-2 gap-2">
               <div>
                 <div className="text-2xl sm:text-3xl font-bold tracking-tight text-white font-mono">
-                  {curRatios.ocfToNetIncome} <span className="text-xs sm:text-sm font-normal text-slate-400 font-sans">%</span>
+                  {curRatios.coreCashConversionRatio} <span className="text-xs sm:text-sm font-normal text-slate-400 font-sans">%</span>
                 </div>
                 <div className="text-[11px] sm:text-xs text-slate-400 mt-1">
-                  營業現金流 / 稅後淨利（基準 &gt; 100%）
+                  (OCF - 租賃本金) / 稅後營益（剔除業外干擾）
                 </div>
               </div>
-              {ocfDelta && (
-                <div className={`flex items-center text-xs font-semibold px-2 py-1 rounded-lg flex-shrink-0 ${
-                  ocfDelta.isUp ? 'text-emerald-400 bg-emerald-500/10' : 'text-rose-400 bg-rose-500/10'
-                }`}>
-                  {ocfDelta.isUp ? <TrendingUp className="w-3.5 h-3.5 mr-1" /> : <TrendingDown className="w-3.5 h-3.5 mr-1" />}
-                  {ocfDelta.text}
-                </div>
-              )}
             </div>
           </div>
 
@@ -143,39 +135,39 @@ export const KpiSummaryGrid: React.FC = () => {
             <div className="w-full h-1.5 bg-slate-800 rounded-full overflow-hidden mb-1.5">
               <div
                 className="h-full bg-cyan-400 rounded-full transition-all duration-500"
-                style={{ width: `${Math.min(100, Math.max(10, curRatios.ocfToNetIncome))}%` }}
+                style={{ width: `${Math.min(100, Math.max(10, curRatios.coreCashConversionRatio))}%` }}
               ></div>
             </div>
             <div className="text-[10px] sm:text-[11px] text-slate-500 flex justify-between">
-              <span>現金流入 ${(latestPeriod.operatingCashFlow / 1000).toLocaleString(undefined, { maximumFractionDigits: 1 })}M</span>
-              <span>真實現金轉化</span>
+              <span>營業現金流 ${(latestPeriod.operatingCashFlow / 1000).toLocaleString(undefined, { maximumFractionDigits: 1 })}M</span>
+              <span>黃金標準 &ge; 100%</span>
             </div>
           </div>
         </div>
 
-        {/* 3. 自由現金流 (Free Cash Flow) */}
+        {/* 3. 審計嚴謹版自由現金流 (Rigorous Free Cash Flow) */}
         <div className="bg-slate-900/50 border border-slate-800 hover:border-cyan-500/50 rounded-2xl sm:rounded-3xl p-4.5 sm:p-6 transition-all shadow-sm flex flex-col justify-between group backdrop-blur-sm">
           <div>
             <div className="flex items-center justify-between mb-3 gap-2">
               <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider flex items-center gap-1.5 truncate">
                 <Waves className="w-4 h-4 text-indigo-400 flex-shrink-0" />
-                自由現金流 (FCF)
+                嚴謹自由現金流 (FCF)
               </span>
               <span className={`text-[10px] sm:text-[11px] font-bold px-2 sm:px-2.5 py-0.5 rounded-full flex-shrink-0 ${
-                curRatios.freeCashFlow > 0 ? 'bg-emerald-500/10 text-emerald-300 border border-emerald-500/30' :
+                curRatios.rigorousFcf > 0 ? 'bg-emerald-500/10 text-emerald-300 border border-emerald-500/30' :
                 'bg-rose-500/10 text-rose-300 border border-rose-500/30'
               }`}>
-                {curRatios.freeCashFlow > 0 ? '充沛造血' : '現金吃緊'}
+                {curRatios.rigorousFcf > 0 ? '充沛真造血' : '現金赤字'}
               </span>
             </div>
 
             <div className="flex items-baseline justify-between mt-1 sm:mt-2 gap-2">
               <div>
-                <div className="text-2xl sm:text-3xl font-bold tracking-tight text-white font-mono">
-                  ${(curRatios.freeCashFlow / 1000).toLocaleString(undefined, { maximumFractionDigits: 1 })} <span className="text-xs sm:text-sm font-normal text-slate-400 font-sans">百萬</span>
+                <div className={`text-2xl sm:text-3xl font-bold tracking-tight font-mono ${curRatios.rigorousFcf >= 0 ? 'text-white' : 'text-rose-400'}`}>
+                  ${(curRatios.rigorousFcf / 1000).toLocaleString(undefined, { maximumFractionDigits: 1 })} <span className="text-xs sm:text-sm font-normal text-slate-400 font-sans">百萬</span>
                 </div>
                 <div className="text-[11px] sm:text-xs text-slate-400 mt-1">
-                  營運現金扣除資本支出 (CAPEX)
+                  扣除 PP&E、無形資產與租賃本金
                 </div>
               </div>
             </div>
@@ -185,23 +177,23 @@ export const KpiSummaryGrid: React.FC = () => {
             <div className="w-full h-1.5 bg-slate-800 rounded-full overflow-hidden mb-1.5">
               <div
                 className="h-full bg-indigo-500 rounded-full transition-all duration-500"
-                style={{ width: `${Math.min(100, Math.max(15, (curRatios.freeCashFlow / (latestPeriod.revenue || 1)) * 100 * 3))}%` }}
+                style={{ width: `${Math.min(100, Math.max(15, (curRatios.rigorousFcf / (latestPeriod.revenue || 1)) * 100 * 3))}%` }}
               ></div>
             </div>
             <div className="text-[10px] sm:text-[11px] text-slate-500 flex justify-between">
               <span>資本支出 ${(latestPeriod.capitalExpenditures / 1000).toLocaleString(undefined, { maximumFractionDigits: 1 })}M</span>
-              <span>股息/研發底氣</span>
+              <span>真實股息底氣</span>
             </div>
           </div>
         </div>
 
-        {/* 4. Altman Z-Score 破產防禦分 */}
+        {/* 4. 純計息負債比 & Altman Z-Score */}
         <div className="bg-slate-900/50 border border-slate-800 hover:border-purple-500/50 rounded-2xl sm:rounded-3xl p-4.5 sm:p-6 transition-all shadow-sm flex flex-col justify-between group backdrop-blur-sm">
           <div>
             <div className="flex items-center justify-between mb-3 gap-2">
               <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider flex items-center gap-1.5 truncate">
                 <ShieldCheck className="w-4 h-4 text-purple-400 flex-shrink-0" />
-                Altman Z 破產防禦分
+                純計息負債比 • Altman Z
               </span>
               <span className={`text-[10px] sm:text-[11px] font-bold px-2 sm:px-2.5 py-0.5 rounded-full flex-shrink-0 ${
                 curRatios.altmanZZone === 'safe' ? 'bg-emerald-500/10 text-emerald-300 border border-emerald-500/30' :
@@ -215,10 +207,10 @@ export const KpiSummaryGrid: React.FC = () => {
             <div className="flex items-baseline justify-between mt-1 sm:mt-2 gap-2">
               <div>
                 <div className="text-2xl sm:text-3xl font-bold tracking-tight text-white font-mono">
-                  {curRatios.altmanZScore} <span className="text-xs sm:text-sm font-normal text-slate-400 font-sans">分</span>
+                  {curRatios.interestBearingDebtRatio}% <span className="text-xs sm:text-sm font-normal text-slate-400 font-sans">計息負債</span>
                 </div>
                 <div className="text-[11px] sm:text-xs text-slate-400 mt-1">
-                  安全線 &gt; 2.99 ｜ 破產風險極低
+                  Altman Z: <span className="font-semibold text-purple-300 font-mono">{curRatios.altmanZScore} 分</span> (安全 &gt; 2.99)
                 </div>
               </div>
               {zDelta && (
@@ -240,8 +232,8 @@ export const KpiSummaryGrid: React.FC = () => {
               ></div>
             </div>
             <div className="text-[10px] sm:text-[11px] text-slate-500 flex justify-between">
-              <span>流動比率 {curRatios.currentRatio}%</span>
-              <span>負債比 {curRatios.debtRatio}%</span>
+              <span>無息浮存金 ${(curRatios.operatingFloat / 1000).toLocaleString(undefined, { maximumFractionDigits: 1 })}M</span>
+              <span>總負債比 {curRatios.debtRatio}%</span>
             </div>
           </div>
         </div>

@@ -25,16 +25,18 @@ export const CashFlowTrendChart: React.FC = () => {
     const ocf = p.operatingCashFlow;
     const capex = p.capitalExpenditures || 0;
     const fcf = p.ratios.freeCashFlow;
+    const rigorousFcf = p.ratios.rigorousFcf;
     const netIncome = p.netIncome;
-    const ocfRatio = p.ratios.ocfToNetIncome;
+    const coreConversion = p.ratios.coreCashConversionRatio;
 
     return {
       period: p.period.replace(' 年度', '').replace(' 集團合併', ''),
       ocfMillions: Math.round(ocf / 1000),
       capexMillions: Math.round(capex / 1000),
       fcfMillions: Math.round(fcf / 1000),
+      rigorousFcfMillions: Math.round(rigorousFcf / 1000),
       netIncomeMillions: Math.round(netIncome / 1000),
-      ocfRatio: Number(ocfRatio) || 0,
+      coreConversion: Number(coreConversion) || 0,
       ocfRaw: ocf,
       fcfRaw: fcf,
     };
@@ -53,12 +55,12 @@ export const CashFlowTrendChart: React.FC = () => {
               <Layers className="w-4 h-4 text-emerald-200" />
             </div>
             <h3 className="text-base font-bold text-white tracking-tight">
-              {isInvestor ? '自由現金流造血力與獲利含金量' : '現金流量品質與資本支出結構'}
+              {isInvestor ? '審計級自由現金流與核心獲利含金量' : '現金流量品質與資本支出結構'}
             </h3>
           </div>
           <p className="text-xs text-slate-400 mt-1">
             {isInvestor
-              ? '檢驗營業現金流 (OCF) 是否扎實高於帳面淨利，衡量真金白銀自由現金流 (FCF) 複利擴張'
+              ? '嚴謹扣除 PP&E、無形資產研發與 IFRS 16 租賃本金，還原真實業主盈餘與本業現金轉化率'
               : '監控本業營運造血 (OCF)、資本支出 (CapEx) 投資節奏與自由現金轉換率'}
           </p>
         </div>
@@ -83,7 +85,7 @@ export const CashFlowTrendChart: React.FC = () => {
                 : 'text-slate-400 hover:text-slate-200'
             }`}
           >
-            自由現金流 (FCF)
+            嚴謹自由現金流 (FCF)
           </button>
           <button
             onClick={() => setMetricMode('quality')}
@@ -93,7 +95,7 @@ export const CashFlowTrendChart: React.FC = () => {
                 : 'text-slate-400 hover:text-slate-200'
             }`}
           >
-            獲利含金量 (%)
+            核心獲利含金量 (%)
           </button>
         </div>
       </div>
@@ -113,15 +115,15 @@ export const CashFlowTrendChart: React.FC = () => {
           </span>
         </div>
         <div className="p-3 rounded-xl bg-slate-950/60 border border-slate-800/80">
-          <span className="text-[11px] text-slate-400 font-medium block">自由現金流 (FCF)</span>
-          <span className={`text-sm sm:text-base font-extrabold font-mono mt-0.5 block ${latest.ratios.freeCashFlow >= 0 ? 'text-cyan-300' : 'text-rose-400'}`}>
-            NT$ {(latest.ratios.freeCashFlow / 1000).toLocaleString(undefined, { maximumFractionDigits: 0 })}M
+          <span className="text-[11px] text-slate-400 font-medium block">嚴謹自由現金流 (FCF)</span>
+          <span className={`text-sm sm:text-base font-extrabold font-mono mt-0.5 block ${latest.ratios.rigorousFcf >= 0 ? 'text-cyan-300' : 'text-rose-400'}`}>
+            NT$ {(latest.ratios.rigorousFcf / 1000).toLocaleString(undefined, { maximumFractionDigits: 0 })}M
           </span>
         </div>
         <div className="p-3 rounded-xl bg-slate-950/60 border border-slate-800/80">
-          <span className="text-[11px] text-slate-400 font-medium block">獲利含金量 (OCF/Net)</span>
-          <span className={`text-sm sm:text-base font-extrabold font-mono mt-0.5 block ${Number(latest.ratios.ocfToNetIncome) >= 100 ? 'text-emerald-400' : Number(latest.ratios.ocfToNetIncome) > 0 ? 'text-blue-400' : 'text-rose-400'}`}>
-            {latest.ratios.ocfToNetIncome}%
+          <span className="text-[11px] text-slate-400 font-medium block">核心現金轉換率</span>
+          <span className={`text-sm sm:text-base font-extrabold font-mono mt-0.5 block ${Number(latest.ratios.coreCashConversionRatio) >= 100 ? 'text-emerald-400' : Number(latest.ratios.coreCashConversionRatio) > 0 ? 'text-blue-400' : 'text-rose-400'}`}>
+            {latest.ratios.coreCashConversionRatio}%
           </span>
         </div>
       </div>
@@ -155,7 +157,7 @@ export const CashFlowTrendChart: React.FC = () => {
                 boxShadow: '0 10px 25px -5px rgba(0,0,0,0.5)',
               }}
               formatter={(value: any, name: string) => {
-                if (name === '獲利含金量 (OCF/淨利)') return [`${value}%`, name];
+                if (name === '核心獲利現金轉換率') return [`${value}%`, name];
                 return [`NT$ ${Number(value).toLocaleString()} 百萬元`, name];
               }}
             />
@@ -166,13 +168,13 @@ export const CashFlowTrendChart: React.FC = () => {
               <>
                 <Bar dataKey="ocfMillions" name="營業活動現金流 (OCF)" fill="#10b981" radius={[4, 4, 0, 0]} maxBarSize={45} />
                 <Bar dataKey="capexMillions" name="資本支出 (CapEx)" fill="#f59e0b" radius={[4, 4, 0, 0]} maxBarSize={45} />
-                <Line type="monotone" dataKey="fcfMillions" name="自由現金流 (FCF)" stroke="#06b6d4" strokeWidth={3} dot={{ r: 4, fill: '#06b6d4' }} />
+                <Line type="monotone" dataKey="rigorousFcfMillions" name="嚴謹自由現金流 (FCF)" stroke="#06b6d4" strokeWidth={3} dot={{ r: 4, fill: '#06b6d4' }} />
               </>
             )}
 
             {metricMode === 'fcf' && (
               <>
-                <Area type="monotone" dataKey="fcfMillions" name="自由現金流 (FCF)" fill="url(#fcfAreaGrad)" stroke="#06b6d4" strokeWidth={3} dot={{ r: 4, fill: '#06b6d4' }} />
+                <Area type="monotone" dataKey="rigorousFcfMillions" name="嚴謹自由現金流 (FCF)" fill="url(#fcfAreaGrad)" stroke="#06b6d4" strokeWidth={3} dot={{ r: 4, fill: '#06b6d4' }} />
                 <Line type="monotone" dataKey="netIncomeMillions" name="稅後淨利 (Net Income)" stroke="#818cf8" strokeWidth={2} strokeDasharray="4 4" dot={{ r: 3 }} />
               </>
             )}
@@ -180,7 +182,7 @@ export const CashFlowTrendChart: React.FC = () => {
             {metricMode === 'quality' && (
               <>
                 <ReferenceLine y={100} stroke="#10b981" strokeDasharray="4 4" label={{ value: '100% 黃金基準', fill: '#10b981', fontSize: 10 }} />
-                <Line type="monotone" dataKey="ocfRatio" name="獲利含金量 (OCF/淨利)" stroke="#6366f1" strokeWidth={3} dot={{ r: 5, fill: '#6366f1' }} />
+                <Line type="monotone" dataKey="coreConversion" name="核心獲利現金轉換率" stroke="#6366f1" strokeWidth={3} dot={{ r: 5, fill: '#6366f1' }} />
               </>
             )}
           </ComposedChart>

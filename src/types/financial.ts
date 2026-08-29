@@ -15,9 +15,11 @@ export interface FinancialPeriod {
   taxExpense?: number;          // 所得稅費用
   interestExpense?: number;     // 利息費用
   sharesOutstanding: number;    // 流通在外股數 (千股)
+  nonOperatingIncome?: number;  // 營業外收入及利益 (業外收益)
 
   // 資產負債表數據 (Balance Sheet)
   accountsReceivable: number;   // 應收帳款及票據
+  contractAssets?: number;      // 流動合約資產 (IFRS 15 未請款債權)
   inventory: number;            // 存貨
   accountsPayable: number;      // 應付帳款及票據
   currentAssets: number;        // 流動資產
@@ -26,16 +28,20 @@ export interface FinancialPeriod {
   totalLiabilities: number;     // 負債總額
   stockholdersEquity: number;   // 股東權益總額
   cashAndEquivalents: number;   // 現金及約當現金
+  interestBearingDebt?: number; // 純計息負債 (短期借款+長債+公司債)
+  leaseLiabilities?: number;    // 租賃負債 (IFRS 16)
 
   // 現金流量表數據 (Cash Flow Statement)
   operatingCashFlow: number;    // 營業活動現金流量
-  capitalExpenditures: number;  // 資本支出 (CAPEX)
+  capitalExpenditures: number;  // 資本支出 (PP&E CapEx)
+  intangibleCapEx?: number;     // 購置電腦軟體及無形資產支出
+  leasePrincipalRepayment?: number; // 償還租賃負債本金 (IFRS 16 籌資現金流)
 }
 
 export interface CalculatedRatios {
   // 營運週轉能力指標 (Activity & Turnover Ratios)
   arTurnover: number;           // 應收帳款週轉率 (次)
-  dso: number;                  // 應收帳款週轉天數 (天)
+  dso: number;                  // 應收帳款週轉天數 (天) (含合約資產之真實天數)
   inventoryTurnover: number;    // 存貨週轉率 (次)
   dsi: number;                  // 存貨週轉天數 (天)
   apTurnover: number;           // 應付帳款週轉率 (次)
@@ -58,16 +64,21 @@ export interface CalculatedRatios {
   dupontEquityMultiplier: number; // 權益乘數 (倍)
   dupontRoe: number;            // 計算得出的 ROE (%)
 
-  // 償債與財務結構指標 (Solvency & Liquidity)
+  // 償債與資本結構指標 (Solvency & Capital Structure)
   currentRatio: number;         // 流動比率 (%)
   quickRatio: number;           // 速動比率 (%)
-  debtRatio: number;            // 負債比率 (%)
+  debtRatio: number;            // 總負債比率 (%)
   debtToEquity: number;         // 負債權益比 (%)
   interestCoverageRatio: number;// 利息保障倍數 (倍)
+  interestBearingDebtRatio: number; // 純計息負債比率 (%)
+  operatingFloat: number;       // 營運無息負債/浮存金 (千元)
+  netDebt: number;              // 淨計息負債 (千元)
 
   // 現金流量與品質指標 (Cash Flow Quality)
   ocfToNetIncome: number;       // 營業現金流對淨利比 (%)
-  freeCashFlow: number;         // 自由現金流 (千元)
+  freeCashFlow: number;         // 標準自由現金流 (千元)
+  rigorousFcf: number;          // 審計嚴謹版自由現金流 (扣無形資產與租賃本金) (千元)
+  coreCashConversionRatio: number; // 核心本業營業現金轉換率 (%)
 
   // 價值投資者專屬指標 (Value Investor Metrics)
   altmanZScore: number;         // Altman Z-Score 破產防禦分數
