@@ -68,7 +68,7 @@ export const WelcomeDisclaimerModal: React.FC = () => {
                 </span>
               </div>
               <p className="text-xs text-slate-400 mt-0.5">
-                《凱文黃的知識天地》專屬 AI 價值投資財報分析系統
+                《凱文黃的知識天地》AI 價值投資財報分析系統
               </p>
             </div>
           </div>

@@ -31,7 +31,7 @@ export const BrandFooter: React.FC = () => {
                   </span>
                 </h3>
                 <p className="text-xs text-slate-400 font-medium">
-                  《凱文黃的知識天地》專屬 AI 財報分析工具
+                  《凱文黃的知識天地》AI 財報分析工具
                 </p>
               </div>
             </div>
