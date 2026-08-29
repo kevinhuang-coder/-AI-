@@ -159,11 +159,14 @@ export const FinancialProvider: React.FC<{ children: React.ReactNode }> = ({ chi
 
   // 當前選中公司的期間（依 歷年年度 / 近四季TTM類整年 動態計算）並計算財務比率
   const activeCompanyPeriodsWithRatios = useMemo(() => {
-    let rawPeriods = activeCompany.periods;
     if (timeFrequency === 'ttm') {
-      rawPeriods = computeTtmRollingPeriods(activeCompany.periods);
+      const ttmPeriods = computeTtmRollingPeriods(activeCompany.periods);
+      return calculateAllPeriodsRatios(ttmPeriods);
+    } else {
+      const annualPeriods = activeCompany.periods.filter(p => !p.isQuarterly);
+      const periodsToUse = annualPeriods.length > 0 ? annualPeriods : activeCompany.periods;
+      return calculateAllPeriodsRatios(periodsToUse);
     }
-    return calculateAllPeriodsRatios(rawPeriods);
   }, [activeCompany, timeFrequency]);
 
   const latestPeriod = useMemo(() => {
