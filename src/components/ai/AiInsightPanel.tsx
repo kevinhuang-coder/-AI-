@@ -33,17 +33,30 @@ export const AiInsightPanel: React.FC = () => {
 
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4 sm:mb-5">
           <div className="flex items-center space-x-3">
-            <div className={`w-10 h-10 rounded-2xl bg-gradient-to-tr ${isInvestor ? 'from-emerald-600 to-teal-600 shadow-emerald-500/20' : 'from-blue-600 to-indigo-600 shadow-blue-500/20'} flex items-center justify-center text-white shadow-md flex-shrink-0`}>
+            <div className={`w-11 h-11 rounded-2xl bg-gradient-to-tr ${isInvestor ? 'from-emerald-600 to-teal-600 shadow-emerald-500/20' : 'from-blue-600 to-indigo-600 shadow-blue-500/20'} flex items-center justify-center text-white shadow-md flex-shrink-0`}>
               <Sparkles className="w-5 h-5 text-amber-300" />
             </div>
             <div>
-              <h3 className="text-base sm:text-lg font-bold text-white tracking-tight flex items-center gap-2 flex-wrap">
-                {isInvestor ? 'AI 價值投資與基本面深度診斷報告' : 'AI 財務健康深度診斷報告'}
-                <span className={`text-[10px] sm:text-xs px-2 sm:px-2.5 py-0.5 rounded-full font-mono ${isInvestor ? 'bg-emerald-500/10 text-emerald-300 border border-emerald-500/20' : 'bg-blue-500/10 text-blue-300 border border-blue-500/20'}`}>
+              <div className="flex items-center gap-2 flex-wrap">
+                <h3 className="text-base sm:text-lg font-bold text-white tracking-tight">
+                  {isInvestor ? 'AI 價值投資與基本面深度診斷報告' : 'AI 財務健康深度診斷戰情報告'}
+                </h3>
+                <span className={`text-[10px] sm:text-xs px-2.5 py-0.5 rounded-full font-mono font-bold ${
+                  isInvestor
+                    ? 'bg-emerald-500/15 text-emerald-300 border border-emerald-500/30'
+                    : 'bg-indigo-500/15 text-indigo-300 border border-indigo-500/30'
+                }`}>
                   {isInvestor ? '價值投資基本面引擎' : 'Gemini 3.7 Flash 驅動'}
                 </span>
-              </h3>
-              <p className="text-xs text-slate-400">
+                <span className={`text-[10px] sm:text-xs px-2.5 py-0.5 rounded-full font-mono font-bold ${
+                  aiReport.overallScore >= 80 ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30' :
+                  aiReport.overallScore >= 60 ? 'bg-blue-500/20 text-blue-300 border border-blue-500/30' :
+                  'bg-rose-500/20 text-rose-300 border border-rose-500/30'
+                }`}>
+                  評分：{aiReport.overallScore} 分 • {aiReport.overallRating}
+                </span>
+              </div>
+              <p className="text-xs text-slate-400 mt-0.5">
                 {isInvestor
                   ? '經濟護城河評級、獲利含金量 (OCF/Net)、自由現金流造血力與破產防禦'
                   : '自動化多維度異常偵測、杜邦拆解、營運資金效率與經營決策指引'}
@@ -62,8 +75,12 @@ export const AiInsightPanel: React.FC = () => {
         </div>
 
         {/* Executive Summary Narrative */}
-        <div className="p-3.5 sm:p-4 rounded-xl sm:rounded-2xl bg-slate-950/60 border border-slate-800 text-slate-200 text-xs sm:text-sm leading-relaxed mb-4 sm:mb-6">
-          <p className="font-sans">
+        <div className="p-4 sm:p-5 rounded-2xl bg-slate-950/70 border border-slate-800 text-slate-200 text-xs sm:text-sm leading-relaxed mb-4 sm:mb-6 shadow-inner">
+          <div className="flex items-center gap-1.5 text-xs font-bold text-indigo-300 uppercase tracking-wider mb-1.5">
+            <Bot className="w-4 h-4 text-indigo-400" />
+            <span>AI 財務長/投資顧問 核心結論總評</span>
+          </div>
+          <p className="font-sans text-slate-300 leading-relaxed">
             {isInvestor
               ? `【價值投資視角總評】${activeCompany.name} 在 ${latestPeriod.period} 展現出「${r.economicMoat === 'wide' ? '寬廣經濟護城河 (Wide Moat)' : r.economicMoat === 'narrow' ? '中度競爭壁壘' : '一般競爭結構'}」，營業毛利率 ${r.grossMargin}% 展現良好定價能力。獲利含金量達 ${r.ocfToNetIncome}%（真實現金流落袋扎實），自由現金流為 NT$ ${(r.freeCashFlow / 1000).toLocaleString(undefined, { maximumFractionDigits: 1 })} 百萬元，Altman Z 破產防禦分數錄得 ${r.altmanZScore} 分（處於 ${r.altmanZZone === 'safe' ? '安全堡壘區' : '穩定區'}），整體具備高度基本面防禦韌性。`
               : aiReport.executiveSummary}

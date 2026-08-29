@@ -1,6 +1,7 @@
 import React from 'react';
 import { FinancialProvider, useFinancial } from './context/FinancialContext';
 import { Navbar } from './components/header/Navbar';
+import { AnalyticsControlBar } from './components/header/AnalyticsControlBar';
 import { MetricFilterTabs } from './components/metrics/MetricFilterTabs';
 import { KpiSummaryGrid } from './components/metrics/KpiSummaryGrid';
 import { TurnoverAnalysisChart } from './components/charts/TurnoverAnalysisChart';
@@ -159,7 +160,10 @@ const DashboardContent: React.FC = () => {
       <div className="flex-1 flex flex-col min-w-0 pb-20 md:pb-0">
         <Navbar />
 
-        <main className="flex-1 max-w-7xl w-full mx-auto p-3.5 sm:p-6 lg:p-8 space-y-5 sm:space-y-6">
+        <main className="flex-1 max-w-7xl w-full mx-auto p-3.5 sm:p-6 lg:p-8 space-y-4 sm:space-y-5">
+          {/* Analytics Dimension Control Hub (Perspective & Time Switchers) */}
+          <AnalyticsControlBar />
+
           {/* Bento Category Navigation Header */}
           <MetricFilterTabs />
 
