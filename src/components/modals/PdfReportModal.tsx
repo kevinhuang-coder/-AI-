@@ -17,7 +17,7 @@ import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 
 export const PdfReportModal: React.FC = () => {
-  const { isPdfModalOpen, setIsPdfModalOpen, activeCompany, latestPeriod, aiReport } =
+  const { isPdfModalOpen, setIsPdfModalOpen, activeCompany, latestPeriod, aiReport, viewMode } =
     useFinancial();
 
   const reportRef = useRef<HTMLDivElement>(null);
@@ -25,6 +25,7 @@ export const PdfReportModal: React.FC = () => {
 
   if (!isPdfModalOpen || !latestPeriod || !aiReport) return null;
 
+  const isInvestor = viewMode === 'investor';
   const health = calculateHealthDimensions(latestPeriod);
   const curRatios = latestPeriod.ratios;
   const currentDate = new Date().toLocaleDateString('zh-TW', {
@@ -58,7 +59,10 @@ export const PdfReportModal: React.FC = () => {
       const pdfHeight = 297;
       pdf.addImage(imgData, 'JPEG', 0, 0, pdfWidth, pdfHeight, undefined, 'FAST');
 
-      pdf.save(`${activeCompany.name}_財務經營決策報告_${latestPeriod.period}.pdf`);
+      const fileName = isInvestor
+        ? `${activeCompany.name}_價值投資基本面研究報告_${latestPeriod.period}.pdf`
+        : `${activeCompany.name}_財務經營決策報告_${latestPeriod.period}.pdf`;
+      pdf.save(fileName);
     } catch (error) {
       console.error('PDF Generation failed, fallback to print:', error);
       window.print();
@@ -78,15 +82,17 @@ export const PdfReportModal: React.FC = () => {
         {/* Modal Controls Header */}
         <div className="no-print px-4 sm:px-6 py-3 sm:py-3.5 bg-slate-950 border-b border-slate-800 flex flex-wrap items-center justify-between gap-3">
           <div className="flex items-center space-x-3">
-            <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-emerald-600/20 text-emerald-400 border border-emerald-500/30 flex items-center justify-center flex-shrink-0">
+            <div className={`w-8 h-8 sm:w-9 sm:h-9 rounded-xl ${isInvestor ? 'bg-emerald-600/20 text-emerald-400 border-emerald-500/30' : 'bg-blue-600/20 text-blue-400 border-blue-500/30'} border flex items-center justify-center flex-shrink-0`}>
               <FileText className="w-4 h-4" />
             </div>
             <div>
               <h3 className="text-sm sm:text-base font-bold text-white tracking-tight">
-                PDF 財務分析報告預覽與匯出
+                {isInvestor ? 'PDF 價值投資研究報告預覽與匯出' : 'PDF 財務分析報告預覽與匯出'}
               </h3>
               <p className="text-[10px] sm:text-xs text-slate-400">
-                符合高階主管與董事會呈報標準之單頁 A4 財務決策診斷書
+                {isInvestor
+                  ? '符合機構法人與價值投資人標準之單頁 A4 基本面與安全邊際報告書'
+                  : '符合高階主管與董事會呈報標準之單頁 A4 財務決策診斷書'}
               </p>
             </div>
           </div>
@@ -102,7 +108,7 @@ export const PdfReportModal: React.FC = () => {
             <button
               onClick={handleDownloadPdf}
               disabled={isExporting}
-              className="flex items-center space-x-1.5 px-4 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold transition shadow-lg shadow-emerald-600/25 disabled:opacity-50 min-h-[34px] cursor-pointer"
+              className={`flex items-center space-x-1.5 px-4 py-1.5 rounded-xl ${isInvestor ? 'bg-emerald-600 hover:bg-emerald-500' : 'bg-blue-600 hover:bg-blue-500'} text-white text-xs font-bold transition shadow-lg disabled:opacity-50 min-h-[34px] cursor-pointer`}
             >
               <Download className={`w-3.5 h-3.5 flex-shrink-0 ${isExporting ? 'animate-bounce' : ''}`} />
               <span>{isExporting ? '生成單頁 A4 中...' : '下載單頁 A4 PDF'}</span>
@@ -134,7 +140,7 @@ export const PdfReportModal: React.FC = () => {
                   <div>
                     <div className="flex items-center space-x-1.5 text-blue-800 font-bold text-[10px] uppercase tracking-wider mb-0.5">
                       <Building2 className="w-3.5 h-3.5 text-blue-700" />
-                      <span>{activeCompany.industry} • 智析財策 AI 財務分析與經營決策報告</span>
+                      <span>{activeCompany.industry} • {isInvestor ? '智析財策 AI 價值投資與基本面研究報告' : '智析財策 AI 財務分析與經營決策報告'}</span>
                     </div>
                     <h1 className="text-xl font-black text-slate-950 tracking-tight">
                       {activeCompany.name}
@@ -147,7 +153,7 @@ export const PdfReportModal: React.FC = () => {
                   <div className="text-right flex-shrink-0">
                     <div className="inline-flex items-center space-x-1 px-2.5 py-0.5 bg-blue-50 border border-blue-200 rounded-lg text-blue-900 text-[11px] font-bold">
                       <Sparkles className="w-3 h-3 text-amber-500" />
-                      <span>AI 診斷評級: {health.rating} ({health.totalScore}分)</span>
+                      <span>{isInvestor ? '投資評級' : 'AI 診斷評級'}: {health.rating} ({health.totalScore}分)</span>
                     </div>
                     <div className="text-[10px] text-slate-500 mt-1 flex items-center justify-end space-x-1">
                       <Calendar className="w-2.5 h-2.5" />
@@ -161,61 +167,111 @@ export const PdfReportModal: React.FC = () => {
               <div className="p-3 bg-slate-50 rounded-xl border border-slate-200">
                 <h2 className="text-[11px] font-bold text-blue-900 uppercase tracking-wider mb-1 flex items-center gap-1">
                   <Sparkles className="w-3 h-3 text-amber-500" />
-                  執行摘要與經營全景診斷 (Executive Summary)
+                  {isInvestor ? '價值投資總評與基本面全景 (Investment Executive Summary)' : '執行摘要與經營全景診斷 (Executive Summary)'}
                 </h2>
                 <p className="text-[11px] text-slate-800 leading-relaxed font-normal">
-                  {aiReport.executiveSummary}
+                  {isInvestor
+                    ? `【價值投資視角總評】${activeCompany.name} 在 ${latestPeriod.period} 展現出「${curRatios.economicMoat === 'wide' ? '寬廣經濟護城河 (Wide Moat)' : curRatios.economicMoat === 'narrow' ? '中度競爭壁壘' : '一般競爭結構'}」，營業毛利率 ${curRatios.grossMargin}% 展現良好定價能力。獲利含金量達 ${curRatios.ocfToNetIncome}%（真實現金流落袋扎實），自由現金流為 NT$ ${(curRatios.freeCashFlow / 1000).toLocaleString(undefined, { maximumFractionDigits: 1 })} 百萬元，Altman Z 破產防禦分數錄得 ${curRatios.altmanZScore} 分（處於 ${curRatios.altmanZZone === 'safe' ? '安全堡壘區' : '穩定區'}），整體具備高度基本面防禦韌性。`
+                    : aiReport.executiveSummary}
                 </p>
               </div>
 
               {/* 3. Key Financial Ratios Snapshot Grid */}
               <div>
                 <h2 className="text-[11px] font-bold text-slate-700 uppercase tracking-wider mb-1.5">
-                  關鍵指標摘要 (Key Ratios & Indicators)
+                  {isInvestor ? '價值投資核心指標 (Value & Solvency Ratios)' : '關鍵營運與財務指標摘要 (Key Ratios & Indicators)'}
                 </h2>
                 <div className="grid grid-cols-3 gap-2 text-xs">
                   
-                  <div className="p-2.5 bg-slate-50 rounded-xl border border-slate-200">
-                    <span className="text-slate-500 block text-[9px]">應收帳款週轉率 / DSO</span>
-                    <div className="text-xs sm:text-sm font-bold text-blue-900 mt-0.5 font-mono">
-                      {curRatios.arTurnover} 次 <span className="text-[9px] text-slate-600 font-normal font-sans">({curRatios.dso} 天)</span>
-                    </div>
-                  </div>
+                  {isInvestor ? (
+                    <>
+                      <div className="p-2.5 bg-slate-50 rounded-xl border border-slate-200">
+                        <span className="text-slate-500 block text-[9px]">經濟護城河 (Economic Moat)</span>
+                        <div className="text-xs sm:text-sm font-bold text-amber-900 mt-0.5 font-sans">
+                          {curRatios.economicMoat === 'wide' ? '👑 寬護城河' : curRatios.economicMoat === 'narrow' ? '🛡️ 窄護城河' : '無顯著壁壘'}
+                        </div>
+                      </div>
 
-                  <div className="p-2.5 bg-slate-50 rounded-xl border border-slate-200">
-                    <span className="text-slate-500 block text-[9px]">存貨週轉率 / DSI</span>
-                    <div className="text-xs sm:text-sm font-bold text-indigo-900 mt-0.5 font-mono">
-                      {curRatios.inventoryTurnover} 次 <span className="text-[9px] text-slate-600 font-normal font-sans">({curRatios.dsi} 天)</span>
-                    </div>
-                  </div>
+                      <div className="p-2.5 bg-slate-50 rounded-xl border border-slate-200">
+                        <span className="text-slate-500 block text-[9px]">獲利含金量 (OCF/Net)</span>
+                        <div className="text-xs sm:text-sm font-bold text-emerald-800 mt-0.5 font-mono">
+                          {curRatios.ocfToNetIncome}% <span className="text-[9px] text-slate-600 font-normal font-sans">({curRatios.ocfToNetIncome >= 100 ? '真金白銀' : '正常'})</span>
+                        </div>
+                      </div>
 
-                  <div className="p-2.5 bg-slate-50 rounded-xl border border-slate-200">
-                    <span className="text-slate-500 block text-[9px]">現金轉換循環 (CCC)</span>
-                    <div className="text-xs sm:text-sm font-bold text-cyan-900 mt-0.5 font-mono">
-                      {curRatios.cashConversionCycle} 天
-                    </div>
-                  </div>
+                      <div className="p-2.5 bg-slate-50 rounded-xl border border-slate-200">
+                        <span className="text-slate-500 block text-[9px]">自由現金流 (FCF)</span>
+                        <div className="text-xs sm:text-sm font-bold text-blue-900 mt-0.5 font-mono">
+                          ${(curRatios.freeCashFlow / 1000).toLocaleString(undefined, { maximumFractionDigits: 1 })} M
+                        </div>
+                      </div>
 
-                  <div className="p-2.5 bg-slate-50 rounded-xl border border-slate-200">
-                    <span className="text-slate-500 block text-[9px]">營業毛利率 (Gross Margin)</span>
-                    <div className="text-xs sm:text-sm font-bold text-emerald-800 mt-0.5 font-mono">
-                      {curRatios.grossMargin}%
-                    </div>
-                  </div>
+                      <div className="p-2.5 bg-slate-50 rounded-xl border border-slate-200">
+                        <span className="text-slate-500 block text-[9px]">Altman Z 破產防禦分</span>
+                        <div className="text-xs sm:text-sm font-bold text-purple-900 mt-0.5 font-mono">
+                          {curRatios.altmanZScore} 分 <span className="text-[9px] text-slate-600 font-normal font-sans">({curRatios.altmanZZone === 'safe' ? '安全堡壘' : '灰色區'})</span>
+                        </div>
+                      </div>
 
-                  <div className="p-2.5 bg-slate-50 rounded-xl border border-slate-200">
-                    <span className="text-slate-500 block text-[9px]">營業利益率 (Operating Margin)</span>
-                    <div className="text-xs sm:text-sm font-bold text-emerald-800 mt-0.5 font-mono">
-                      {curRatios.operatingMargin}%
-                    </div>
-                  </div>
+                      <div className="p-2.5 bg-slate-50 rounded-xl border border-slate-200">
+                        <span className="text-slate-500 block text-[9px]">營業毛利率 (定價壁壘)</span>
+                        <div className="text-xs sm:text-sm font-bold text-emerald-800 mt-0.5 font-mono">
+                          {curRatios.grossMargin}%
+                        </div>
+                      </div>
 
-                  <div className="p-2.5 bg-slate-50 rounded-xl border border-slate-200">
-                    <span className="text-slate-500 block text-[9px]">股東權益報酬率 (ROE)</span>
-                    <div className="text-xs sm:text-sm font-bold text-amber-900 mt-0.5 font-mono">
-                      {curRatios.roe}% <span className="text-[9px] text-slate-600 font-normal font-sans">(EPS ${curRatios.eps})</span>
-                    </div>
-                  </div>
+                      <div className="p-2.5 bg-slate-50 rounded-xl border border-slate-200">
+                        <span className="text-slate-500 block text-[9px]">股東權益報酬率 (ROE)</span>
+                        <div className="text-xs sm:text-sm font-bold text-amber-900 mt-0.5 font-mono">
+                          {curRatios.roe}% <span className="text-[9px] text-slate-600 font-normal font-sans">(EPS ${curRatios.eps})</span>
+                        </div>
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      <div className="p-2.5 bg-slate-50 rounded-xl border border-slate-200">
+                        <span className="text-slate-500 block text-[9px]">應收帳款週轉率 / DSO</span>
+                        <div className="text-xs sm:text-sm font-bold text-blue-900 mt-0.5 font-mono">
+                          {curRatios.arTurnover} 次 <span className="text-[9px] text-slate-600 font-normal font-sans">({curRatios.dso} 天)</span>
+                        </div>
+                      </div>
+
+                      <div className="p-2.5 bg-slate-50 rounded-xl border border-slate-200">
+                        <span className="text-slate-500 block text-[9px]">存貨週轉率 / DSI</span>
+                        <div className="text-xs sm:text-sm font-bold text-indigo-900 mt-0.5 font-mono">
+                          {curRatios.inventoryTurnover} 次 <span className="text-[9px] text-slate-600 font-normal font-sans">({curRatios.dsi} 天)</span>
+                        </div>
+                      </div>
+
+                      <div className="p-2.5 bg-slate-50 rounded-xl border border-slate-200">
+                        <span className="text-slate-500 block text-[9px]">現金轉換循環 (CCC)</span>
+                        <div className="text-xs sm:text-sm font-bold text-cyan-900 mt-0.5 font-mono">
+                          {curRatios.cashConversionCycle} 天
+                        </div>
+                      </div>
+
+                      <div className="p-2.5 bg-slate-50 rounded-xl border border-slate-200">
+                        <span className="text-slate-500 block text-[9px]">營業毛利率 (Gross Margin)</span>
+                        <div className="text-xs sm:text-sm font-bold text-emerald-800 mt-0.5 font-mono">
+                          {curRatios.grossMargin}%
+                        </div>
+                      </div>
+
+                      <div className="p-2.5 bg-slate-50 rounded-xl border border-slate-200">
+                        <span className="text-slate-500 block text-[9px]">營業利益率 (Operating Margin)</span>
+                        <div className="text-xs sm:text-sm font-bold text-emerald-800 mt-0.5 font-mono">
+                          {curRatios.operatingMargin}%
+                        </div>
+                      </div>
+
+                      <div className="p-2.5 bg-slate-50 rounded-xl border border-slate-200">
+                        <span className="text-slate-500 block text-[9px]">股東權益報酬率 (ROE)</span>
+                        <div className="text-xs sm:text-sm font-bold text-amber-900 mt-0.5 font-mono">
+                          {curRatios.roe}% <span className="text-[9px] text-slate-600 font-normal font-sans">(EPS ${curRatios.eps})</span>
+                        </div>
+                      </div>
+                    </>
+                  )}
 
                 </div>
               </div>

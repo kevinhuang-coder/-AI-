@@ -17,106 +17,36 @@ import {
 } from 'lucide-react';
 
 export const AiInsightPanel: React.FC = () => {
-  const { aiReport, activeCompany, runAiDiagnostic, isLoadingAi, latestPeriod, activeCompanyPeriodsWithRatios } =
+  const { aiReport, activeCompany, runAiDiagnostic, isLoadingAi, latestPeriod, viewMode } =
     useFinancial();
 
-  const [question, setQuestion] = useState('');
-  const [isAsking, setIsAsking] = useState(false);
-  const [chatHistory, setChatHistory] = useState<Array<{ role: 'user' | 'assistant'; text: string }>>([
-    {
-      role: 'assistant',
-      text: `您好！我是您的 AI 財務戰略顧問（Financial Copilot）。我已深度剖析「${activeCompany.name}」的歷年財報、應收帳款與存貨週轉效率、杜邦拆解及獲利能力。您可以隨時點選上方快捷問題，或向我提出任何關於營運資本優化、成本定價策略、風險防範或未來預測之問題！`,
-    },
-  ]);
+  if (!aiReport || !latestPeriod) return null;
 
-  if (!aiReport) return null;
-
-  const handleAskQuestion = async (e?: React.FormEvent, directText?: string) => {
-    if (e) e.preventDefault();
-    const query = (directText || question).trim();
-    if (!query || isAsking) return;
-
-    setQuestion('');
-    setChatHistory((prev) => [...prev, { role: 'user', text: query }]);
-    setIsAsking(true);
-
-    try {
-      let answer = '';
-      try {
-        const res = await fetch('/api/financial/ai-chat', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            question: query,
-            companyName: activeCompany.name,
-            contextData: {
-              latestPeriod: latestPeriod?.period,
-              revenue: latestPeriod?.revenue,
-              ratios: latestPeriod?.ratios,
-              aiReportSummary: aiReport.executiveSummary,
-              strengths: aiReport.strengths,
-              risks: aiReport.weaknessesAndRisks,
-            },
-          }),
-        });
-
-        if (res.ok) {
-          const json = await res.json();
-          if (json.answer && typeof json.answer === 'string' && json.answer.trim().length > 10) {
-            answer = json.answer.trim();
-          }
-        }
-      } catch (apiErr) {
-        console.warn('Remote AI Chat API unavailable or offline, activating in-browser CFO inference engine:', apiErr);
-      }
-
-      // 若 API 未回傳或處於離線/Vercel SPA 狀態，調用高階專業財務推演引擎
-      if (!answer) {
-        answer = generateFinancialCopilotResponse(query, activeCompany.name, latestPeriod, aiReport);
-      }
-
-      setChatHistory((prev) => [
-        ...prev,
-        { role: 'assistant', text: answer },
-      ]);
-    } catch (err: any) {
-      const fallbackAnswer = generateFinancialCopilotResponse(query, activeCompany.name, latestPeriod, aiReport);
-      setChatHistory((prev) => [
-        ...prev,
-        { role: 'assistant', text: fallbackAnswer },
-      ]);
-    } finally {
-      setIsAsking(false);
-    }
-  };
-
-  const sampleQuestions = [
-    '目前的應收帳款週轉天數是否需要調整信用政策？',
-    '如何藉由縮短存貨週轉天數改善現金轉換循環 (CCC)？',
-    '分析杜邦三因子中 ROE 的主要驅動力與弱點？',
-    '預測次年度營收成長與獲利率面臨哪些主要風險？',
-  ];
+  const r = latestPeriod.ratios;
+  const isInvestor = viewMode === 'investor';
 
   return (
     <div className="space-y-5 sm:space-y-6">
       {/* 1. Main Executive AI Diagnostic Header Card */}
       <div className="rounded-2xl sm:rounded-3xl border border-slate-800 bg-slate-900/60 backdrop-blur-sm p-4.5 sm:p-6 shadow-sm relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-96 h-96 bg-blue-500/5 rounded-full blur-3xl pointer-events-none"></div>
+        <div className={`absolute top-0 right-0 w-96 h-96 ${isInvestor ? 'bg-emerald-500/5' : 'bg-blue-500/5'} rounded-full blur-3xl pointer-events-none`}></div>
 
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4 sm:mb-5">
           <div className="flex items-center space-x-3">
-            <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-blue-600 to-indigo-600 flex items-center justify-center text-white shadow-md shadow-blue-500/20 flex-shrink-0">
+            <div className={`w-10 h-10 rounded-2xl bg-gradient-to-tr ${isInvestor ? 'from-emerald-600 to-teal-600 shadow-emerald-500/20' : 'from-blue-600 to-indigo-600 shadow-blue-500/20'} flex items-center justify-center text-white shadow-md flex-shrink-0`}>
               <Sparkles className="w-5 h-5 text-amber-300" />
             </div>
             <div>
               <h3 className="text-base sm:text-lg font-bold text-white tracking-tight flex items-center gap-2 flex-wrap">
-                AI 財務健康深度診斷報告
-                <span className="text-[10px] sm:text-xs px-2 sm:px-2.5 py-0.5 rounded-full bg-blue-500/10 text-blue-300 border border-blue-500/20 font-mono">
-                  Gemini 3.7 Flash 驅動
+                {isInvestor ? 'AI 價值投資與基本面深度診斷報告' : 'AI 財務健康深度診斷報告'}
+                <span className={`text-[10px] sm:text-xs px-2 sm:px-2.5 py-0.5 rounded-full font-mono ${isInvestor ? 'bg-emerald-500/10 text-emerald-300 border border-emerald-500/20' : 'bg-blue-500/10 text-blue-300 border border-blue-500/20'}`}>
+                  {isInvestor ? '價值投資基本面引擎' : 'Gemini 3.7 Flash 驅動'}
                 </span>
               </h3>
               <p className="text-xs text-slate-400">
-                自動化多維度異常偵測、杜邦拆解、營運資金效率與決策指引
+                {isInvestor
+                  ? '經濟護城河評級、獲利含金量 (OCF/Net)、自由現金流造血力與破產防禦'
+                  : '自動化多維度異常偵測、杜邦拆解、營運資金效率與經營決策指引'}
               </p>
             </div>
           </div>
@@ -124,7 +54,7 @@ export const AiInsightPanel: React.FC = () => {
           <button
             onClick={runAiDiagnostic}
             disabled={isLoadingAi}
-            className="flex items-center space-x-1.5 px-3.5 py-2 rounded-xl sm:rounded-2xl bg-slate-800/80 hover:bg-slate-700 text-slate-200 border border-slate-700/60 text-xs font-semibold transition self-start sm:self-auto disabled:opacity-50 min-h-[38px]"
+            className="flex items-center space-x-1.5 px-3.5 py-2 rounded-xl sm:rounded-2xl bg-slate-800/80 hover:bg-slate-700 text-slate-200 border border-slate-700/60 text-xs font-semibold transition self-start sm:self-auto disabled:opacity-50 min-h-[38px] cursor-pointer"
           >
             <RotateCcw className={`w-3.5 h-3.5 ${isLoadingAi ? 'animate-spin text-amber-300' : 'text-blue-400'}`} />
             <span>{isLoadingAi ? '重新運算中...' : '重新分析'}</span>
@@ -133,48 +63,78 @@ export const AiInsightPanel: React.FC = () => {
 
         {/* Executive Summary Narrative */}
         <div className="p-3.5 sm:p-4 rounded-xl sm:rounded-2xl bg-slate-950/60 border border-slate-800 text-slate-200 text-xs sm:text-sm leading-relaxed mb-4 sm:mb-6">
-          <p className="font-sans">{aiReport.executiveSummary}</p>
+          <p className="font-sans">
+            {isInvestor
+              ? `【價值投資視角總評】${activeCompany.name} 在 ${latestPeriod.period} 展現出「${r.economicMoat === 'wide' ? '寬廣經濟護城河 (Wide Moat)' : r.economicMoat === 'narrow' ? '中度競爭壁壘' : '一般競爭結構'}」，營業毛利率 ${r.grossMargin}% 展現良好定價能力。獲利含金量達 ${r.ocfToNetIncome}%（真實現金流落袋扎實），自由現金流為 NT$ ${(r.freeCashFlow / 1000).toLocaleString(undefined, { maximumFractionDigits: 1 })} 百萬元，Altman Z 破產防禦分數錄得 ${r.altmanZScore} 分（處於 ${r.altmanZZone === 'safe' ? '安全堡壘區' : '穩定區'}），整體具備高度基本面防禦韌性。`
+              : aiReport.executiveSummary}
+          </p>
         </div>
 
         {/* Strengths & Weaknesses Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5 sm:gap-4">
           
-          {/* Strengths */}
+          {/* Strengths / Bull Points */}
           <div className="p-4 sm:p-5 rounded-xl sm:rounded-2xl bg-emerald-950/20 border border-emerald-900/30">
             <div className="flex items-center space-x-2 text-emerald-400 text-xs font-bold uppercase tracking-wider mb-2.5 sm:mb-3">
               <CheckCircle2 className="w-4 h-4 flex-shrink-0" />
-              <span>核心財務優勢與經營亮點</span>
+              <span>{isInvestor ? '🟢 多方看好理由 (Bull Case Thesis)' : '核心財務優勢與經營亮點'}</span>
             </div>
             <ul className="space-y-2 text-xs text-slate-300">
-              {(aiReport.strengths && aiReport.strengths.length > 0) ? (
+              {isInvestor ? (
+                <>
+                  <li className="flex items-start space-x-2">
+                    <span className="text-emerald-400 mt-0.5">•</span>
+                    <span><strong>卓越資本回報力：</strong>ROE 達 {r.roe}%，每股盈餘 EPS 達 NT$ {r.eps}，展現長期複利滾動潛力。</span>
+                  </li>
+                  <li className="flex items-start space-x-2">
+                    <span className="text-emerald-400 mt-0.5">•</span>
+                    <span><strong>真金白銀獲利：</strong>獲利含金量 {r.ocfToNetIncome}%（&gt;100%），營業現金流遠高於帳面淨利，盈餘品質極佳。</span>
+                  </li>
+                  <li className="flex items-start space-x-2">
+                    <span className="text-emerald-400 mt-0.5">•</span>
+                    <span><strong>安全堡壘防禦：</strong>Altman Z-Score {r.altmanZScore} 分，破產風險極低，具備穿越景氣週期的抗風險底氣。</span>
+                  </li>
+                </>
+              ) : (
                 aiReport.strengths.map((st, i) => (
                   <li key={i} className="flex items-start space-x-2">
                     <span className="text-emerald-400 mt-0.5">•</span>
                     <span>{st}</span>
                   </li>
                 ))
-              ) : (
-                <li className="text-slate-400 italic">綜合財務指標評級穩健，各維度均衡發展。</li>
               )}
             </ul>
           </div>
 
-          {/* Risks & Weaknesses */}
+          {/* Risks / Bear Points */}
           <div className="p-4 sm:p-5 rounded-xl sm:rounded-2xl bg-amber-950/20 border border-amber-900/30">
             <div className="flex items-center space-x-2 text-amber-400 text-xs font-bold uppercase tracking-wider mb-2.5 sm:mb-3">
               <AlertTriangle className="w-4 h-4 flex-shrink-0" />
-              <span>潛在風險警訊與改善空間</span>
+              <span>{isInvestor ? '🔴 空方隱憂與風險提示 (Bear Case Risks)' : '潛在風險警訊與改善空間'}</span>
             </div>
             <ul className="space-y-2 text-xs text-slate-300">
-              {(aiReport.weaknessesAndRisks && aiReport.weaknessesAndRisks.length > 0) ? (
+              {isInvestor ? (
+                <>
+                  <li className="flex items-start space-x-2">
+                    <span className="text-amber-400 mt-0.5">•</span>
+                    <span><strong>資本支出折舊壓力：</strong>本期資本支出 NT$ ${(latestPeriod.capitalExpenditures / 1000).toLocaleString()} 百萬元，需追蹤未來新產能投產後的毛利支撐力。</span>
+                  </li>
+                  <li className="flex items-start space-x-2">
+                    <span className="text-amber-400 mt-0.5">•</span>
+                    <span><strong>同業競爭與毛利防禦：</strong>面對全球供應鏈景氣波動，需嚴密防範毛利率是否出現逐季下滑跡象。</span>
+                  </li>
+                  <li className="flex items-start space-x-2">
+                    <span className="text-amber-400 mt-0.5">•</span>
+                    <span><strong>估值防禦與市場預期：</strong>若市場給予過高評價，需確保營收成長率能如期兌現以支撐本益比。</span>
+                  </li>
+                </>
+              ) : (
                 aiReport.weaknessesAndRisks.map((wk, i) => (
                   <li key={i} className="flex items-start space-x-2">
                     <span className="text-amber-400 mt-0.5">•</span>
                     <span>{wk}</span>
                   </li>
                 ))
-              ) : (
-                <li className="text-slate-400 italic">各項指標皆在基準水準之上，建議持續關注總體經貿景氣與供應鏈交期變數。</li>
               )}
             </ul>
           </div>
@@ -184,31 +144,29 @@ export const AiInsightPanel: React.FC = () => {
         {/* Detailed Assessment Subsections */}
         <div className="mt-4 sm:mt-5 grid grid-cols-1 sm:grid-cols-2 gap-3.5 sm:gap-4 pt-4 sm:pt-5 border-t border-slate-800">
           
-          {/* Turnover Assessment */}
+          {/* Left Block */}
           <div className="bg-slate-950/50 p-3.5 sm:p-4 rounded-xl sm:rounded-2xl border border-slate-800">
             <span className="text-xs font-semibold text-blue-300 flex items-center gap-1.5 mb-2">
               <RotateCcw className="w-3.5 h-3.5 flex-shrink-0" />
-              應收帳款與存貨週轉評估
+              {isInvestor ? '經濟護城河與定價壁壘評級' : '應收帳款與存貨週轉評估'}
             </span>
-            <p className="text-xs text-slate-300 leading-relaxed mb-2">
-              {aiReport.turnoverAnalysis.arAssessment}
-            </p>
             <p className="text-xs text-slate-300 leading-relaxed">
-              {aiReport.turnoverAnalysis.inventoryAssessment}
+              {isInvestor
+                ? `毛利率達 ${r.grossMargin}%，代表企業對下游客戶具備堅實的定價自主權，技術或品牌護城河深度評定為「${r.economicMoat === 'wide' ? '寬廣護城河' : '中度護城河'}」，具備長期抗通膨能力。`
+                : aiReport.turnoverAnalysis.arAssessment}
             </p>
           </div>
 
-          {/* Profitability Assessment */}
+          {/* Right Block */}
           <div className="bg-slate-950/50 p-3.5 sm:p-4 rounded-xl sm:rounded-2xl border border-slate-800">
             <span className="text-xs font-semibold text-emerald-300 flex items-center gap-1.5 mb-2">
               <TrendingUp className="w-3.5 h-3.5 flex-shrink-0" />
-              獲利能力與杜邦驅動拆解
+              {isInvestor ? '獲利含金量與自由現金流造血' : '獲利能力與杜邦驅動拆解'}
             </span>
-            <p className="text-xs text-slate-300 leading-relaxed mb-2">
-              {aiReport.profitabilityAnalysis.marginAssessment}
-            </p>
             <p className="text-xs text-slate-300 leading-relaxed">
-              {aiReport.profitabilityAnalysis.dupontDrivers}
+              {isInvestor
+                ? `營業現金流對淨利比為 ${r.ocfToNetIncome}%，產生自由現金流 NT$ ${(r.freeCashFlow / 1000).toLocaleString(undefined, { maximumFractionDigits: 1 })} 百萬元，為未來股息發放、再投資研發提供了堅實無虞的現金後盾。`
+                : aiReport.profitabilityAnalysis.dupontDrivers}
             </p>
           </div>
 
@@ -218,31 +176,83 @@ export const AiInsightPanel: React.FC = () => {
         <div className="mt-4 sm:mt-5 pt-4 sm:pt-5 border-t border-slate-800">
           <div className="flex items-center space-x-2 text-xs font-bold text-indigo-300 uppercase tracking-wider mb-3">
             <Target className="w-4 h-4 flex-shrink-0" />
-            <span>高階管理階層決策行動方案建議</span>
+            <span>{isInvestor ? '價值投資人長期策略指引 (Investment Guidance)' : '高階管理階層決策行動方案建議'}</span>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-            {aiReport.strategicRecommendations.map((rec, i) => (
-              <div key={i} className="p-3.5 sm:p-4 rounded-xl sm:rounded-2xl bg-slate-950/60 border border-slate-800 flex flex-col justify-between">
-                <div>
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="text-xs font-semibold text-slate-200">{rec.category}</span>
-                    <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
-                      rec.priority === '高' ? 'bg-rose-950/80 text-rose-300 border border-rose-800/60' : 'bg-blue-950/80 text-blue-300 border border-blue-800/60'
-                    }`}>
-                      優先度: {rec.priority}
-                    </span>
+            {isInvestor ? (
+              <>
+                <div className="p-3.5 sm:p-4 rounded-xl sm:rounded-2xl bg-slate-950/60 border border-slate-800 flex flex-col justify-between">
+                  <div>
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="text-xs font-semibold text-slate-200">長線複利潛力</span>
+                      <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-950/80 text-emerald-300 border border-emerald-800/60">評級: 優質</span>
+                    </div>
+                    <p className="text-xs text-slate-300 font-medium leading-relaxed">
+                      具備長期高 ROE ({r.roe}%) 與高獲利含金量，適合價值型投資者逢回檔分批建立長期核心持股。
+                    </p>
                   </div>
-                  <p className="text-xs text-slate-300 font-medium leading-relaxed">
-                    {rec.action}
-                  </p>
+                  <div className="mt-3 pt-2.5 border-t border-slate-800 text-[11px] text-emerald-300">
+                    <span className="font-semibold text-slate-400">關鍵關注: </span>
+                    追蹤每季毛利率與 EPS 成長性
+                  </div>
                 </div>
-                <div className="mt-3 pt-2.5 border-t border-slate-800 text-[11px] text-indigo-300">
-                  <span className="font-semibold text-slate-400">預期成效: </span>
-                  {rec.expectedImpact}
+
+                <div className="p-3.5 sm:p-4 rounded-xl sm:rounded-2xl bg-slate-950/60 border border-slate-800 flex flex-col justify-between">
+                  <div>
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="text-xs font-semibold text-slate-200">股息與自由現金保護</span>
+                      <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-blue-950/80 text-blue-300 border border-blue-800/60">評級: 充沛</span>
+                    </div>
+                    <p className="text-xs text-slate-300 font-medium leading-relaxed">
+                      自由現金流充沛，具備持續穩定配發高額現金股息之強大造血底氣，下行防禦性高。
+                    </p>
+                  </div>
+                  <div className="mt-3 pt-2.5 border-t border-slate-800 text-[11px] text-blue-300">
+                    <span className="font-semibold text-slate-400">關鍵關注: </span>
+                    檢驗資本支出對 FCF 之佔用比率
+                  </div>
                 </div>
-              </div>
-            ))}
+
+                <div className="p-3.5 sm:p-4 rounded-xl sm:rounded-2xl bg-slate-950/60 border border-slate-800 flex flex-col justify-between">
+                  <div>
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="text-xs font-semibold text-slate-200">破產防禦與安全邊際</span>
+                      <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-purple-950/80 text-purple-300 border border-purple-800/60">評級: 堡壘級</span>
+                    </div>
+                    <p className="text-xs text-slate-300 font-medium leading-relaxed">
+                      Altman Z-Score 達 {r.altmanZScore} 分，負債結構穩固，即使遭遇大環境逆風亦無財務危機隱憂。
+                    </p>
+                  </div>
+                  <div className="mt-3 pt-2.5 border-t border-slate-800 text-[11px] text-purple-300">
+                    <span className="font-semibold text-slate-400">關鍵關注: </span>
+                    確保流動比率維持在 200% 以上
+                  </div>
+                </div>
+              </>
+            ) : (
+              aiReport.strategicRecommendations.map((rec, i) => (
+                <div key={i} className="p-3.5 sm:p-4 rounded-xl sm:rounded-2xl bg-slate-950/60 border border-slate-800 flex flex-col justify-between">
+                  <div>
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="text-xs font-semibold text-slate-200">{rec.category}</span>
+                      <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
+                        rec.priority === '高' ? 'bg-rose-950/80 text-rose-300 border border-rose-800/60' : 'bg-blue-950/80 text-blue-300 border border-blue-800/60'
+                      }`}>
+                        優先度: {rec.priority}
+                      </span>
+                    </div>
+                    <p className="text-xs text-slate-300 font-medium leading-relaxed">
+                      {rec.action}
+                    </p>
+                  </div>
+                  <div className="mt-3 pt-2.5 border-t border-slate-800 text-[11px] text-indigo-300">
+                    <span className="font-semibold text-slate-400">預期成效: </span>
+                    {rec.expectedImpact}
+                  </div>
+                </div>
+              ))
+            )}
           </div>
         </div>
 
@@ -250,9 +260,13 @@ export const AiInsightPanel: React.FC = () => {
         <div className="mt-4 pt-3.5 border-t border-slate-800/80 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-slate-400">
           <div className="flex items-center space-x-2">
             <Bot className="w-4 h-4 text-indigo-400" />
-            <span>需要更多情境推演或細部諮詢？點擊右下角懸浮按鈕 <strong>「AI 財務顧問」</strong> 隨時開展 CFO 對話！</span>
+            <span>
+              {isInvestor
+                ? '想了解更多估值與長期存股潛力？點擊右下角「AI 財務顧問」進行投資人問答 ➔'
+                : '需要更多情境推演或細部諮詢？點擊右下角「AI 財務顧問」隨時開展 CFO 對話 ➔'}
+            </span>
           </div>
-          <span className="text-[10px] text-slate-500 font-mono">24/7 CFO Copilot Ready</span>
+          <span className="text-[10px] text-slate-500 font-mono">{isInvestor ? 'Investor Copilot' : 'CFO Copilot'}</span>
         </div>
 
       </div>

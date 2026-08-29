@@ -7,10 +7,14 @@ import {
   PackageCheck,
   Percent,
   Award,
+  ShieldCheck,
+  Gem,
+  Waves,
+  Castle,
 } from 'lucide-react';
 
 export const KpiSummaryGrid: React.FC = () => {
-  const { activeCompanyPeriodsWithRatios, latestPeriod } = useFinancial();
+  const { activeCompanyPeriodsWithRatios, latestPeriod, viewMode } = useFinancial();
 
   if (!latestPeriod || activeCompanyPeriodsWithRatios.length === 0) {
     return (
@@ -38,6 +42,215 @@ export const KpiSummaryGrid: React.FC = () => {
     return { diff, isUp, text };
   };
 
+  // 1. 價值投資者專屬視角 (Investor Mode KPI Cards)
+  if (viewMode === 'investor') {
+    const ocfDelta = calcDelta(curRatios.ocfToNetIncome, prevRatios?.ocfToNetIncome, true);
+    const roeDelta = calcDelta(curRatios.roe, prevRatios?.roe, true);
+    const zDelta = calcDelta(curRatios.altmanZScore, prevRatios?.altmanZScore);
+
+    return (
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+        
+        {/* 1. 經濟護城河評級 (Economic Moat) */}
+        <div className="bg-slate-900/50 border border-slate-800 hover:border-emerald-500/50 rounded-2xl sm:rounded-3xl p-4.5 sm:p-6 transition-all shadow-sm flex flex-col justify-between group backdrop-blur-sm">
+          <div>
+            <div className="flex items-center justify-between mb-3 gap-2">
+              <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider flex items-center gap-1.5 truncate">
+                <Castle className="w-4 h-4 text-amber-400 flex-shrink-0" />
+                經濟護城河評級
+              </span>
+              <span className={`text-[10px] sm:text-[11px] font-bold px-2 sm:px-2.5 py-0.5 rounded-full flex-shrink-0 ${
+                curRatios.economicMoat === 'wide' ? 'bg-amber-500/10 text-amber-300 border border-amber-500/30' :
+                curRatios.economicMoat === 'narrow' ? 'bg-blue-500/10 text-blue-300 border border-blue-500/30' :
+                'bg-slate-800 text-slate-400 border border-slate-700'
+              }`}>
+                {curRatios.economicMoat === 'wide' ? '👑 寬護城河' : curRatios.economicMoat === 'narrow' ? '🛡️ 窄護城河' : '無顯著壁壘'}
+              </span>
+            </div>
+
+            <div className="flex items-baseline justify-between mt-1 sm:mt-2 gap-2">
+              <div>
+                <div className="text-xl sm:text-2xl font-bold tracking-tight text-white">
+                  {curRatios.economicMoat === 'wide' ? '強大定價權' : curRatios.economicMoat === 'narrow' ? '中度壁壘' : '競爭激烈'}
+                </div>
+                <div className="text-[11px] sm:text-xs text-slate-400 mt-1">
+                  毛利 <span className="font-semibold text-emerald-400 font-mono">{curRatios.grossMargin}%</span> • ROE <span className="font-semibold text-amber-400 font-mono">{curRatios.roe}%</span>
+                </div>
+              </div>
+              {roeDelta && (
+                <div className={`flex items-center text-xs font-semibold px-2 py-1 rounded-lg flex-shrink-0 ${
+                  roeDelta.isUp ? 'text-emerald-400 bg-emerald-500/10' : 'text-rose-400 bg-rose-500/10'
+                }`}>
+                  {roeDelta.isUp ? <TrendingUp className="w-3.5 h-3.5 mr-1" /> : <TrendingDown className="w-3.5 h-3.5 mr-1" />}
+                  {roeDelta.text}
+                </div>
+              )}
+            </div>
+          </div>
+
+          <div className="mt-3.5 sm:mt-4 pt-3 border-t border-slate-800/80">
+            <div className="w-full h-1.5 bg-slate-800 rounded-full overflow-hidden mb-1.5">
+              <div
+                className="h-full bg-gradient-to-r from-amber-500 to-emerald-400 rounded-full transition-all duration-500"
+                style={{ width: `${curRatios.economicMoat === 'wide' ? 95 : curRatios.economicMoat === 'narrow' ? 65 : 35}%` }}
+              ></div>
+            </div>
+            <div className="text-[10px] sm:text-[11px] text-slate-500 flex justify-between">
+              <span>長期資本回報力</span>
+              <span>{curRatios.economicMoat === 'wide' ? '具定價溢價' : '一般競爭'}</span>
+            </div>
+          </div>
+        </div>
+
+        {/* 2. 獲利含金量 (Earnings Quality) */}
+        <div className="bg-slate-900/50 border border-slate-800 hover:border-blue-500/50 rounded-2xl sm:rounded-3xl p-4.5 sm:p-6 transition-all shadow-sm flex flex-col justify-between group backdrop-blur-sm">
+          <div>
+            <div className="flex items-center justify-between mb-3 gap-2">
+              <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider flex items-center gap-1.5 truncate">
+                <Gem className="w-4 h-4 text-cyan-400 flex-shrink-0" />
+                獲利含金量 (OCF/Net)
+              </span>
+              <span className={`text-[10px] sm:text-[11px] font-bold px-2 sm:px-2.5 py-0.5 rounded-full flex-shrink-0 ${
+                curRatios.ocfToNetIncome >= 100 ? 'bg-emerald-500/10 text-emerald-300 border border-emerald-500/30' :
+                curRatios.ocfToNetIncome >= 70 ? 'bg-blue-500/10 text-blue-300 border border-blue-500/30' :
+                'bg-amber-500/10 text-amber-300 border border-amber-500/30'
+              }`}>
+                {curRatios.ocfToNetIncome >= 100 ? '💎 真金白銀' : curRatios.ocfToNetIncome >= 70 ? '正常落袋' : '⚠️ 利潤滯留'}
+              </span>
+            </div>
+
+            <div className="flex items-baseline justify-between mt-1 sm:mt-2 gap-2">
+              <div>
+                <div className="text-2xl sm:text-3xl font-bold tracking-tight text-white font-mono">
+                  {curRatios.ocfToNetIncome} <span className="text-xs sm:text-sm font-normal text-slate-400 font-sans">%</span>
+                </div>
+                <div className="text-[11px] sm:text-xs text-slate-400 mt-1">
+                  營業現金流 / 稅後淨利（基準 &gt; 100%）
+                </div>
+              </div>
+              {ocfDelta && (
+                <div className={`flex items-center text-xs font-semibold px-2 py-1 rounded-lg flex-shrink-0 ${
+                  ocfDelta.isUp ? 'text-emerald-400 bg-emerald-500/10' : 'text-rose-400 bg-rose-500/10'
+                }`}>
+                  {ocfDelta.isUp ? <TrendingUp className="w-3.5 h-3.5 mr-1" /> : <TrendingDown className="w-3.5 h-3.5 mr-1" />}
+                  {ocfDelta.text}
+                </div>
+              )}
+            </div>
+          </div>
+
+          <div className="mt-3.5 sm:mt-4 pt-3 border-t border-slate-800/80">
+            <div className="w-full h-1.5 bg-slate-800 rounded-full overflow-hidden mb-1.5">
+              <div
+                className="h-full bg-cyan-400 rounded-full transition-all duration-500"
+                style={{ width: `${Math.min(100, Math.max(10, curRatios.ocfToNetIncome))}%` }}
+              ></div>
+            </div>
+            <div className="text-[10px] sm:text-[11px] text-slate-500 flex justify-between">
+              <span>現金流入 ${(latestPeriod.operatingCashFlow / 1000).toLocaleString(undefined, { maximumFractionDigits: 1 })}M</span>
+              <span>真實現金轉化</span>
+            </div>
+          </div>
+        </div>
+
+        {/* 3. 自由現金流 (Free Cash Flow) */}
+        <div className="bg-slate-900/50 border border-slate-800 hover:border-cyan-500/50 rounded-2xl sm:rounded-3xl p-4.5 sm:p-6 transition-all shadow-sm flex flex-col justify-between group backdrop-blur-sm">
+          <div>
+            <div className="flex items-center justify-between mb-3 gap-2">
+              <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider flex items-center gap-1.5 truncate">
+                <Waves className="w-4 h-4 text-indigo-400 flex-shrink-0" />
+                自由現金流 (FCF)
+              </span>
+              <span className={`text-[10px] sm:text-[11px] font-bold px-2 sm:px-2.5 py-0.5 rounded-full flex-shrink-0 ${
+                curRatios.freeCashFlow > 0 ? 'bg-emerald-500/10 text-emerald-300 border border-emerald-500/30' :
+                'bg-rose-500/10 text-rose-300 border border-rose-500/30'
+              }`}>
+                {curRatios.freeCashFlow > 0 ? '充沛造血' : '現金吃緊'}
+              </span>
+            </div>
+
+            <div className="flex items-baseline justify-between mt-1 sm:mt-2 gap-2">
+              <div>
+                <div className="text-2xl sm:text-3xl font-bold tracking-tight text-white font-mono">
+                  ${(curRatios.freeCashFlow / 1000).toLocaleString(undefined, { maximumFractionDigits: 1 })} <span className="text-xs sm:text-sm font-normal text-slate-400 font-sans">百萬</span>
+                </div>
+                <div className="text-[11px] sm:text-xs text-slate-400 mt-1">
+                  營運現金扣除資本支出 (CAPEX)
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="mt-3.5 sm:mt-4 pt-3 border-t border-slate-800/80">
+            <div className="w-full h-1.5 bg-slate-800 rounded-full overflow-hidden mb-1.5">
+              <div
+                className="h-full bg-indigo-500 rounded-full transition-all duration-500"
+                style={{ width: `${Math.min(100, Math.max(15, (curRatios.freeCashFlow / (latestPeriod.revenue || 1)) * 100 * 3))}%` }}
+              ></div>
+            </div>
+            <div className="text-[10px] sm:text-[11px] text-slate-500 flex justify-between">
+              <span>資本支出 ${(latestPeriod.capitalExpenditures / 1000).toLocaleString(undefined, { maximumFractionDigits: 1 })}M</span>
+              <span>股息/研發底氣</span>
+            </div>
+          </div>
+        </div>
+
+        {/* 4. Altman Z-Score 破產防禦分 */}
+        <div className="bg-slate-900/50 border border-slate-800 hover:border-purple-500/50 rounded-2xl sm:rounded-3xl p-4.5 sm:p-6 transition-all shadow-sm flex flex-col justify-between group backdrop-blur-sm">
+          <div>
+            <div className="flex items-center justify-between mb-3 gap-2">
+              <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider flex items-center gap-1.5 truncate">
+                <ShieldCheck className="w-4 h-4 text-purple-400 flex-shrink-0" />
+                Altman Z 破產防禦分
+              </span>
+              <span className={`text-[10px] sm:text-[11px] font-bold px-2 sm:px-2.5 py-0.5 rounded-full flex-shrink-0 ${
+                curRatios.altmanZZone === 'safe' ? 'bg-emerald-500/10 text-emerald-300 border border-emerald-500/30' :
+                curRatios.altmanZZone === 'grey' ? 'bg-blue-500/10 text-blue-300 border border-blue-500/30' :
+                'bg-rose-500/10 text-rose-300 border border-rose-500/30'
+              }`}>
+                {curRatios.altmanZZone === 'safe' ? '🏰 安全堡壘' : curRatios.altmanZZone === 'grey' ? '⚖️ 灰色區' : '🚨 困境警戒'}
+              </span>
+            </div>
+
+            <div className="flex items-baseline justify-between mt-1 sm:mt-2 gap-2">
+              <div>
+                <div className="text-2xl sm:text-3xl font-bold tracking-tight text-white font-mono">
+                  {curRatios.altmanZScore} <span className="text-xs sm:text-sm font-normal text-slate-400 font-sans">分</span>
+                </div>
+                <div className="text-[11px] sm:text-xs text-slate-400 mt-1">
+                  安全線 &gt; 2.99 ｜ 破產風險極低
+                </div>
+              </div>
+              {zDelta && (
+                <div className={`flex items-center text-xs font-semibold px-2 py-1 rounded-lg flex-shrink-0 ${
+                  zDelta.isUp ? 'text-emerald-400 bg-emerald-500/10' : 'text-rose-400 bg-rose-500/10'
+                }`}>
+                  {zDelta.isUp ? <TrendingUp className="w-3.5 h-3.5 mr-1" /> : <TrendingDown className="w-3.5 h-3.5 mr-1" />}
+                  {zDelta.text}
+                </div>
+              )}
+            </div>
+          </div>
+
+          <div className="mt-3.5 sm:mt-4 pt-3 border-t border-slate-800/80">
+            <div className="w-full h-1.5 bg-slate-800 rounded-full overflow-hidden mb-1.5">
+              <div
+                className="h-full bg-purple-500 rounded-full transition-all duration-500"
+                style={{ width: `${Math.min(100, (curRatios.altmanZScore / 4) * 100)}%` }}
+              ></div>
+            </div>
+            <div className="text-[10px] sm:text-[11px] text-slate-500 flex justify-between">
+              <span>流動比率 {curRatios.currentRatio}%</span>
+              <span>負債比 {curRatios.debtRatio}%</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    );
+  }
+
+  // 2. 企業經營者視角 (Manager Mode KPI Cards)
   const arDelta = calcDelta(curRatios.arTurnover, prevRatios?.arTurnover);
   const invDelta = calcDelta(curRatios.inventoryTurnover, prevRatios?.inventoryTurnover);
   const grossDelta = calcDelta(curRatios.grossMargin, prevRatios?.grossMargin, true);

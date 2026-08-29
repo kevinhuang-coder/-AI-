@@ -68,7 +68,16 @@ export interface CalculatedRatios {
   // 現金流量與品質指標 (Cash Flow Quality)
   ocfToNetIncome: number;       // 營業現金流對淨利比 (%)
   freeCashFlow: number;         // 自由現金流 (千元)
+
+  // 價值投資者專屬指標 (Value Investor Metrics)
+  altmanZScore: number;         // Altman Z-Score 破產防禦分數
+  altmanZZone: 'safe' | 'grey' | 'distress'; // 安全區 / 灰色區 / 困境區
+  economicMoat: 'wide' | 'narrow' | 'none';  // 經濟護城河 (寬 / 窄 / 無)
+  earningsQualityScore: number; // 獲利含金量評分 (0 - 100)
 }
+
+export type ViewMode = 'manager' | 'investor';
+
 
 export interface PeriodWithRatios extends FinancialPeriod {
   ratios: CalculatedRatios;

@@ -7,6 +7,7 @@ import {
   AiDiagnosticReport,
   FinancialChangeRecord,
   ChangeActionType,
+  ViewMode,
 } from '../types/financial';
 import { SAMPLE_COMPANIES, buildConsolidatedCompany } from '../data/sampleCompanies';
 import {
@@ -24,6 +25,8 @@ interface FinancialContextType {
   compareCompanyIds: string[];
   selectedCategory: MetricCategory;
   selectedMetrics: string[];
+  viewMode: ViewMode;
+  setViewMode: (mode: ViewMode) => void;
   aiReport: AiDiagnosticReport | null;
   isLoadingAi: boolean;
   aiError: string | null;
@@ -79,6 +82,7 @@ export const FinancialProvider: React.FC<{ children: React.ReactNode }> = ({ chi
     'company-ecommerce-retail',
   ]);
   const [selectedCategory, setSelectedCategory] = useState<MetricCategory>('all');
+  const [viewMode, setViewMode] = useState<ViewMode>('manager');
   const [selectedMetrics, setSelectedMetrics] = useState<string[]>([
     'arTurnover',
     'dso',
@@ -361,6 +365,8 @@ export const FinancialProvider: React.FC<{ children: React.ReactNode }> = ({ chi
         compareCompanyIds,
         selectedCategory,
         selectedMetrics,
+        viewMode,
+        setViewMode,
         aiReport,
         isLoadingAi,
         aiError,

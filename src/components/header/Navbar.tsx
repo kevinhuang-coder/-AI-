@@ -19,6 +19,8 @@ export const Navbar: React.FC = () => {
     activeCompanyId,
     activeCompany,
     setActiveCompanyId,
+    viewMode,
+    setViewMode,
     runAiDiagnostic,
     isLoadingAi,
     setIsPdfModalOpen,
@@ -53,8 +55,8 @@ export const Navbar: React.FC = () => {
             </div>
           </div>
 
-          {/* Center: Account Switcher */}
-          <div className="flex items-center space-x-3">
+          {/* Center: Account Switcher & Dual Perspective Toggle */}
+          <div className="flex items-center space-x-2 sm:space-x-3">
             {/* Account Selector Dropdown */}
             <div className="relative">
               <button
@@ -67,7 +69,7 @@ export const Navbar: React.FC = () => {
                 ) : (
                   <Building2 className="w-4 h-4 text-indigo-400 flex-shrink-0" />
                 )}
-                <div className="max-w-[100px] xs:max-w-[130px] sm:max-w-[180px] truncate">
+                <div className="max-w-[90px] xs:max-w-[120px] sm:max-w-[160px] truncate">
                   <span className="text-slate-200 font-semibold block truncate text-xs sm:text-sm">{activeCompany.name}</span>
                   <span className="text-[10px] text-slate-400 block font-mono leading-none">{activeCompany.code}</span>
                 </div>
@@ -98,29 +100,25 @@ export const Navbar: React.FC = () => {
                             }}
                             className={`w-full text-left px-3.5 py-2.5 flex items-start space-x-3 transition ${
                               isSelected
-                                ? 'bg-indigo-600/20 text-indigo-300 border-l-4 border-indigo-500'
-                                : 'hover:bg-slate-800/60 text-slate-300'
+                                ? 'bg-indigo-600/20 text-white'
+                                : 'text-slate-300 hover:bg-slate-800/60'
                             }`}
                           >
-                            <div className="mt-0.5">
-                              {comp.isConsolidatedGroup ? (
-                                <Layers className={`w-4 h-4 ${isSelected ? 'text-cyan-300' : 'text-cyan-400'}`} />
-                              ) : (
-                                <Building2 className={`w-4 h-4 ${isSelected ? 'text-indigo-300' : 'text-slate-400'}`} />
-                              )}
-                            </div>
-                            <div className="flex-1 min-w-0">
+                            <Building2 className={`w-4 h-4 mt-0.5 flex-shrink-0 ${isSelected ? 'text-indigo-400' : 'text-slate-500'}`} />
+                            <div className="min-w-0 flex-1">
                               <div className="flex items-center justify-between">
-                                <span className="text-xs font-semibold truncate">{comp.name}</span>
+                                <span className="font-semibold text-xs sm:text-sm truncate">{comp.name}</span>
                                 {comp.isConsolidatedGroup && (
-                                  <span className="text-[10px] bg-cyan-950 text-cyan-300 px-1.5 py-0.5 rounded border border-cyan-800 ml-1">
-                                    綜合合併
+                                  <span className="text-[9px] bg-cyan-950 text-cyan-400 border border-cyan-800/60 px-1.5 py-0.2 rounded font-mono ml-2">
+                                    集團合併
                                   </span>
                                 )}
                               </div>
-                              <p className="text-[11px] text-slate-400 truncate mt-0.5">
-                                {comp.code} • {comp.industry}
-                              </p>
+                              <div className="text-[11px] text-slate-400 flex items-center space-x-2 mt-0.5 font-mono">
+                                <span>{comp.code}</span>
+                                <span>•</span>
+                                <span>{comp.industry}</span>
+                              </div>
                             </div>
                           </button>
                         );
@@ -154,6 +152,36 @@ export const Navbar: React.FC = () => {
                   </div>
                 </>
               )}
+            </div>
+
+            {/* Dual Perspective Mode Switcher */}
+            <div className="flex items-center bg-slate-950 p-1 rounded-xl border border-slate-800 text-xs font-medium">
+              <button
+                onClick={() => setViewMode('manager')}
+                className={`flex items-center space-x-1 sm:space-x-1.5 px-2 sm:px-3 py-1.5 rounded-lg transition cursor-pointer min-h-[30px] ${
+                  viewMode === 'manager'
+                    ? 'bg-blue-600 text-white shadow-sm shadow-blue-600/30 font-bold'
+                    : 'text-slate-400 hover:text-slate-200'
+                }`}
+                title="切換為企業經營與營運資金管理視角"
+              >
+                <Building2 className="w-3.5 h-3.5 flex-shrink-0" />
+                <span className="hidden xs:inline">企業經營</span>
+                <span className="xs:hidden">經營</span>
+              </button>
+              <button
+                onClick={() => setViewMode('investor')}
+                className={`flex items-center space-x-1 sm:space-x-1.5 px-2 sm:px-3 py-1.5 rounded-lg transition cursor-pointer min-h-[30px] ${
+                  viewMode === 'investor'
+                    ? 'bg-gradient-to-r from-emerald-600 to-teal-600 text-white shadow-sm shadow-emerald-600/30 font-bold'
+                    : 'text-slate-400 hover:text-slate-200'
+                }`}
+                title="切換為價值投資、護城河與真實獲利品質視角"
+              >
+                <TrendingUp className="w-3.5 h-3.5 text-amber-300 flex-shrink-0" />
+                <span className="hidden xs:inline">價值投資</span>
+                <span className="xs:hidden">投資</span>
+              </button>
             </div>
           </div>
 

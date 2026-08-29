@@ -261,6 +261,34 @@ export function calculatePeriodRatios(period: FinancialPeriod, previousPeriod?: 
   const ocfToNetIncome = netIncome !== 0 ? Number(((period.operatingCashFlow / netIncome) * 100).toFixed(1)) : 0;
   const freeCashFlow = period.operatingCashFlow - (period.capitalExpenditures || 0);
 
+  // 6. 價值投資者指標 (Value Investor Metrics)
+  // Altman Z-Score: 1.2*X1 + 1.4*X2 + 3.3*X3 + 0.6*X4 + 0.999*X5
+  const workingCapital = period.currentAssets - period.currentLiabilities;
+  const x1 = workingCapital / totalAssets;
+  const x2 = netIncome / totalAssets;
+  const x3 = opIncome / totalAssets;
+  const x4 = equity / (period.totalLiabilities || 1);
+  const x5 = rev / totalAssets;
+  const rawZ = 1.2 * x1 + 1.4 * x2 + 3.3 * x3 + 0.6 * x4 + 0.999 * x5;
+  const altmanZScore = Number(rawZ.toFixed(2));
+  const altmanZZone: 'safe' | 'grey' | 'distress' = altmanZScore >= 2.99 ? 'safe' : altmanZScore >= 1.81 ? 'grey' : 'distress';
+
+  // 經濟護城河 (Economic Moat)
+  let economicMoat: 'wide' | 'narrow' | 'none' = 'none';
+  if (grossMargin >= 38 && roe >= 16 && freeCashFlow > 0) {
+    economicMoat = 'wide';
+  } else if (grossMargin >= 22 && roe >= 10) {
+    economicMoat = 'narrow';
+  }
+
+  // 獲利含金量評分 (0 - 100)
+  let earningsQualityScore = 75;
+  if (ocfToNetIncome >= 110) earningsQualityScore = 95;
+  else if (ocfToNetIncome >= 90) earningsQualityScore = 88;
+  else if (ocfToNetIncome >= 70) earningsQualityScore = 75;
+  else if (ocfToNetIncome >= 50) earningsQualityScore = 60;
+  else earningsQualityScore = 40;
+
   return {
     arTurnover,
     dso,
@@ -288,6 +316,10 @@ export function calculatePeriodRatios(period: FinancialPeriod, previousPeriod?: 
     interestCoverageRatio,
     ocfToNetIncome,
     freeCashFlow,
+    altmanZScore,
+    altmanZZone,
+    economicMoat,
+    earningsQualityScore,
   };
 }
 
@@ -725,36 +757,92 @@ export function generateFinancialCopilotResponse(
       `• 資本結構優化：在負債比率安全範圍內，善用低成本綠色債券或中長期融資，適度維持財務乘數效益。`;
   }
 
-  // 5. 營收成長預測 / 未來趨勢 / 風險展望
-  if (q.includes('預測') || q.includes('成長') || q.includes('風險') || q.includes('未來') || q.includes('趨勢') || q.includes('展望')) {
-    const forecast = aiReport?.forecast;
-    const predGrowth = forecast?.predictedRevenueGrowth ?? 12.5;
-    const predMargin = forecast?.predictedNetMargin ?? nm;
-    const predRoe = forecast?.predictedRoe ?? roe;
-    const confidence = forecast?.confidenceLevel ?? 88;
+  // 5. 經濟護城河 (Economic Moat) 與長期競爭優勢分析
+  if (q.includes('護城河') || q.includes('moat') || q.includes('競爭優勢') || q.includes('定價權') || q.includes('壁壘')) {
+    const moatType = r.economicMoat;
+    const moatLabel = moatType === 'wide' ? '👑 寬廣經濟護城河 (Wide Moat)' : moatType === 'narrow' ? '🛡️ 窄經濟護城河 (Narrow Moat)' : '⚠️ 無顯著護城河 (No Moat)';
+    const fcfMillions = (r.freeCashFlow / 1000).toLocaleString('zh-TW', { maximumFractionDigits: 1 });
 
-    return `【財務長顧問分析・未來營運預測與風險情境推演】\n\n` +
-      `🔮 1. AI 多變量時序模型預測指標：\n` +
-      `• 預估次年度營收成長率：【 ${predGrowth >= 0 ? '+' : ''}${predGrowth}% 】\n` +
-      `• 預估次年度稅後淨利率：【 ${predMargin}% 】\n` +
-      `• 預估股東權益報酬率 (ROE)：【 ${predRoe}% 】\n` +
-      `• 模型演算法信心水準：【 ${confidence}% 】\n\n` +
-      `⚠️ 2. 主要面臨之三大經營風險：\n` +
-      `• 總體經貿與匯率波動：外銷比重高時需嚴密監控匯率損益，並執行遠期外匯套期保值。\n` +
-      `• 資本支出折舊壓力：當前資本支出達 NT$ ${capexMillions} 百萬元，需確保新產能良率如期達標。\n` +
-      `• 同業價格競爭與成本通膨：關鍵原材料與人力成本上升可能侵蝕營業利益率。\n\n` +
-      `🎯 3. CFO 前瞻佈局方針：\n` +
-      `• 建立跨季度動態滾動預算（Rolling Forecast），並保留至少 6 個月之安全流動現金備援。`;
+    return `【價值投資顧問・企業經濟護城河 (Economic Moat) 深度評級】\n\n` +
+      `🏰 1. 護城河評級結果：【 ${moatLabel} 】（基準期：${period}）\n` +
+      `• 營業毛利率：${gm}% （反映定價權與技術/品牌溢價防護盾）\n` +
+      `• 股東權益報酬率 (ROE)：${roe}% （反映股東資本複利累積效應）\n` +
+      `• 自由現金流 (FCF)：NT$ ${fcfMillions} 百萬元 （反映扣除資本支出後的真金白銀分配力）\n\n` +
+      `🔍 2. 巴菲特式護城河歸因解析：\n` +
+      (moatType === 'wide'
+        ? `• 🌟 「${companyName}」具備高毛利與高 ROE 雙重支撐，代表其產品具有不可替代性或高度客戶黏著度，競爭對手難以透過價格戰侵蝕其超額利潤。`
+        : moatType === 'narrow'
+        ? `• ⚖️ 具備一定的產業競爭優勢，但面對同業擴產或技術更迭仍需持續維持高研發投入以捍衛市占率。`
+        : `• ⚠️ 毛利率與 ROE 處於中低水位，易受原料價格波動與同業價格戰影響，尚未建立起強大的結構性壁壘。`) +
+      `\n\n🎯 3. 價值投資者長線檢驗指標：\n` +
+      `• 持續追蹤毛利率是否維持在 ${gm}% 以上，警惕毛利率逐季滑落。\n` +
+      `• 觀察自由現金流是否維持正數，確保再投資資本回報率 (ROIC) 高於加權資金成本 (WACC)。`;
   }
 
-  // 6. 自由提問與綜合諮詢通用高階解答
-  return `【財務長顧問分析・經營決策診斷】\n\n` +
+  // 6. 獲利含金量 (Earnings Quality) 與現金流品質分析
+  if (q.includes('含金量') || q.includes('獲利品質') || q.includes('真實獲利') || q.includes('紙上富貴') || q.includes('ocf/net')) {
+    const ocfRatio = r.ocfToNetIncome;
+    const isGold = ocfRatio >= 100;
+    const isWarning = ocfRatio < 70;
+
+    return `【價值投資顧問・獲利含金量與盈餘品質檢驗】\n\n` +
+      `💎 1. 核心含金量指標矩陣（基準期：${period}）：\n` +
+      `• 營業活動現金流 (OCF)：NT$ ${ocfMillions} 百萬元\n` +
+      `• 帳面稅後淨利 (Net Income)：NT$ ${(latest.netIncome / 1000).toLocaleString()} 百萬元\n` +
+      `• ➔ 【獲利含金量 (OCF/Net)】：【 ${ocfRatio}% 】（健康基準通常需 $\\ge 100\\%$）\n\n` +
+      `🔍 2. 盈餘真實度深度解讀：\n` +
+      (isGold
+        ? `• 🏆 【真金白銀落袋】：獲利含金量達 ${ocfRatio}%（超過 100%），代表公司每賺 1 元帳面利潤，實際上流進超過 1 元的真實營運現金！獲利品質極為扎實，絕無應收帳款虛胖灌水之嫌！`
+        : isWarning
+        ? `• ⚠️ 【警訊：利潤現金轉化不足】：獲利含金量僅 ${ocfRatio}%（低於 70% 警戒線），部分帳面利潤被應收帳款或未售存貨積壓，投資人應提防「紙上富貴」與流動性隱憂。`
+        : `• ⚖️ 獲利含金量為 ${ocfRatio}%，處於正常合理區間，營業現金流入與淨利走勢基本同步。`) +
+      `\n\n🎯 3. 投資人決策關注點：\n` +
+      `• 檢視應收帳款收現天數 (DSO ${dso} 天) 是否持續穩定，杜絕盈餘操縱風險。`;
+  }
+
+  // 7. Altman Z-Score 破產防禦與財務安全邊際
+  if (q.includes('altman') || q.includes('z-score') || q.includes('破產') || q.includes('安全邊際') || q.includes('下行風險') || q.includes('防禦')) {
+    const z = r.altmanZScore;
+    const zone = r.altmanZZone;
+    const zoneLabel = zone === 'safe' ? '🏰 安全堡壘區 (Safe Zone - 破產風險極低)' : zone === 'grey' ? '⚖️ 灰色觀察區 (Grey Zone - 體質尚可)' : '🚨 財務困境區 (Distress Zone - 高風險警戒)';
+
+    return `【價值投資顧問・Altman Z-Score 破產防禦與財務健全度】\n\n` +
+      `🛡️ 1. 華爾街經典 Altman Z-Score 評分：【 ${z} 分 】\n` +
+      `• 判定等級：【 ${zoneLabel} 】\n` +
+      `• 流動比率：${r.currentRatio}% ｜ 負債比率：${r.debtRatio}% ｜ 利息保障倍數：${r.interestCoverageRatio} 倍\n\n` +
+      `🔍 2. 破產防禦深度剖析：\n` +
+      (zone === 'safe'
+        ? `• ✅ 「${companyName}」Z 分數達 ${z} 分（遠高於安全線 2.99），營運資本充裕、獲利動能強勁且償債覆蓋率極高，即使遭遇景氣下行黑天鵝，依然具備強大抗風險韌性！`
+        : zone === 'grey'
+        ? `• ⚖️ Z 分數為 ${z} 分處於灰色區間，財務槓桿適中，但需持續監控短期償債資金儲備與負債到期結構。`
+        : `• ⚠️ Z 分數僅 ${z} 分（低於 1.81 警戒線），顯示槓桿過高或營運資金吃緊，投資人應高度注意下行風險。`) +
+      `\n\n🎯 3. 投資人防禦清單：\n` +
+      `• 檢查負債比率是否低於 50%，並確認自由現金流能持續覆蓋資本支出與利息負擔。`;
+  }
+
+  // 8. 價值投資 / 存股 / 多空投資論點 (Bull vs Bear)
+  if (q.includes('存股') || q.includes('投資') || q.includes('多空') || q.includes('價值') || q.includes('買進') || q.includes('長期')) {
+    return `【價值投資顧問・多空戰略觀點 (Bull vs. Bear Thesis)】\n\n` +
+      `🟢 【多方看好理由 (Bull Case)】：\n` +
+      `• 優異股東權益報酬率：ROE 錄得 ${roe}%，每股盈餘 EPS NT$ ${eps}，具備優異資本複利動能。\n` +
+      `• 護城河與定價權：營業毛利率達 ${gm}%，產品具備定價優勢，抗通膨能力堅實。\n` +
+      `• 現金造血能力：營業現金流達 NT$ ${ocfMillions} 百萬元，為股息發放與研發擴產提供厚實底氣。\n\n` +
+      `🔴 【空方風險隱憂 (Bear Case)】：\n` +
+      `• 資本支出折舊挑戰：本期資本支出 NT$ ${capexMillions} 百萬元，需追蹤新產能利用率以防折舊侵蝕淨利。\n` +
+      `• 外部景氣與匯率敏感度：外銷比重高時需防範匯率逆風及終端需求降溫風險。\n\n` +
+      `💡 綜合投資評估：整體財務體質健康，具備長期基本面支撐，適合採取「逢低分批佈局、長期價值投資」之投資策略！`;
+  }
+
+  // 9. 自由提問與綜合諮詢通用高階解答
+  return `【財務長顧問分析・經營與投資決策診斷】\n\n` +
     `針對您詢問「${question}」，結合「${companyName}」在 ${period} 的核心財務指標：\n\n` +
     `📊 1. 關鍵經營指標速覽：\n` +
     `• 營業收入：NT$ ${revMillions} 百萬元｜營業毛利率：${gm}%｜稅後淨利率：${nm}%\n` +
     `• 股東權益報酬率 (ROE)：${roe}%｜每股盈餘 (EPS)：NT$ ${eps}\n` +
+    `• 獲利含金量：${r.ocfToNetIncome}% ｜ Altman Z 破產防禦分：${r.altmanZScore} (${r.altmanZZone === 'safe' ? '安全堡壘' : '穩定'})\n` +
     `• 收現天數 (DSO)：${dso} 天｜存貨天數 (DSI)：${dsi} 天｜現金循環 (CCC)：${ccc} 天\n\n` +
     `💡 2. 核心診斷結論：\n` +
-    `整體經營體質穩健，獲利轉化效率維持良好。建議優先著重於「縮短現金轉換循環 (CCC)」以及「維持高毛利產品組合比重」，以在市場景氣波動中確保充沛之自由現金流 (FCF) 與長期股東價值回報！`;
+    `無論從「企業經營者（營運資金效率）」或「價值投資者（護城河與真實獲利含金量）」視角來看，整體體質均展現優異韌性。建議持續追蹤自由現金流與毛利率穩定度！`;
 }
+
 

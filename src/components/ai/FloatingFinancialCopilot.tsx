@@ -11,7 +11,7 @@ import {
 } from 'lucide-react';
 
 export const FloatingFinancialCopilot: React.FC = () => {
-  const { activeCompany, latestPeriod, aiReport } = useFinancial();
+  const { activeCompany, latestPeriod, aiReport, viewMode } = useFinancial();
 
   const [isOpen, setIsOpen] = useState(false);
   const [question, setQuestion] = useState('');
@@ -19,7 +19,7 @@ export const FloatingFinancialCopilot: React.FC = () => {
   const [chatHistory, setChatHistory] = useState<Array<{ role: 'user' | 'assistant'; text: string }>>([
     {
       role: 'assistant',
-      text: `您好！我是您的專屬「AI 數位財務長顧問（Financial Copilot）」。\n我已深入掌握「${activeCompany.name}」的最新財務報表、應收帳款與存貨週轉效率、杜邦因子及獲利結構。\n\n您可以隨時點選下方快捷問題，或向我提出任何關於營運資本優化、成本定價策略、風險防範或未來趨勢之情境推演！`,
+      text: `您好！我是您的專屬「AI 數位財務長與價值投資顧問（Financial Copilot）」。\n我已深入掌握「${activeCompany.name}」的財務報表、經濟護城河、獲利含金量、週轉效率及破產防禦指標。\n\n您可以隨時點選下方快捷問題，或向我提出任何關於營運資本優化、長期存股價值、安全邊際或未來趨勢之情境推演！`,
     },
   ]);
 
@@ -102,17 +102,25 @@ export const FloatingFinancialCopilot: React.FC = () => {
     setChatHistory([
       {
         role: 'assistant',
-        text: `已重置對話記錄。我是您的 AI 財務長顧問，隨時準備好為「${activeCompany.name}」進行深度財務診斷與策略推演！`,
+        text: `已重置對話記錄。我是您的 AI 財務顧問，隨時準備好為「${activeCompany.name}」進行深度財務診斷、護城河評估與策略推演！`,
       },
     ]);
   };
 
-  const sampleQuestions = [
-    '目前的應收帳款週轉天數是否需要調整信用政策？',
-    '如何藉由縮短存貨週轉天數改善現金轉換循環 (CCC)？',
-    '分析杜邦三因子中 ROE 的主要驅動力與弱點？',
-    '預測次年度營收成長與獲利率面臨哪些主要風險？',
-  ];
+  const sampleQuestions = viewMode === 'investor'
+    ? [
+        '這家公司具備長期的經濟護城河 (Moat) 與定價壁壘嗎？',
+        '檢驗本期的獲利含金量 (OCF/Net) 是否為真金白銀？',
+        '評估 Altman Z-Score 破產防禦分數與下行安全邊際？',
+        '站在價值投資角度，多空投資論點 (Bull vs Bear) 如何解讀？',
+      ]
+    : [
+        '目前的應收帳款週轉天數是否需要調整信用政策？',
+        '如何藉由縮短存貨週轉天數改善現金轉換循環 (CCC)？',
+        '分析杜邦三因子中 ROE 的主要驅動力與弱點？',
+        '預測次年度營收成長與獲利率面臨哪些主要風險？',
+      ];
+
 
   return (
     <>
