@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useFinancial } from '../../context/FinancialContext';
 import { generateFinancialCopilotResponse } from '../../utils/financialCalculations';
+import { directAskGeminiCopilot } from '../../utils/geminiClient';
 import {
   Bot,
   Sparkles,
@@ -75,10 +76,27 @@ export const FloatingFinancialCopilot: React.FC = () => {
           }
         }
       } catch (apiErr) {
-        console.warn('Remote AI Chat API unavailable, activating in-browser CFO inference engine:', apiErr);
+        console.warn('Remote AI Chat API unavailable, checking browser direct Gemini:', apiErr);
       }
 
-      // 若 API 未回傳或處於離線/Vercel SPA 狀態，調用高階專業財務推演引擎
+      // 若後端 API 未回傳，嘗試以瀏覽器直連 Gemini
+      if (!answer) {
+        try {
+          const directAns = await directAskGeminiCopilot(query, activeCompany.name, {
+            latestPeriod: latestPeriod?.period,
+            revenue: latestPeriod?.revenue,
+            ratios: latestPeriod?.ratios,
+            aiReportSummary: aiReport?.executiveSummary,
+            strengths: aiReport?.strengths,
+            risks: aiReport?.weaknessesAndRisks,
+          });
+          if (directAns) answer = directAns;
+        } catch (directErr) {
+          console.warn('Browser direct Gemini also skipped:', directErr);
+        }
+      }
+
+      // 若皆未配置 Key，調用內建頂級審計財務推演引擎
       if (!answer) {
         answer = generateFinancialCopilotResponse(query, activeCompany.name, latestPeriod, aiReport);
       }
