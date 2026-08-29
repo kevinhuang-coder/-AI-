@@ -14,6 +14,7 @@ import {
   calculateAllPeriodsRatios,
   generateLocalAiReport,
 } from '../utils/financialCalculations';
+import { fetchTaiwanStockFinancials } from '../utils/stockFetcher';
 
 interface FinancialContextType {
   companies: AccountEntity[];
@@ -53,6 +54,7 @@ interface FinancialContextType {
   setIsDataEditorOpen: (open: boolean) => void;
   editingCompany: AccountEntity | null;
   setEditingCompany: (company: AccountEntity | null) => void;
+  loadStockByCode: (code: string) => Promise<boolean>;
 }
 
 const FinancialContext = createContext<FinancialContextType | undefined>(undefined);
@@ -353,6 +355,18 @@ export const FinancialProvider: React.FC<{ children: React.ReactNode }> = ({ chi
     localStorage.removeItem(LOCAL_STORAGE_KEY);
   };
 
+  const loadStockByCode = async (stockCode: string): Promise<boolean> => {
+    try {
+      const company = await fetchTaiwanStockFinancials(stockCode);
+      addOrUpdateCompany(company, true, `自台灣證交所與金融資料庫載入「${company.name}」官方財報`);
+      setActiveCompanyId(company.id);
+      return true;
+    } catch (err: any) {
+      console.error('loadStockByCode error:', err);
+      throw err;
+    }
+  };
+
   return (
     <FinancialContext.Provider
       value={{
@@ -388,6 +402,7 @@ export const FinancialProvider: React.FC<{ children: React.ReactNode }> = ({ chi
         setIsDataEditorOpen,
         editingCompany,
         setEditingCompany,
+        loadStockByCode,
       }}
     >
       {children}

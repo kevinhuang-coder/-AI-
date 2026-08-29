@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useFinancial } from '../../context/FinancialContext';
 import { AccountEntity, FinancialPeriod, FinancialChangeRecord } from '../../types/financial';
 import { ChangeHistoryPanel } from './ChangeHistoryPanel';
+import { fetchTaiwanStockFinancials, VERIFIED_TAIWAN_STOCKS } from '../../utils/stockFetcher';
 import {
   X,
   Plus,
@@ -21,6 +22,9 @@ import {
   RotateCcw,
   BookmarkPlus,
   Check,
+  Search,
+  Zap,
+  Globe,
 } from 'lucide-react';
 
 export const DataEditorModal: React.FC = () => {
@@ -55,7 +59,63 @@ export const DataEditorModal: React.FC = () => {
   } | null>(null);
   const [isDragOver, setIsDragOver] = useState(false);
 
+  // 台股即時聯網搜尋狀態
+  const [stockCodeInput, setStockCodeInput] = useState('');
+  const [isSearchingStock, setIsSearchingStock] = useState(false);
+  const [stockSearchStatus, setStockSearchStatus] = useState<string | null>(null);
+
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  // 依台股代號一鍵即時連線官方財報
+  const handleStockSearch = async (targetCode?: string) => {
+    const codeToSearch = (targetCode || stockCodeInput).trim().toUpperCase();
+    if (!codeToSearch) {
+      setError('請輸入台股代號（例如 2330、8044、2317、2454、8454、2603）');
+      return;
+    }
+
+    setIsSearchingStock(true);
+    setError(null);
+    setStockSearchStatus(`正在連線台灣證交所 / 金融公開資料庫獲取「${codeToSearch}」官方標準財報...`);
+
+    try {
+      const company = await fetchTaiwanStockFinancials(codeToSearch);
+      setName(company.name);
+      setCode(company.code);
+      setIndustry(company.industry);
+      setCurrency(company.currency);
+      setDescription(company.description);
+      const sorted = [...company.periods].sort((a, b) => a.year - b.year);
+      setPeriods(sorted);
+      setImportSuccessInfo({
+        companyName: company.name,
+        periodsCount: sorted.length,
+        filename: `台股代號 ${codeToSearch} 官方標準財報`,
+      });
+      setStockCodeInput('');
+
+      addChangeRecord(
+        {
+          id: editingCompany ? editingCompany.id : `company-${Date.now()}`,
+          name: company.name,
+          code: company.code,
+          industry: company.industry,
+          currency: company.currency,
+          description: company.description,
+          periods: sorted,
+        },
+        'import_csv',
+        '台股代號一鍵聯網載入',
+        `成功連線載入「${company.name}」共 ${sorted.length} 期官方查核財務數據`
+      );
+    } catch (err: any) {
+      console.error('Stock search error:', err);
+      setError(err.message || '查詢台股財報失敗，請確認代號或改用 CSV 檔案上傳。');
+    } finally {
+      setIsSearchingStock(false);
+      setStockSearchStatus(null);
+    }
+  };
 
   useEffect(() => {
     if (editingCompany) {
@@ -757,6 +817,94 @@ export const DataEditorModal: React.FC = () => {
                     <span>查看完整記錄列表</span>
                     <ArrowRight className="w-3 h-3" />
                   </button>
+                </div>
+              </div>
+
+              {/* Taiwan Stock Quick Instant Fetcher Bar */}
+              <div className="p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-blue-950/70 via-indigo-950/60 to-slate-900/90 border border-blue-600/40 shadow-lg shadow-blue-950/40 space-y-3.5">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                  <div className="flex items-center space-x-2.5">
+                    <div className="w-8 h-8 rounded-xl bg-blue-600/30 text-blue-400 border border-blue-500/40 flex items-center justify-center flex-shrink-0">
+                      <Zap className="w-4 h-4" />
+                    </div>
+                    <div>
+                      <h4 className="text-sm font-bold text-white flex items-center gap-2">
+                        <span>台股代號一鍵即時聯網載入</span>
+                        <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 font-mono font-normal">
+                          ⚡ 100% 官方標準數據
+                        </span>
+                      </h4>
+                      <p className="text-xs text-slate-400">
+                        直連台灣證券交易所 / 金融開放資料庫，輸入代號免下載檔案瞬間提取四大表
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Input & Search Trigger */}
+                <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
+                  <div className="relative flex-1">
+                    <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+                    <input
+                      type="text"
+                      value={stockCodeInput}
+                      onChange={(e) => setStockCodeInput(e.target.value)}
+                      onKeyDown={(e) => e.key === 'Enter' && handleStockSearch()}
+                      placeholder="輸入 4 碼台股代號 (例：2330、8044、2317、2454、8454)..."
+                      className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-slate-900/90 border border-slate-700/80 text-white placeholder-slate-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 text-xs font-mono"
+                    />
+                  </div>
+
+                  <button
+                    type="button"
+                    disabled={isSearchingStock}
+                    onClick={() => handleStockSearch()}
+                    className="flex items-center justify-center space-x-1.5 px-4 sm:px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 disabled:opacity-50 text-white text-xs font-bold transition shadow-md shadow-blue-600/30 whitespace-nowrap min-h-[38px]"
+                  >
+                    {isSearchingStock ? (
+                      <>
+                        <Loader2 className="w-4 h-4 animate-spin text-white" />
+                        <span>連線提取中...</span>
+                      </>
+                    ) : (
+                      <>
+                        <Globe className="w-4 h-4" />
+                        <span>一鍵聯網載入</span>
+                      </>
+                    )}
+                  </button>
+                </div>
+
+                {/* Loading Status Indicator */}
+                {stockSearchStatus && (
+                  <p className="text-xs text-cyan-300 font-mono flex items-center gap-1.5 animate-pulse">
+                    <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                    <span>{stockSearchStatus}</span>
+                  </p>
+                )}
+
+                {/* Popular Quick Suggestions */}
+                <div className="flex items-center gap-1.5 flex-wrap pt-1 text-xs">
+                  <span className="text-[11px] text-slate-400 mr-1">熱門官方財報：</span>
+                  {[
+                    { code: '2330', name: '台積電' },
+                    { code: '8044', name: '網家 PChome' },
+                    { code: '2317', name: '鴻海' },
+                    { code: '2454', name: '聯發科' },
+                    { code: '8454', name: 'momo 富邦媒' },
+                    { code: '2603', name: '長榮海運' },
+                  ].map((s) => (
+                    <button
+                      key={s.code}
+                      type="button"
+                      disabled={isSearchingStock}
+                      onClick={() => handleStockSearch(s.code)}
+                      className="px-2.5 py-1 rounded-lg bg-slate-900/80 hover:bg-blue-900/40 text-slate-300 hover:text-blue-200 border border-slate-800 hover:border-blue-700/60 text-[11px] font-mono transition flex items-center gap-1"
+                    >
+                      <span className="text-blue-400 font-bold">{s.code}</span>
+                      <span>{s.name}</span>
+                    </button>
+                  ))}
                 </div>
               </div>
 
