@@ -159,11 +159,12 @@ export const Navbar: React.FC = () => {
             <button
               id="export-pdf-report-btn"
               onClick={() => setIsPdfModalOpen(true)}
-              className="flex items-center space-x-1.5 px-3 py-1.5 rounded-xl bg-emerald-600/90 hover:bg-emerald-600 text-white text-xs font-semibold shadow-sm transition cursor-pointer"
+              className="flex items-center space-x-1.5 px-3 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-semibold shadow-sm transition cursor-pointer"
               title="預覽與產出單頁 A4 財務分析報告"
             >
               <FileDown className="w-3.5 h-3.5" />
-              <span>產出 PDF 報告</span>
+              <span className="hidden sm:inline">產出 PDF 報告</span>
+              <span className="sm:hidden">PDF 報告</span>
             </button>
 
             {/* Blog Portal Link */}

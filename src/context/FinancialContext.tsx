@@ -172,10 +172,15 @@ export const FinancialProvider: React.FC<{ children: React.ReactNode }> = ({ chi
     return activeCompanyPeriodsWithRatios[activeCompanyPeriodsWithRatios.length - 1];
   }, [activeCompanyPeriodsWithRatios]);
 
-  // 切換公司時重設 AI 診斷狀態，等待使用者主動點擊「AI 深度診斷」觸發
+  // 切換公司或載入時，自動以本地精算演算法即時生成完整診斷報告
   useEffect(() => {
-    setAiReport(null);
-  }, [activeCompany.id]);
+    if (activeCompanyPeriodsWithRatios.length > 0) {
+      const localReport = generateLocalAiReport(activeCompany.name, activeCompanyPeriodsWithRatios);
+      setAiReport(localReport);
+    } else {
+      setAiReport(null);
+    }
+  }, [activeCompany.id, activeCompanyPeriodsWithRatios]);
 
   // 觸發遠端 Gemini API 深入 AI 診斷
   const runAiDiagnostic = async () => {
