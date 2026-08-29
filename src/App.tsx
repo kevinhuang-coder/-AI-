@@ -168,6 +168,9 @@ const DashboardContent: React.FC = () => {
           {/* Dynamic Bento Modules based on selected category */}
           {selectedCategory === 'all' && (
             <div className="space-y-5 sm:space-y-6">
+              {/* 核心決策層：AI 財務健康深度診斷與 Financial Copilot 顧問諮詢 */}
+              <AiInsightPanel />
+
               {/* Bento Grid: Turnover & Profitability */}
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 sm:gap-6">
                 <TurnoverAnalysisChart />
@@ -183,7 +186,6 @@ const DashboardContent: React.FC = () => {
               {/* AI Forecast & Multi-Account Bento Modules */}
               <AiForecastChart />
               <MultiAccountComparison />
-              <AiInsightPanel />
               <FinancialDataTable />
             </div>
           )}
