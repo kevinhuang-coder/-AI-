@@ -60,43 +60,55 @@
 
 @media print {
   @page {
-    margin: 10mm 12mm;
+    margin: 8mm 10mm;
     size: A4 portrait;
   }
 
-  body {
+  html, body {
     background: #ffffff !important;
     color: #0f172a !important;
+    height: auto !important;
+    min-height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: visible !important;
     -webkit-print-color-adjust: exact !important;
     print-color-adjust: exact !important;
   }
 
-  /* 隱藏網頁主體所有元件，僅保留列印專用報告 */
+  /* 隱藏網頁主體所有元件 */
   body > * {
-    visibility: hidden !important;
+    display: none !important;
   }
 
-  .fixed.inset-0,
-  #printable-report-wrapper {
-    visibility: visible !important;
+  /* 僅允許列印視窗及其內容在列印流中佔位 */
+  body > .fixed.inset-0,
+  body > div:has(#printable-report) {
+    display: block !important;
     position: static !important;
     background: transparent !important;
     padding: 0 !important;
     margin: 0 !important;
+    height: auto !important;
+    min-height: 0 !important;
     overflow: visible !important;
-    width: 100% !important;
-    max-width: 100% !important;
   }
 
-  #printable-report,
-  #printable-report * {
-    visibility: visible !important;
+  .no-print, nav, button, header, aside, input, form {
+    display: none !important;
+  }
+
+  #printable-report-wrapper {
+    display: block !important;
+    background: transparent !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    overflow: visible !important;
+    height: auto !important;
   }
 
   #printable-report {
-    position: absolute !important;
-    left: 0 !important;
-    top: 0 !important;
+    display: block !important;
     width: 100% !important;
     max-width: 100% !important;
     background: #ffffff !important;
@@ -104,15 +116,12 @@
     box-shadow: none !important;
     border: none !important;
     padding: 0 !important;
-    margin: 0 !important;
-    page-break-inside: avoid;
-  }
-
-  /* 隱藏所有按鈕與導航 */
-  nav, button, header, aside, .no-print, input, form {
-    display: none !important;
+    margin: 0 auto !important;
+    page-break-inside: avoid !important;
+    page-break-after: avoid !important;
   }
 }
+
 
 
 
