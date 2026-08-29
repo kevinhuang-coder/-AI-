@@ -59,22 +59,60 @@
 }
 
 @media print {
+  @page {
+    margin: 10mm 12mm;
+    size: A4 portrait;
+  }
+
   body {
-    background: #020617 !important;
-    color: #f8fafc !important;
+    background: #ffffff !important;
+    color: #0f172a !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
   }
-  nav, button, aside, footer {
-    display: none !important;
+
+  /* 隱藏網頁主體所有元件，僅保留列印專用報告 */
+  body > * {
+    visibility: hidden !important;
   }
+
+  .fixed.inset-0,
+  #printable-report-wrapper {
+    visibility: visible !important;
+    position: static !important;
+    background: transparent !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    overflow: visible !important;
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  #printable-report,
+  #printable-report * {
+    visibility: visible !important;
+  }
+
   #printable-report {
-    display: block !important;
+    position: absolute !important;
+    left: 0 !important;
+    top: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    background: #ffffff !important;
+    color: #0f172a !important;
     box-shadow: none !important;
     border: none !important;
     padding: 0 !important;
     margin: 0 !important;
-    width: 100% !important;
-    max-width: 100% !important;
+    page-break-inside: avoid;
+  }
+
+  /* 隱藏所有按鈕與導航 */
+  nav, button, header, aside, .no-print, input, form {
+    display: none !important;
   }
 }
+
 
 
