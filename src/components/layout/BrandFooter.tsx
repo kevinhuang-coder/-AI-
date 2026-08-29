@@ -25,13 +25,13 @@ export const BrandFooter: React.FC = () => {
               <BrandLogo size={42} />
               <div>
                 <h3 className="text-base sm:text-lg font-bold text-white tracking-tight flex items-center gap-2">
-                  <span>凱文黃的價值投資智策</span>
+                  <span>價值決策 (Value Decision)</span>
                   <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-emerald-950/70 text-emerald-300 border border-emerald-500/30">
                     個人研究品牌
                   </span>
                 </h3>
                 <p className="text-xs text-slate-400 font-medium">
-                  《凱文黃的知識天地》專屬 AI 財報審計與價值投資工具
+                  《凱文黃的知識天地》專屬 AI 財報分析工具
                 </p>
               </div>
             </div>

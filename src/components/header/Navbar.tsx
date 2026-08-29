@@ -41,11 +41,11 @@ export const Navbar: React.FC = () => {
             <BrandLogo size={32} />
             <div className="flex items-center space-x-2">
               <span className="font-bold text-sm sm:text-base text-white tracking-tight">
-                凱文黃
+                價值決策
               </span>
               <span className="text-slate-500 text-xs hidden xs:inline">•</span>
               <span className="text-slate-300 text-xs font-medium hidden xs:inline">
-                價值投資智策
+                凱文黃的知識天地
               </span>
               <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 font-medium hidden md:inline">
                 5年官方年報
