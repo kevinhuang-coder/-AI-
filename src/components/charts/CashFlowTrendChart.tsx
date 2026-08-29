@@ -189,14 +189,31 @@ export const CashFlowTrendChart: React.FC = () => {
         </ResponsiveContainer>
       </div>
 
-      {/* Explanatory Footer */}
-      <div className="mt-3.5 pt-3 border-t border-slate-800/80 flex items-center justify-between text-[11px] text-slate-400 flex-wrap gap-2">
-        <div className="flex items-center gap-1.5">
-          <ShieldCheck className="w-3.5 h-3.5 text-emerald-400 flex-shrink-0" />
-          <span>自由現金流 = 營業活動現金流 (OCF) - 資本支出 (CapEx)</span>
+      {/* Explanatory Footer with Complete Formulas */}
+      <div className="mt-3.5 pt-3 border-t border-slate-800/80 flex flex-col sm:flex-row sm:items-center justify-between text-[11px] text-slate-400 gap-2">
+        <div className="flex items-start sm:items-center gap-1.5 flex-1">
+          <ShieldCheck className="w-4 h-4 text-emerald-400 flex-shrink-0 mt-0.5 sm:mt-0" />
+          <div>
+            {metricMode === 'quality' ? (
+              <span>
+                <strong className="text-slate-300">核心本業現金轉換率公式：</strong>
+                <span className="font-mono text-indigo-300">
+                  (營業現金流 OCF - 租賃本金償付) ÷ [ 營業利益 (EBIT) × (1 - 20% 法定稅率) ] × 100%
+                </span>
+                <span className="text-slate-400 ml-1.5 hidden md:inline">（&gt;100% 代表本業獲利 100% 轉化為真金白銀）</span>
+              </span>
+            ) : (
+              <span>
+                <strong className="text-slate-300">審計級自由現金流 (Rigorous FCF) 完整公式：</strong>
+                <span className="font-mono text-cyan-300">
+                  營業現金流 (OCF) - 資本支出 (PP&E CapEx) - 無形資產研發支出 - IFRS 16 租賃本金償付
+                </span>
+              </span>
+            )}
+          </div>
         </div>
-        <div className="text-slate-400 font-mono">
-          單位：新台幣百萬元 (Millions)
+        <div className="text-slate-400 font-mono text-[10px] sm:text-xs flex-shrink-0 self-end sm:self-auto">
+          金額單位：新台幣百萬元 (NT$ Millions)
         </div>
       </div>
     </div>
