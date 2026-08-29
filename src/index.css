@@ -60,11 +60,11 @@
 
 @media print {
   @page {
-    margin: 8mm 10mm;
+    margin: 6mm 8mm;
     size: A4 portrait;
   }
 
-  html, body {
+  html, body, #root, #root > div {
     background: #ffffff !important;
     color: #0f172a !important;
     height: auto !important;
@@ -76,39 +76,24 @@
     print-color-adjust: exact !important;
   }
 
-  /* 隱藏網頁主體所有元件 */
-  body > * {
-    display: none !important;
-  }
-
-  /* 僅允許列印視窗及其內容在列印流中佔位 */
-  body > .fixed.inset-0,
-  body > div:has(#printable-report) {
-    display: block !important;
-    position: static !important;
-    background: transparent !important;
-    padding: 0 !important;
-    margin: 0 !important;
-    height: auto !important;
-    min-height: 0 !important;
-    overflow: visible !important;
-  }
-
-  .no-print, nav, button, header, aside, input, form {
+  /* 隱藏所有非列印元件 */
+  nav, header, footer, aside, button, form, input, .no-print,
+  .fixed.bottom-20, .fixed.bottom-36, .fixed.bottom-6, #floating-copilot-container {
     display: none !important;
   }
 
   #printable-report-wrapper {
-    display: block !important;
-    background: transparent !important;
+    position: absolute !important;
+    left: 0 !important;
+    top: 0 !important;
+    width: 100% !important;
+    background: #ffffff !important;
     padding: 0 !important;
     margin: 0 !important;
     overflow: visible !important;
-    height: auto !important;
   }
 
   #printable-report {
-    display: block !important;
     width: 100% !important;
     max-width: 100% !important;
     background: #ffffff !important;
@@ -119,6 +104,7 @@
     margin: 0 auto !important;
     page-break-inside: avoid !important;
     page-break-after: avoid !important;
+    break-inside: avoid !important;
   }
 }
 
