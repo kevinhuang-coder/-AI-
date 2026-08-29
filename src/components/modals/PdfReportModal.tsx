@@ -1,6 +1,6 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useMemo } from 'react';
 import { useFinancial } from '../../context/FinancialContext';
-import { calculateHealthDimensions } from '../../utils/financialCalculations';
+import { calculateHealthDimensions, generateLocalAiReport } from '../../utils/financialCalculations';
 import {
   X,
   Printer,
@@ -16,13 +16,29 @@ import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 
 export const PdfReportModal: React.FC = () => {
-  const { isPdfModalOpen, setIsPdfModalOpen, activeCompany, latestPeriod, aiReport, viewMode } =
-    useFinancial();
+  const {
+    isPdfModalOpen,
+    setIsPdfModalOpen,
+    activeCompany,
+    latestPeriod,
+    aiReport,
+    activeCompanyPeriodsWithRatios,
+    viewMode,
+  } = useFinancial();
 
   const reportRef = useRef<HTMLDivElement>(null);
   const [isExporting, setIsExporting] = useState(false);
 
-  if (!isPdfModalOpen || !latestPeriod || !aiReport) return null;
+  // 確保無論何時開啟，都能即時獲得完整的分析診斷數據
+  const effectiveReport = useMemo(() => {
+    if (aiReport) return aiReport;
+    if (activeCompany && activeCompanyPeriodsWithRatios.length > 0) {
+      return generateLocalAiReport(activeCompany.name, activeCompanyPeriodsWithRatios);
+    }
+    return null;
+  }, [aiReport, activeCompany, activeCompanyPeriodsWithRatios]);
+
+  if (!isPdfModalOpen || !latestPeriod || !effectiveReport) return null;
 
   const isInvestor = viewMode === 'investor';
   const health = calculateHealthDimensions(latestPeriod);
@@ -34,8 +50,8 @@ export const PdfReportModal: React.FC = () => {
   });
 
   /**
-   * 獨立沙盒 Iframe 單頁 A4 隔離列印引擎
-   * 徹底隔離背景網頁，100% 保證輸出精準「第 1 頁 / 共 1 頁」，絕不溢出多頁！
+   * 獨立單頁 A4 隔離列印引擎
+   * 徹底隔離背景網頁，保證輸出精準 1 頁 A4，絕不溢出多頁！
    */
   const handlePrintIsolatedA4 = () => {
     if (!reportRef.current) return;
@@ -67,12 +83,12 @@ export const PdfReportModal: React.FC = () => {
       <html>
         <head>
           <meta charset="utf-8">
-          <title>${activeCompany.name}_價值投資研究報告_${latestPeriod.period}</title>
+          <title>${activeCompany.code || ''}_${activeCompany.name}_財務分析報告_${latestPeriod.period}</title>
           <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
           <style>
             @page {
               size: A4 portrait;
-              margin: 8mm 10mm;
+              margin: 6mm 8mm;
             }
             * {
               box-sizing: border-box;
@@ -90,8 +106,8 @@ export const PdfReportModal: React.FC = () => {
             .a4-sheet {
               width: 100%;
               max-width: 100%;
-              height: 275mm;
-              max-height: 275mm;
+              height: 280mm;
+              max-height: 280mm;
               overflow: hidden;
               display: flex;
               flex-direction: column;
@@ -110,7 +126,7 @@ export const PdfReportModal: React.FC = () => {
     `);
     doc.close();
 
-    // 等待 Tailwind CSS 與樣式完全載入後喚醒列印對話框
+    // 等待樣式載入後喚醒列印對話框
     setTimeout(() => {
       iframe.contentWindow?.focus();
       iframe.contentWindow?.print();
@@ -118,7 +134,7 @@ export const PdfReportModal: React.FC = () => {
   };
 
   /**
-   * 下載單頁 A4 PDF
+   * 一鍵直接下載單頁 A4 PDF 檔案
    */
   const handleDownloadPdf = async () => {
     if (!reportRef.current || isExporting) return;
@@ -131,13 +147,15 @@ export const PdfReportModal: React.FC = () => {
         useCORS: true,
         backgroundColor: '#ffffff',
         logging: false,
+        windowWidth: 794,
       });
 
-      const imgData = canvas.toDataURL('image/jpeg', 0.95);
+      const imgData = canvas.toDataURL('image/jpeg', 0.96);
       const pdf = new jsPDF({
         orientation: 'portrait',
         unit: 'mm',
         format: 'a4',
+        compress: true,
       });
 
       // 嚴格確保只輸出單頁 A4（210mm x 297mm）
@@ -145,12 +163,10 @@ export const PdfReportModal: React.FC = () => {
       const pdfHeight = 297;
       pdf.addImage(imgData, 'JPEG', 0, 0, pdfWidth, pdfHeight, undefined, 'FAST');
 
-      const fileName = isInvestor
-        ? `${activeCompany.name}_價值投資研究報告_${latestPeriod.period}.pdf`
-        : `${activeCompany.name}_財務分析報告_${latestPeriod.period}.pdf`;
+      const fileName = `${activeCompany.code ? activeCompany.code + '_' : ''}${activeCompany.name}_財務分析報告_${latestPeriod.period}.pdf`;
       pdf.save(fileName);
     } catch (error) {
-      console.error('PDF Generation failed, fallback to isolated 1-page print:', error);
+      console.error('PDF Generation failed, falling back to print dialog:', error);
       handlePrintIsolatedA4();
     } finally {
       setIsExporting(false);
@@ -162,19 +178,20 @@ export const PdfReportModal: React.FC = () => {
       <div className="bg-slate-900 border border-slate-800 rounded-2xl sm:rounded-3xl w-full max-w-4xl shadow-2xl overflow-hidden my-2 sm:my-6 flex flex-col max-h-[94vh] sm:max-h-[92vh]">
         
         {/* Modal Controls Header */}
-        <div className="no-print px-4 sm:px-6 py-3 sm:py-3.5 bg-slate-950 border-b border-slate-800 flex flex-wrap items-center justify-between gap-3">
+        <div className="no-print px-4 sm:px-6 py-3 sm:py-3.5 bg-slate-950 border-b border-slate-800 flex flex-wrap items-center justify-between gap-3 flex-shrink-0">
           <div className="flex items-center space-x-3">
-            <div className={`w-8 h-8 sm:w-9 sm:h-9 rounded-xl ${isInvestor ? 'bg-emerald-600/20 text-emerald-400 border-emerald-500/30' : 'bg-blue-600/20 text-blue-400 border-blue-500/30'} border flex items-center justify-center flex-shrink-0`}>
+            <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-emerald-600/20 text-emerald-400 border border-emerald-500/30 flex items-center justify-center flex-shrink-0">
               <FileText className="w-4 h-4" />
             </div>
             <div>
-              <h3 className="text-sm sm:text-base font-bold text-white tracking-tight">
-                {isInvestor ? 'PDF 價值投資研究報告預覽與匯出' : 'PDF 財務分析報告預覽與匯出'}
+              <h3 className="text-sm sm:text-base font-bold text-white tracking-tight flex items-center gap-2">
+                <span>單頁 A4 財務分析報告產出</span>
+                <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-950 text-emerald-300 border border-emerald-500/30 font-mono">
+                  精準單頁 A4
+                </span>
               </h3>
               <p className="text-[10px] sm:text-xs text-slate-400">
-                {isInvestor
-                  ? '符合機構法人與價值投資標準之單頁 A4 基本面與安全邊際報告書'
-                  : '符合高階主管與管理決策標準之單頁 A4 財務分析報告書'}
+                符合專業機構法人與管理決策標準，一鍵直接下載為單頁 PDF 或預覽列印
               </p>
             </div>
           </div>
@@ -183,59 +200,74 @@ export const PdfReportModal: React.FC = () => {
             <button
               onClick={handlePrintIsolatedA4}
               className="flex items-center space-x-1.5 px-3.5 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-750 text-slate-200 border border-slate-700 text-xs font-semibold transition min-h-[34px] cursor-pointer"
+              title="喚醒瀏覽器列印視窗"
             >
               <Printer className="w-3.5 h-3.5 text-emerald-400 flex-shrink-0" />
-              <span>直接列印 (精確 1 頁)</span>
+              <span>直接列印</span>
             </button>
             <button
               onClick={handleDownloadPdf}
               disabled={isExporting}
-              className={`flex items-center space-x-1.5 px-4 py-1.5 rounded-xl ${isInvestor ? 'bg-emerald-600 hover:bg-emerald-500' : 'bg-blue-600 hover:bg-blue-500'} text-white text-xs font-bold transition shadow-lg disabled:opacity-50 min-h-[34px] cursor-pointer`}
+              className="flex items-center space-x-1.5 px-4 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold transition shadow-lg shadow-emerald-900/30 disabled:opacity-50 min-h-[34px] cursor-pointer"
             >
               <Download className={`w-3.5 h-3.5 flex-shrink-0 ${isExporting ? 'animate-bounce' : ''}`} />
-              <span>{isExporting ? '生成單頁 A4 中...' : '下載單頁 A4 PDF'}</span>
+              <span>{isExporting ? '正在生成單頁 PDF...' : '下載單頁 A4 PDF'}</span>
             </button>
             <button
               onClick={() => setIsPdfModalOpen(false)}
               className="p-1.5 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 transition cursor-pointer"
+              title="關閉預覽視窗"
             >
               <X className="w-4 h-4" />
             </button>
           </div>
         </div>
 
-        {/* Scrollable Printable Report Canvas (Executive 1-Page A4 Theme) */}
-        <div id="printable-report-wrapper" className="p-3 sm:p-5 overflow-y-auto flex-1 bg-slate-950/80">
+        {/* Scrollable Printable Report Canvas (Strict Single-Page A4 Dimensions) */}
+        <div id="printable-report-wrapper" className="p-3 sm:p-6 overflow-y-auto overflow-x-auto flex-1 bg-slate-950/90 flex justify-center items-start">
           
           <div
             ref={reportRef}
             id="printable-report"
-            className="bg-white text-slate-900 border border-slate-200 rounded-xl p-5 sm:p-6 max-w-[760px] mx-auto shadow-xl space-y-3 font-sans"
-            style={{ maxHeight: '1060px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}
+            className="bg-white text-slate-900 border border-slate-300 rounded-lg shadow-2xl font-sans"
+            style={{
+              width: '794px',
+              minWidth: '794px',
+              maxWidth: '794px',
+              height: '1123px',
+              minHeight: '1123px',
+              maxHeight: '1123px',
+              boxSizing: 'border-box',
+              padding: '28px 32px',
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'space-between',
+              backgroundColor: '#ffffff',
+            }}
           >
             
-            {/* Top Container */}
+            {/* Top Main Section */}
             <div className="space-y-2.5">
-              {/* 1. Official Header Banner */}
+              
+              {/* 1. Header Banner */}
               <div className="border-b-2 border-slate-900 pb-2">
                 <div className="flex justify-between items-start gap-2">
                   <div>
                     <div className="flex items-center space-x-1.5 text-emerald-800 font-bold text-[10px] uppercase tracking-wider mb-0.5">
                       <Building2 className="w-3.5 h-3.5 text-emerald-700" />
-                      <span>{activeCompany.industry} • 《凱文黃的知識天地》價值決策 AI 財務分析報告</span>
+                      <span>{activeCompany.industry} • 《凱文黃的知識天地》價值決策 財務分析報告</span>
+                    </div>
                     <h1 className="text-xl font-black text-slate-950 tracking-tight">
                       {activeCompany.name}
                     </h1>
-                    <div className="flex items-center space-x-1.5 text-slate-600 font-medium text-[10px] mt-0.5">
-                      <span>{activeCompany.industry} • 《凱文黃的知識天地》價值決策 財務分析報告</span>
-                      <span>•</span>
-                      <span>報表基準：{latestPeriod.period} 官方審定年報</span>
-                    </div>
+                    <p className="text-[10px] text-slate-600 mt-0.5">
+                      股票代號 / 識別碼：<span className="font-mono font-bold text-slate-800">{activeCompany.code}</span> • 報告基準期：<span className="font-bold text-slate-900">{latestPeriod.period} 官方審定年報</span>
+                    </p>
                   </div>
-                  <div className="flex flex-wrap items-center gap-2">
-                    <span className="inline-flex items-center px-2.5 py-1 rounded bg-slate-900 text-white font-mono font-bold text-xs border border-slate-700">
+                  <div className="text-right flex-shrink-0">
+                    <div className="inline-flex items-center px-2.5 py-1 rounded bg-slate-900 text-white font-mono font-bold text-xs border border-slate-700">
                       <span>{isInvestor ? '投資評級' : '綜合財務評級'}: {health.rating} ({health.totalScore}分)</span>
-                    </span>
+                    </div>
                     <div className="text-[10px] text-slate-500 mt-1 flex items-center justify-end space-x-1">
                       <Calendar className="w-2.5 h-2.5" />
                       <span>產出日期: {currentDate}</span>
@@ -253,14 +285,14 @@ export const PdfReportModal: React.FC = () => {
                 <p className="text-[10.5px] text-slate-800 leading-relaxed font-normal">
                   {isInvestor
                     ? `【價值投資視角總評】${activeCompany.name} 在 ${latestPeriod.period} 展現出「${curRatios.economicMoat === 'wide' ? '寬廣經濟護城河 (Wide Moat)' : curRatios.economicMoat === 'narrow' ? '中度競爭壁壘' : '一般競爭結構'}」，營業毛利率 ${curRatios.grossMargin}% 展現良好定價能力。獲利含金量達 ${curRatios.ocfToNetIncome}%（真實現金流落袋扎實），自由現金流為 NT$ ${(curRatios.freeCashFlow / 1000).toLocaleString(undefined, { maximumFractionDigits: 1 })} 百萬元，Altman Z 評分達 ${curRatios.altmanZScore} 分（處於 ${curRatios.altmanZZone === 'safe' ? '安全堡壘區' : '穩定區'}），整體具備高度基本面防禦韌性。`
-                    : aiReport.executiveSummary}
+                    : effectiveReport.executiveSummary}
                 </p>
               </div>
 
               {/* 3. Key Financial Ratios Snapshot Grid */}
               <div>
                 <h2 className="text-[10.5px] font-bold text-slate-700 uppercase tracking-wider mb-1">
-                  {isInvestor ? '價值投資核心指標 (Value & Solvency Ratios)' : '關鍵營運與財務指標摘要 (Key Ratios & Indicators)'}
+                  {isInvestor ? '價值投資核心指標矩陣 (Value & Solvency Ratios)' : '關鍵營運與財務指標摘要 (Key Ratios & Indicators)'}
                 </h2>
                 <div className="grid grid-cols-3 gap-2 text-xs">
                   
@@ -365,8 +397,8 @@ export const PdfReportModal: React.FC = () => {
                     <span>核心競爭優勢與亮點</span>
                   </div>
                   <ul className="space-y-0.5 text-emerald-950 text-[9.5px] leading-tight">
-                    {(aiReport.strengths && aiReport.strengths.length > 0) ? (
-                      aiReport.strengths.slice(0, 3).map((s, i) => (
+                    {(effectiveReport.strengths && effectiveReport.strengths.length > 0) ? (
+                      effectiveReport.strengths.slice(0, 3).map((s, i) => (
                         <li key={i}>• {s}</li>
                       ))
                     ) : (
@@ -381,8 +413,8 @@ export const PdfReportModal: React.FC = () => {
                     <span>潛在風險與改善空間</span>
                   </div>
                   <ul className="space-y-0.5 text-amber-950 text-[9.5px] leading-tight">
-                    {(aiReport.weaknessesAndRisks && aiReport.weaknessesAndRisks.length > 0) ? (
-                      aiReport.weaknessesAndRisks.slice(0, 3).map((w, i) => (
+                    {(effectiveReport.weaknessesAndRisks && effectiveReport.weaknessesAndRisks.length > 0) ? (
+                      effectiveReport.weaknessesAndRisks.slice(0, 3).map((w, i) => (
                         <li key={i}>• {w}</li>
                       ))
                     ) : (
@@ -426,7 +458,7 @@ export const PdfReportModal: React.FC = () => {
                   決策行動方案建議 (Strategic Action Matrix)
                 </h3>
                 <div className="space-y-1 text-xs">
-                  {aiReport.strategicRecommendations.slice(0, 3).map((rec, i) => (
+                  {effectiveReport.strategicRecommendations.slice(0, 3).map((rec, i) => (
                     <div key={i} className="p-1.5 bg-slate-50 rounded-lg border border-slate-200 flex justify-between items-center text-[10px]">
                       <div>
                         <span className="font-bold text-slate-900">【{rec.category}】</span>

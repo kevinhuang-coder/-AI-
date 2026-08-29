@@ -12,6 +12,7 @@ import {
   Search,
   Check,
   ShieldCheck,
+  FileDown,
 } from 'lucide-react';
 
 export const Navbar: React.FC = () => {
@@ -22,6 +23,7 @@ export const Navbar: React.FC = () => {
     setActiveCompanyId,
     setIsDataEditorOpen,
     setIsDisclaimerOpen,
+    setIsPdfModalOpen,
     setEditingCompany,
     resetToSampleData,
   } = useFinancial();
@@ -151,6 +153,17 @@ export const Navbar: React.FC = () => {
             >
               <Upload className="w-3.5 h-3.5 text-slate-400" />
               <span className="hidden sm:inline">搜尋/載入</span>
+            </button>
+
+            {/* Export PDF Report Button */}
+            <button
+              id="export-pdf-report-btn"
+              onClick={() => setIsPdfModalOpen(true)}
+              className="flex items-center space-x-1.5 px-3 py-1.5 rounded-xl bg-emerald-600/90 hover:bg-emerald-600 text-white text-xs font-semibold shadow-sm transition cursor-pointer"
+              title="預覽與產出單頁 A4 財務分析報告"
+            >
+              <FileDown className="w-3.5 h-3.5" />
+              <span>產出 PDF 報告</span>
             </button>
 
             {/* Blog Portal Link */}

@@ -14,10 +14,11 @@ import {
   Target,
   ArrowRight,
   Bot,
+  FileDown,
 } from 'lucide-react';
 
 export const AiInsightPanel: React.FC = () => {
-  const { aiReport, activeCompany, runAiDiagnostic, isLoadingAi, latestPeriod, viewMode } =
+  const { aiReport, activeCompany, runAiDiagnostic, isLoadingAi, latestPeriod, viewMode, setIsPdfModalOpen } =
     useFinancial();
 
   if (!latestPeriod) return null;
@@ -102,14 +103,25 @@ export const AiInsightPanel: React.FC = () => {
             </div>
           </div>
 
-          <button
-            onClick={runAiDiagnostic}
-            disabled={isLoadingAi}
-            className="flex items-center space-x-1.5 px-3.5 py-2 rounded-xl sm:rounded-2xl bg-slate-800/80 hover:bg-slate-700 text-slate-200 border border-slate-700/60 text-xs font-semibold transition self-start sm:self-auto disabled:opacity-50 min-h-[38px] cursor-pointer"
-          >
-            <RotateCcw className={`w-3.5 h-3.5 ${isLoadingAi ? 'animate-spin text-amber-300' : 'text-blue-400'}`} />
-            <span>{isLoadingAi ? '重新運算中...' : '重新分析'}</span>
-          </button>
+          <div className="flex items-center space-x-2 self-start sm:self-auto">
+            <button
+              onClick={() => setIsPdfModalOpen(true)}
+              className="flex items-center space-x-1.5 px-3.5 py-2 rounded-xl sm:rounded-2xl bg-emerald-600/90 hover:bg-emerald-600 text-white text-xs font-semibold shadow-sm transition min-h-[38px] cursor-pointer"
+              title="產出單頁 A4 財務分析報告 PDF"
+            >
+              <FileDown className="w-3.5 h-3.5" />
+              <span>產出 PDF 報告</span>
+            </button>
+
+            <button
+              onClick={runAiDiagnostic}
+              disabled={isLoadingAi}
+              className="flex items-center space-x-1.5 px-3.5 py-2 rounded-xl sm:rounded-2xl bg-slate-800/80 hover:bg-slate-700 text-slate-200 border border-slate-700/60 text-xs font-semibold transition disabled:opacity-50 min-h-[38px] cursor-pointer"
+            >
+              <RotateCcw className={`w-3.5 h-3.5 ${isLoadingAi ? 'animate-spin text-amber-300' : 'text-blue-400'}`} />
+              <span>{isLoadingAi ? '重新運算中...' : '重新分析'}</span>
+            </button>
+          </div>
         </div>
 
         {/* Executive Summary Narrative */}
