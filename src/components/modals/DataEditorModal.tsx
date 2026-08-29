@@ -384,130 +384,13 @@ export const DataEditorModal: React.FC = () => {
           }
         }
       } catch (networkOrApiErr) {
-        console.warn('API PDF Parse fetch failed or returned non-JSON, checking smart fallback parser:', networkOrApiErr);
+        console.warn('API PDF Parse fetch failed or returned non-JSON:', networkOrApiErr);
       }
 
-      // 若後端 API 處於尖峰或 Vercel 無伺服器環境，啟用前端智慧財報解析容錯機制
       if (!parsedCompany) {
-        setPdfParseStep('啟用高階財報特徵解析引擎，自動比對公開資訊觀測站科目...');
-        
-        const lowerName = file.name.toLowerCase();
-        const isTsmc = lowerName.includes('2330') || lowerName.includes('tsmc') || lowerName.includes('台積') || lowerName.includes('積體電路');
-
-        if (isTsmc) {
-          parsedCompany = {
-            name: '台灣積體電路製造股份有限公司 (TSMC)',
-            code: '2330-TW',
-            industry: '半導體晶圓代工製造業',
-            currency: 'NTD (千元)',
-            description: '全球晶圓代工領先企業，先進製程 (3nm/5nm) 產能滿載，高效能運算 (HPC) 與 AI 需求強勁推升營收與淨利雙創新高。',
-            periods: [
-              {
-                id: `pdf-tsmc-2025q2`,
-                year: 2025,
-                period: '2025 年第 2 季 (114Q2)',
-                revenue: 933791869,
-                costOfGoodsSold: 386422631,
-                grossProfit: 547369238,
-                operatingExpenses: 84508339,
-                operatingIncome: 463423638,
-                netIncome: 397493424,
-                sharesOutstanding: 25932615,
-                accountsReceivable: 233407179,
-                inventory: 304193716,
-                accountsPayable: 84771710,
-                currentAssets: 3264917475,
-                currentLiabilities: 1377314334,
-                totalAssets: 7006349549,
-                totalLiabilities: 2389717699,
-                stockholdersEquity: 4616631850,
-                cashAndEquivalents: 2364524340,
-                operatingCashFlow: 1122637757,
-                capitalExpenditures: 628052531,
-              },
-              {
-                id: `pdf-tsmc-2026q2`,
-                year: 2026,
-                period: '2026 年第 2 季 (115Q2 最新)',
-                revenue: 1270380250,
-                costOfGoodsSold: 410069555,
-                grossProfit: 860310695,
-                operatingExpenses: 98982083,
-                operatingIncome: 766602651,
-                netIncome: 706780923,
-                sharesOutstanding: 25932370,
-                accountsReceivable: 435762477,
-                inventory: 385524542,
-                accountsPayable: 110625817,
-                currentAssets: 4565700742,
-                currentLiabilities: 1857761825,
-                totalAssets: 9375654727,
-                totalLiabilities: 2901183746,
-                stockholdersEquity: 6474470981,
-                cashAndEquivalents: 3134218213,
-                operatingCashFlow: 1482341242,
-                capitalExpenditures: 846764746,
-              },
-            ],
-          };
-        } else {
-          // 通用財報特徵解析與推算
-          parsedCompany = {
-            name: file.name.replace(/\.pdf$/i, ''),
-            code: 'IMPORT-PDF',
-            industry: '半導體及電子製造業',
-            currency: 'NTD (千元)',
-            description: `從「${file.name}」公開財報自動提取並對齊標準財務報表科目`,
-            periods: [
-              {
-                id: `pdf-period-${Date.now()}-1`,
-                year: 2025,
-                period: '2025 年度 (前一期)',
-                revenue: 885000000,
-                costOfGoodsSold: 395000000,
-                grossProfit: 490000000,
-                operatingExpenses: 78000000,
-                operatingIncome: 412000000,
-                netIncome: 360000000,
-                sharesOutstanding: 25000000,
-                accountsReceivable: 220000000,
-                inventory: 280000000,
-                accountsPayable: 80000000,
-                currentAssets: 3100000000,
-                currentLiabilities: 1300000000,
-                totalAssets: 6800000000,
-                totalLiabilities: 2300000000,
-                stockholdersEquity: 4500000000,
-                cashAndEquivalents: 2200000000,
-                operatingCashFlow: 1050000000,
-                capitalExpenditures: 590000000,
-              },
-              {
-                id: `pdf-period-${Date.now()}-2`,
-                year: 2026,
-                period: '2026 年度 (最新期)',
-                revenue: 1210000000,
-                costOfGoodsSold: 420000000,
-                grossProfit: 790000000,
-                operatingExpenses: 95000000,
-                operatingIncome: 695000000,
-                netIncome: 640000000,
-                sharesOutstanding: 25000000,
-                accountsReceivable: 390000000,
-                inventory: 350000000,
-                accountsPayable: 105000000,
-                currentAssets: 4200000000,
-                currentLiabilities: 1750000000,
-                totalAssets: 8900000000,
-                totalLiabilities: 2750000000,
-                stockholdersEquity: 6150000000,
-                cashAndEquivalents: 2950000000,
-                operatingCashFlow: 1380000000,
-                capitalExpenditures: 790000000,
-              },
-            ],
-          };
-        }
+        throw new Error(
+          `無法直接從「${file.name}」提取財務文字數據。\n\n【原因說明】：公開資訊觀測站 (MOPS) 的會計師查核報告 PDF 屬於印刷向量圖層或影像掃描檔（無法複製選取純文字），純前端解析無法精準定位科目金額。\n\n【建議解決方式】：\n1. 點選下方「下載標準 CSV 範本」，填寫 6~8 個核心科目後上傳 CSV 檔（100% 精確、絕不產生數字幻覺）。\n2. 或於下方數據編輯表格直接填寫/核算。\n3. 系統已內建「網路家庭 (PChome 8044)」民國113與114年度官方會計師查核數據，您可直接於頂部切換選取！`
+        );
       }
 
       setPdfParseStep('正在核算千元幣別單位與財務平衡校驗...');

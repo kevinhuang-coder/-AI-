@@ -327,14 +327,18 @@ export const FinancialDataTable: React.FC = () => {
                   <td className="py-2.5 px-4 font-sans text-blue-400 sticky left-0 bg-slate-900 z-10 border-r border-slate-800/80 shadow-[2px_0_6px_rgba(0,0,0,0.3)]">營業利益 (EBIT)</td>
                   <td className="py-2.5 px-3 text-center text-slate-400">千元</td>
                   {activeCompanyPeriodsWithRatios.map((p) => (
-                    <td key={p.id} className="py-2.5 px-4 text-right text-blue-300">{p.operatingIncome.toLocaleString()}</td>
+                    <td key={p.id} className={`py-2.5 px-4 text-right ${p.operatingIncome < 0 ? 'text-rose-400 font-bold' : 'text-blue-300'}`}>
+                      {p.operatingIncome < 0 ? `(${Math.abs(p.operatingIncome).toLocaleString()})` : p.operatingIncome.toLocaleString()}
+                    </td>
                   ))}
                 </tr>
                 <tr className="hover:bg-slate-800/30 bg-amber-950/20 font-bold">
                   <td className="py-2.5 px-4 font-sans text-amber-400 sticky left-0 bg-slate-900 z-10 border-r border-slate-800/80 shadow-[2px_0_6px_rgba(0,0,0,0.3)]">稅後淨利 (Net Income)</td>
                   <td className="py-2.5 px-3 text-center text-slate-400">千元</td>
                   {activeCompanyPeriodsWithRatios.map((p) => (
-                    <td key={p.id} className="py-2.5 px-4 text-right text-amber-300">{p.netIncome.toLocaleString()}</td>
+                    <td key={p.id} className={`py-2.5 px-4 text-right ${p.netIncome < 0 ? 'text-rose-400 font-bold' : 'text-amber-300'}`}>
+                      {p.netIncome < 0 ? `(${Math.abs(p.netIncome).toLocaleString()})` : p.netIncome.toLocaleString()}
+                    </td>
                   ))}
                 </tr>
               </>
@@ -407,7 +411,9 @@ export const FinancialDataTable: React.FC = () => {
                   <td className="py-2.5 px-4 font-sans text-emerald-400 sticky left-0 bg-slate-900 z-10 border-r border-slate-800/80 shadow-[2px_0_6px_rgba(0,0,0,0.3)]">營業活動現金流量 (OCF)</td>
                   <td className="py-2.5 px-3 text-center text-slate-400">千元</td>
                   {activeCompanyPeriodsWithRatios.map((p) => (
-                    <td key={p.id} className="py-2.5 px-4 text-right text-emerald-300 font-bold">{p.operatingCashFlow.toLocaleString()}</td>
+                    <td key={p.id} className={`py-2.5 px-4 text-right font-bold ${p.operatingCashFlow < 0 ? 'text-rose-400' : 'text-emerald-300'}`}>
+                      {p.operatingCashFlow < 0 ? `(${Math.abs(p.operatingCashFlow).toLocaleString()})` : p.operatingCashFlow.toLocaleString()}
+                    </td>
                   ))}
                 </tr>
                 <tr className="hover:bg-slate-800/30">
@@ -421,7 +427,9 @@ export const FinancialDataTable: React.FC = () => {
                   <td className="py-2.5 px-4 font-sans text-cyan-400 sticky left-0 bg-slate-900 z-10 border-r border-slate-800/80 shadow-[2px_0_6px_rgba(0,0,0,0.3)]">自由現金流量 (Free Cash Flow)</td>
                   <td className="py-2.5 px-3 text-center text-slate-400">千元</td>
                   {activeCompanyPeriodsWithRatios.map((p) => (
-                    <td key={p.id} className="py-2.5 px-4 text-right text-cyan-300">{p.ratios.freeCashFlow.toLocaleString()}</td>
+                    <td key={p.id} className={`py-2.5 px-4 text-right font-bold ${p.ratios.freeCashFlow < 0 ? 'text-rose-400' : 'text-cyan-300'}`}>
+                      {p.ratios.freeCashFlow < 0 ? `(${Math.abs(p.ratios.freeCashFlow).toLocaleString()})` : p.ratios.freeCashFlow.toLocaleString()}
+                    </td>
                   ))}
                 </tr>
               </>

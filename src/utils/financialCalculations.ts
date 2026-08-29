@@ -275,19 +275,29 @@ export function calculatePeriodRatios(period: FinancialPeriod, previousPeriod?: 
 
   // 經濟護城河 (Economic Moat)
   let economicMoat: 'wide' | 'narrow' | 'none' = 'none';
-  if (grossMargin >= 38 && roe >= 16 && freeCashFlow > 0) {
+  if (netIncome > 0 && grossMargin >= 38 && roe >= 16 && freeCashFlow > 0) {
     economicMoat = 'wide';
-  } else if (grossMargin >= 22 && roe >= 10) {
+  } else if (netIncome > 0 && grossMargin >= 22 && roe >= 10) {
     economicMoat = 'narrow';
+  } else {
+    economicMoat = 'none'; // 虧損或毛利/ROE偏低皆無護城河壁壘
   }
 
   // 獲利含金量評分 (0 - 100)
   let earningsQualityScore = 75;
-  if (ocfToNetIncome >= 110) earningsQualityScore = 95;
-  else if (ocfToNetIncome >= 90) earningsQualityScore = 88;
-  else if (ocfToNetIncome >= 70) earningsQualityScore = 75;
-  else if (ocfToNetIncome >= 50) earningsQualityScore = 60;
-  else earningsQualityScore = 40;
+  if (netIncome <= 0) {
+    if (period.operatingCashFlow < 0) {
+      earningsQualityScore = 15; // 雙重失血：帳面虧損且營運現金大幅淨流出
+    } else {
+      earningsQualityScore = 45; // 帳面虧損但營運現金勉力維持正向
+    }
+  } else {
+    if (ocfToNetIncome >= 110) earningsQualityScore = 95;
+    else if (ocfToNetIncome >= 90) earningsQualityScore = 88;
+    else if (ocfToNetIncome >= 70) earningsQualityScore = 75;
+    else if (ocfToNetIncome >= 50) earningsQualityScore = 60;
+    else earningsQualityScore = 40;
+  }
 
   return {
     arTurnover,
@@ -349,20 +359,25 @@ export function calculateAllPeriodsRatios(periods: FinancialPeriod[]): PeriodWit
 export function calculateHealthDimensions(latest: PeriodWithRatios) {
   const r = latest.ratios;
 
-  // 1. 獲利能力得分 (ROE, 毛利率, 營業利益率)
+  // 1. 獲利能力得分 (毛利率, 營益率, ROE)
   let profitScore = 40;
-  if (r.grossMargin >= 40) profitScore += 20;
-  else if (r.grossMargin >= 25) profitScore += 12;
-  else if (r.grossMargin >= 15) profitScore += 6;
+  if (r.netMargin < 0) {
+    profitScore = Math.max(5, Math.round(20 + r.netMargin * 2));
+    if (r.operatingMargin < 0) profitScore = Math.max(5, profitScore - 12);
+  } else {
+    if (r.grossMargin >= 40) profitScore += 20;
+    else if (r.grossMargin >= 25) profitScore += 12;
+    else if (r.grossMargin >= 15) profitScore += 6;
 
-  if (r.operatingMargin >= 15) profitScore += 20;
-  else if (r.operatingMargin >= 8) profitScore += 12;
-  else if (r.operatingMargin > 0) profitScore += 5;
+    if (r.operatingMargin >= 15) profitScore += 20;
+    else if (r.operatingMargin >= 8) profitScore += 12;
+    else if (r.operatingMargin > 0) profitScore += 5;
 
-  if (r.roe >= 18) profitScore += 20;
-  else if (r.roe >= 12) profitScore += 12;
-  else if (r.roe >= 6) profitScore += 6;
-  profitScore = Math.min(100, Math.max(10, profitScore));
+    if (r.roe >= 18) profitScore += 20;
+    else if (r.roe >= 12) profitScore += 12;
+    else if (r.roe >= 6) profitScore += 6;
+  }
+  profitScore = Math.min(100, Math.max(5, profitScore));
 
   // 2. 營運週轉效率得分 (應收天數 DSO, 存貨天數 DSI, 現金循環 CCC)
   let turnoverScore = 50;
@@ -398,14 +413,16 @@ export function calculateHealthDimensions(latest: PeriodWithRatios) {
 
   // 4. 現金流品質得分 (OCF / Net Income, 自由現金流)
   let cashflowScore = 45;
-  if (r.ocfToNetIncome >= 110) cashflowScore += 30;
+  if (latest.operatingCashFlow < 0) {
+    cashflowScore = Math.max(5, Math.round(20 + (latest.operatingCashFlow / (latest.revenue || 1)) * 300));
+  } else if (r.ocfToNetIncome >= 110) cashflowScore += 30;
   else if (r.ocfToNetIncome >= 80) cashflowScore += 18;
   else if (r.ocfToNetIncome >= 50) cashflowScore += 8;
   else cashflowScore -= 15;
 
   if (r.freeCashFlow > 0) cashflowScore += 25;
-  else cashflowScore -= 10;
-  cashflowScore = Math.min(100, Math.max(10, cashflowScore));
+  else cashflowScore -= 15;
+  cashflowScore = Math.min(100, Math.max(5, cashflowScore));
 
   // 5. 資產運用與槓桿綜效 (總資產週轉率, 杜邦權益乘數適度性)
   let assetEfficiencyScore = 50;
@@ -459,7 +476,8 @@ export function generateLocalAiReport(companyName: string, periodsWithRatios: Pe
 
   // 營收成長率
   const revGrowth = previous.revenue > 0 ? ((latest.revenue - previous.revenue) / previous.revenue) * 100 : 0;
-  const netIncomeGrowth = previous.netIncome > 0 ? ((latest.netIncome - previous.netIncome) / previous.netIncome) * 100 : 0;
+  const isNetLoss = latest.netIncome < 0;
+  const isOperatingLoss = latest.operatingIncome < 0;
   const dsoChange = latest.ratios.dso - previous.ratios.dso;
   const dsiChange = latest.ratios.dsi - previous.ratios.dsi;
 
@@ -467,7 +485,12 @@ export function generateLocalAiReport(companyName: string, periodsWithRatios: Pe
   const weaknesses: string[] = [];
 
   // 1. 毛利率與獲利能力診斷
-  if (latest.ratios.grossMargin >= 30) {
+  if (isNetLoss) {
+    weaknesses.push(`本期呈顯著虧損：稅後淨損 NT$ ${(Math.abs(latest.netIncome)/1000).toLocaleString()} 百萬元（淨利率 ${latest.ratios.netMargin}%，每股虧損 NT$ ${latest.ratios.eps}），本業獲利嚴重受壓，需急迫推動成本瘦身與事業重整。`);
+    if (isOperatingLoss) {
+      weaknesses.push(`本業營業利益轉負：營業淨損 NT$ ${(Math.abs(latest.operatingIncome)/1000).toLocaleString()} 百萬元，顯示毛利無法覆蓋龐大營業費用，核心本業失去造血功能。`);
+    }
+  } else if (latest.ratios.grossMargin >= 30) {
     strengths.push(`高產品附加價值：毛利率達 ${latest.ratios.grossMargin}%，具備堅實的定價能力與技術防護盾。`);
   } else if (latest.ratios.grossMargin < 18) {
     weaknesses.push(`毛利承壓嚴重：毛利率僅 ${latest.ratios.grossMargin}%，易受原物料價格波動及同業價格競爭削價衝擊。`);
@@ -476,13 +499,79 @@ export function generateLocalAiReport(companyName: string, periodsWithRatios: Pe
   }
 
   // 2. 股東權益報酬率 (ROE)
-  if (latest.ratios.roe >= 15) {
+  if (!isNetLoss && latest.ratios.roe >= 15) {
     strengths.push(`股東回報優異：ROE 達 ${latest.ratios.roe}%，資金配置效率與資本報酬率卓越。`);
+  } else if (latest.ratios.roe < 0) {
+    weaknesses.push(`權益報酬呈負值：ROE 錄得 ${latest.ratios.roe}%，股東權益持續遭到虧損侵蝕。`);
   } else if (latest.ratios.roe < 8) {
     weaknesses.push(`權益報酬偏低：ROE 僅 ${latest.ratios.roe}%，資產轉化為股東實質利潤的能力有待提升。`);
   } else {
     weaknesses.push(`資產報酬效益潛力：ROE 為 ${latest.ratios.roe}%，可透過加速資產週轉與優化產品利潤率進一步推升股東回報。`);
   }
+
+  // 3. 應收帳款天數 (DSO) 與信用管理
+  if (latest.ratios.dso <= 50) {
+    strengths.push(`帳款回收極為迅速：應收帳款天數僅 ${latest.ratios.dso} 天，銷貨收現流暢、客戶信用控管嚴謹。`);
+  } else if (latest.ratios.dso > 80) {
+    weaknesses.push(`應收帳款滯留風險：DSO 達 ${latest.ratios.dso} 天（較前期變動 ${dsoChange > 0 ? '+' : ''}${dsoChange.toFixed(1)} 天），需防範下游客戶延遲付款與潛在呆帳損失。`);
+  } else {
+    weaknesses.push(`帳款回收週期優化空間：目前 DSO 為 ${latest.ratios.dso} 天，建議推動現金折扣促銷 (如 2/10 net 30) 以縮短資金滯留期。`);
+  }
+
+  // 4. 存貨天數 (DSI) 與庫存風險
+  if (latest.ratios.dsi <= 60) {
+    strengths.push(`存貨去化健康敏捷：存貨週轉天數 ${latest.ratios.dsi} 天，供應鏈彈性高、庫存積壓資金成本低。`);
+  } else if (latest.ratios.dsi > 95) {
+    weaknesses.push(`存貨週期拉長：DSI 達 ${latest.ratios.dsi} 天（週轉率 ${latest.ratios.inventoryTurnover} 次），需警戒存貨跌價損失提列與倉儲資金佔用。`);
+  } else {
+    weaknesses.push(`存貨去化與備料平衡：存貨天數為 ${latest.ratios.dsi} 天，需密切關注下游終端拉貨動能，避免安全庫存超額積壓。`);
+  }
+
+  // 5. 現金轉換循環 (CCC)
+  if (latest.ratios.cashConversionCycle <= 40) {
+    strengths.push(`營運資金循環卓越：現金轉換循環 (CCC) 僅 ${latest.ratios.cashConversionCycle} 天，資金週轉速度快，營運資金佔用極小。`);
+  } else if (latest.ratios.cashConversionCycle > 80) {
+    weaknesses.push(`現金轉換循環 (CCC) 偏長：目前需 ${latest.ratios.cashConversionCycle} 天完成現金回流，對外部流動性融資需求與利息成本負擔較大。`);
+  } else {
+    weaknesses.push(`現金流循環壓縮潛力：CCC 為 ${latest.ratios.cashConversionCycle} 天，可透過協商延長應付帳款天數 (DPO) 與加速收現同步優化。`);
+  }
+
+  // 6. 流動性與償債結構
+  if (latest.ratios.currentRatio >= 180 && latest.ratios.quickRatio >= 120) {
+    strengths.push(`短期流動性充沛：流動比率 ${latest.ratios.currentRatio}%、速動比率 ${latest.ratios.quickRatio}%，具備穩健的抗風險與即時償債韌性。`);
+  } else if (latest.ratios.currentRatio < 130) {
+    weaknesses.push(`短期流動性吃緊：流動比率 ${latest.ratios.currentRatio}%，需妥善調度資金池或預備銀行短期週轉額度以防資金鏈緊張。`);
+  }
+
+  // 7. 現金流品質
+  if (latest.operatingCashFlow < 0) {
+    weaknesses.push(`營業現金大幅淨流出：本期營業現金流為 NT$ ${(latest.operatingCashFlow/1000).toLocaleString()} 百萬元，出現實質資金缺口，需高度防範資金鏈斷裂。`);
+  } else if (latest.ratios.ocfToNetIncome >= 90) {
+    strengths.push(`獲利含金量高：營業現金流對淨利比達 ${latest.ratios.ocfToNetIncome}%，帳面利潤均有扎實的真金白銀支撐。`);
+  } else {
+    weaknesses.push(`獲利與現金流存在落差：營業現金流/淨利比僅 ${latest.ratios.ocfToNetIncome}%，需留意盈餘品質與未收帳款增長速度。`);
+  }
+
+  // 8. 成長動能與總體敏感度補充
+  if (revGrowth < 5 && revGrowth >= 0) {
+    weaknesses.push(`營收成長動能趨緩：本期營收成長率為 ${revGrowth.toFixed(1)}%，需積極開拓新市場或高單價產品線以突破成長天花板。`);
+  } else if (revGrowth < 0) {
+    weaknesses.push(`營收出現衰退警訊：本期營收 YoY 衰退 ${Math.abs(revGrowth).toFixed(1)}%，需全面檢視客戶流失率與主力產品競爭力。`);
+  }
+
+  // 保證即使最頂尖的企業，也能提供高品質的改善策略與風險監控
+  if (weaknesses.length === 0) {
+    weaknesses.push(
+      `供應鏈與總體景氣敏感度：面對外部匯率與總體經貿波動，需加強避險操作與關鍵原材料多來源採購。`,
+      `持續優化營運資金效率：目前 CCC 維持良好，可進一步深化供應鏈金融合作，將資金釋放最大化。`,
+      `研發與資本支出回收追蹤：需嚴格追蹤各項資本投入之後續效益，確保新產品良率與毛利如期達成預期目標。`
+    );
+  }
+
+  // 執行摘要
+  const executiveSummary = isNetLoss
+    ? `【經營全景診斷】「${companyName}」在 ${latest.period} 面臨嚴峻之營運挑戰與本業虧損，本期稅後淨損達 NT$ ${(Math.abs(latest.netIncome)/1000).toLocaleString()} 百萬元（每股虧損 NT$ ${latest.ratios.eps}），營業利益率為 ${latest.ratios.operatingMargin}%。毛利率錄得 ${latest.ratios.grossMargin}%，顯示受同業價格競爭與成本上升削弱。營運活動現金流量為 NT$ ${(latest.operatingCashFlow/1000).toLocaleString()} 百萬元，當前首要任務為精簡固定營業費用、提升核心通路獲利率，並嚴密監控短期償債與現金儲備。`
+    : `【經營全景診斷】「${companyName}」在 ${latest.period} 綜合財務健康總體評估為「${health.rating}」（綜合指標得分 ${health.totalScore} 分）。本期營業收入達 NT$ ${(latest.revenue / 1000).toLocaleString()} 百萬元（YoY 成長率 ${revGrowth >= 0 ? '+' : ''}${revGrowth.toFixed(1)}%），營業毛利率為 ${latest.ratios.grossMargin}%、營業利益率為 ${latest.ratios.operatingMargin}%、股東權益報酬率 (ROE) 達 ${latest.ratios.roe}%。整體營運資金循環 (CCC) 為 ${latest.ratios.cashConversionCycle} 天，展現均衡穩健的營運效率。`;
 
   // 3. 應收帳款天數 (DSO) 與信用管理
   if (latest.ratios.dso <= 50) {
