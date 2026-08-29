@@ -104,7 +104,7 @@ const DashboardContent: React.FC = () => {
           </div>
         )}
 
-        {/* 凱文黃個人品牌與部落格專屬頁尾 */}
+        {/* 凱文黃個人品牌與部落格頁尾 */}
         <BrandFooter />
       </main>
     </div>

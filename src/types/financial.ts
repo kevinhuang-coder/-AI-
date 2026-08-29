@@ -80,7 +80,7 @@ export interface CalculatedRatios {
   rigorousFcf: number;          // 審計嚴謹版自由現金流 (扣無形資產與租賃本金) (千元)
   coreCashConversionRatio: number; // 核心本業營業現金轉換率 (%)
 
-  // 價值投資者專屬指標 (Value Investor Metrics)
+  // 價值投資指標 (Value Investor Metrics)
   altmanZScore: number;         // Altman Z-Score 破產防禦分數
   altmanZZone: 'safe' | 'grey' | 'distress'; // 安全區 / 灰色區 / 困境區
   economicMoat: 'wide' | 'narrow' | 'none';  // 經濟護城河 (寬 / 窄 / 無)

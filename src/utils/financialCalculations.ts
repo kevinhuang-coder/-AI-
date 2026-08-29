@@ -776,7 +776,7 @@ export function generateFinancialCopilotResponse(
 
   // 0. 日常問候語友善引導 (Greeting Handler)
   if (['hi', 'hello', 'hey', '你好', '您好', '哈囉', '嗨', '早安', '午安', '晚安'].includes(q) || q === 'hi!' || q === 'hello!') {
-    return `您好！我是您的專屬「AI 數位財務顧問（Financial Copilot）」👋\n\n` +
+    return `您好！我是「AI 數位財務顧問（Financial Copilot）」👋\n\n` +
       `目前系統正在深入分析「${companyName}」在 ${latest.period} 的最新官方審計年報（毛利率 ${latest.ratios.grossMargin}%、ROE ${latest.ratios.roe}%）。\n\n` +
       `您可以向我詢問例如：\n` +
       `• 「這家公司具備長期的經濟護城河嗎？」\n` +

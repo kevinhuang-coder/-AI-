@@ -97,7 +97,7 @@ export const AiInsightPanel: React.FC = () => {
                 </span>
               </div>
               <p className="text-xs text-slate-400 mt-0.5">
-                《凱文黃的知識天地》專屬體系 • 結合 Google Gemini 2.5 Flash 與專業財務分析演算法，深度拆解經濟護城河、核心獲利含金量與 Altman Z 破產防禦
+                結合 Google Gemini 2.5 Flash 與專業財務分析演算法，深度拆解經濟護城河、核心獲利含金量與 Altman Z 破產防禦
               </p>
             </div>
           </div>

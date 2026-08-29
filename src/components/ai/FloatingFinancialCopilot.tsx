@@ -20,7 +20,7 @@ export const FloatingFinancialCopilot: React.FC = () => {
   const [chatHistory, setChatHistory] = useState<Array<{ role: 'user' | 'assistant'; text: string }>>([
     {
       role: 'assistant',
-      text: `您好！我是您的專屬「AI 數位財務長與價值投資顧問（Financial Copilot）」。\n我已深入掌握「${activeCompany.name}」的財務報表、經濟護城河、獲利含金量、週轉效率及破產防禦指標。\n\n您可以隨時點選下方快捷問題，或向我提出任何關於營運資本優化、長期存股價值、安全邊際或未來趨勢之情境推演！`,
+      text: `您好！我是「AI 數位財務顧問（Financial Copilot）」。\n我已深入掌握「${activeCompany.name}」的財務報表、經濟護城河、獲利含金量、週轉效率及破產防禦指標。\n\n您可以隨時點選下方快捷問題，或向我提出任何關於營運資本優化、長期存股價值、安全邊際或未來趨勢之情境推演！`,
     },
   ]);
 
