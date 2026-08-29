@@ -223,20 +223,19 @@ export const PdfReportModal: React.FC = () => {
                     <div className="flex items-center space-x-1.5 text-emerald-800 font-bold text-[10px] uppercase tracking-wider mb-0.5">
                       <Building2 className="w-3.5 h-3.5 text-emerald-700" />
                       <span>{activeCompany.industry} • 《凱文黃的知識天地》價值決策 AI 財務分析報告</span>
-                    </div>
                     <h1 className="text-xl font-black text-slate-950 tracking-tight">
                       {activeCompany.name}
                     </h1>
-                    <p className="text-[11px] text-slate-600 mt-0.5">
-                      股票代號 / 識別碼：<span className="font-mono font-bold text-slate-800">{activeCompany.code}</span> • 報告基準期：<span className="font-bold text-slate-900">{latestPeriod.period}</span>
-                    </p>
-                  </div>
-
-                  <div className="text-right flex-shrink-0">
-                    <div className="inline-flex items-center space-x-1 px-2.5 py-0.5 bg-emerald-50 border border-emerald-200 rounded-lg text-emerald-900 text-[11px] font-bold">
-                      <Sparkles className="w-3 h-3 text-amber-500" />
-                      <span>{isInvestor ? '投資評級' : 'AI 診斷評級'}: {health.rating} ({health.totalScore}分)</span>
+                    <div className="flex items-center space-x-1.5 text-slate-600 font-medium text-[10px] mt-0.5">
+                      <span>{activeCompany.industry} • 《凱文黃的知識天地》價值決策 財務分析報告</span>
+                      <span>•</span>
+                      <span>報表基準：{latestPeriod.period} 官方審定年報</span>
                     </div>
+                  </div>
+                  <div className="flex flex-wrap items-center gap-2">
+                    <span className="inline-flex items-center px-2.5 py-1 rounded bg-slate-900 text-white font-mono font-bold text-xs border border-slate-700">
+                      <span>{isInvestor ? '投資評級' : '綜合財務評級'}: {health.rating} ({health.totalScore}分)</span>
+                    </span>
                     <div className="text-[10px] text-slate-500 mt-1 flex items-center justify-end space-x-1">
                       <Calendar className="w-2.5 h-2.5" />
                       <span>產出日期: {currentDate}</span>
@@ -445,7 +444,7 @@ export const PdfReportModal: React.FC = () => {
             {/* 7. Footer Sign-off & Disclaimer (Bottom Pinned) */}
             <div className="border-t border-slate-200 pt-1.5 space-y-0.5 text-[8.5px] text-slate-500">
               <div className="flex justify-between items-center">
-                <span>報告由「價值決策 (Value Decision) AI 財報分析工具」自動生成 • 內部研究參考文件</span>
+                <span>報告由「價值決策 (Value Decision) 財報分析工具」自動生成 • 內部研究參考文件</span>
                 <span className="font-bold">第 1 頁 / 共 1 頁</span>
               </div>
               <p className="text-[8px] text-slate-400 leading-tight">

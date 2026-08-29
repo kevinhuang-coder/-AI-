@@ -38,7 +38,7 @@ export async function directAskGeminiCopilot(
   if (!ai) return null;
 
   const prompt = `
-你是一位擁有會計查核思維與價值投資基本面分析專業的「AI 財務分析助手（Financial Copilot）」。
+你是一位擁有會計查核思維與價值投資基本面分析專業的「財務分析助手（Financial Copilot）」。
 使用者目前正在研究「${companyName || '目標分析企業'}」的財務報表。
 
 【當前企業財務背景數據】：

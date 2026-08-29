@@ -43,7 +43,7 @@ export const AiForecastChart: React.FC = () => {
               <Sparkles className="w-4 h-4 text-amber-300" />
             </div>
             <h3 className="text-base font-bold text-white tracking-tight">
-              AI 多變量趨勢預測模型 (Next Periods Forecast)
+              多變量營運趨勢預測模型 (Financial Forecast)
             </h3>
           </div>
           <p className="text-xs text-slate-400 mt-1">
@@ -208,7 +208,7 @@ export const AiForecastChart: React.FC = () => {
         <div>
           <div className="flex items-center space-x-2 text-xs font-semibold text-indigo-300 flex-wrap gap-y-1">
             <Compass className="w-4 h-4 flex-shrink-0" />
-            <span>AI 決策預測摘要 ({aiReport.forecast.nextPeriod})</span>
+            <span>未來情境預測摘要 ({aiReport.forecast.nextPeriod})</span>
             <span className="bg-indigo-900/60 text-indigo-200 px-2.5 py-0.5 rounded-full border border-indigo-700/60 text-[10px] font-mono">
               信心度: {aiReport.forecast.confidenceLevel}%
             </span>

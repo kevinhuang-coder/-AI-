@@ -68,7 +68,7 @@ export const WelcomeDisclaimerModal: React.FC = () => {
                 </span>
               </div>
               <p className="text-xs text-slate-400 mt-0.5">
-                《凱文黃的知識天地》AI 價值投資財報分析系統
+                《凱文黃的知識天地》價值投資財報分析系統
               </p>
             </div>
           </div>
@@ -140,10 +140,10 @@ export const WelcomeDisclaimerModal: React.FC = () => {
               <div className="p-3 rounded-xl bg-slate-950/40 border border-slate-800/80 space-y-1">
                 <div className="font-bold text-indigo-300 flex items-center gap-1">
                   <Sparkles className="w-3.5 h-3.5 text-amber-300" />
-                  <span>Gemini 2.5 Flash</span>
+                  <span>多維情境互動推演</span>
                 </div>
                 <p className="text-[11px] text-slate-400 leading-snug">
-                  由使用者按需點擊觸發深度診斷與 Financial Copilot 智能多輪問答。
+                  提供深度財務診斷與 Financial Copilot 互動式多維問答推演。
                 </p>
               </div>
             </div>
@@ -163,7 +163,7 @@ export const WelcomeDisclaimerModal: React.FC = () => {
                 <strong>資料來源與審慎評估：</strong>報表數據彙整自公開發行公司官方公告，系統雖力求勾稽嚴謹，使用者在進行重大商業投資決策前，仍應參閱公開資訊觀測站最新公告並獨立評估市場風險。
               </li>
               <li>
-                <strong>投資風險自負：</strong>歷史財務數據與 AI 推演僅供學術探討與研究參考，過去績效不代表未來獲利保證，投資人須自負盈虧。
+                <strong>投資風險自負：</strong>歷史財務數據與情境推演僅供學術探討與研究參考，過去績效不代表未來獲利保證，投資人須自負盈虧。
               </li>
             </ul>
           </div>

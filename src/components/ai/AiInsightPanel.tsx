@@ -34,14 +34,14 @@ export const AiInsightPanel: React.FC = () => {
             <div>
               <div className="flex items-center gap-2 flex-wrap">
                 <h3 className="text-sm sm:text-base font-bold text-white tracking-tight">
-                  AI 價值投資與基本面深度診斷
+                  價值投資與財務健全度深度診斷
                 </h3>
                 <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-emerald-950 text-emerald-300 border border-emerald-500/30 font-semibold">
-                  Powered by Google Gemini 2.5 Flash
+                  多維財務模型分析
                 </span>
               </div>
               <p className="text-xs text-slate-400 mt-1">
-                尚未執行分析。點擊右側按鈕，啟動大模型針對「{activeCompany.name}」進行經濟護城河、獲利現金含金量與 Altman Z 破產防禦之全面嚴謹診斷。
+                尚未執行分析。點擊右側按鈕，針對「{activeCompany.name}」進行經濟護城河、獲利現金含金量與 Altman Z 破產防禦之全面深度診斷。
               </p>
               <div className="flex flex-wrap gap-2 mt-2 text-[11px] text-slate-400">
                 <span className="px-2 py-0.5 rounded-md bg-slate-800/60 border border-slate-700/50">👑 護城河定價權</span>
@@ -58,7 +58,7 @@ export const AiInsightPanel: React.FC = () => {
             className="flex items-center justify-center space-x-2 px-4.5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs sm:text-sm font-bold shadow-md shadow-emerald-900/30 transition disabled:opacity-50 cursor-pointer flex-shrink-0 self-start md:self-center"
           >
             <Sparkles className={`w-4 h-4 ${isLoadingAi ? 'animate-spin' : 'text-amber-300'}`} />
-            <span>{isLoadingAi ? 'AI 正在精算診斷中...' : '✨ 立即啟動 AI 深度診斷'}</span>
+            <span>{isLoadingAi ? '正在運算診斷中...' : '✨ 立即啟動深度診斷'}</span>
           </button>
         </div>
       </div>
@@ -70,7 +70,7 @@ export const AiInsightPanel: React.FC = () => {
 
   return (
     <div className="space-y-5 sm:space-y-6">
-      {/* 1. Main Executive AI Diagnostic Header Card */}
+      {/* 1. Main Executive Diagnostic Header Card */}
       <div className="rounded-2xl sm:rounded-3xl border border-slate-800 bg-slate-900/60 backdrop-blur-sm p-4.5 sm:p-6 shadow-sm relative overflow-hidden">
         <div className={`absolute top-0 right-0 w-96 h-96 ${isInvestor ? 'bg-emerald-500/5' : 'bg-blue-500/5'} rounded-full blur-3xl pointer-events-none`}></div>
 
@@ -82,11 +82,11 @@ export const AiInsightPanel: React.FC = () => {
             <div>
               <div className="flex items-center gap-2 flex-wrap">
                 <h3 className="text-base sm:text-lg font-bold text-white tracking-tight">
-                  AI 價值投資與基本面深度診斷報告
+                  價值投資與基本面深度診斷報告
                 </h3>
                 <span className="text-[10px] sm:text-xs px-2.5 py-0.5 rounded-full font-mono font-semibold bg-emerald-500/15 text-emerald-300 border border-emerald-500/30 flex items-center gap-1.5">
                   <Sparkles className="w-3 h-3 text-amber-300" />
-                  Powered by Google Gemini 2.5 Flash
+                  多維財務模型分析
                 </span>
                 <span className={`text-[10px] sm:text-xs px-2.5 py-0.5 rounded-full font-mono font-bold ${
                   aiReport.overallScore >= 80 ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30' :
@@ -97,7 +97,7 @@ export const AiInsightPanel: React.FC = () => {
                 </span>
               </div>
               <p className="text-xs text-slate-400 mt-0.5">
-                結合 Google Gemini 2.5 Flash 與專業財務分析演算法，深度拆解經濟護城河、核心獲利含金量與 Altman Z 破產防禦
+                結合經典價值投資模型與多維財務演算法，深度拆解經濟護城河、核心獲利含金量與 Altman Z 破產防禦
               </p>
             </div>
           </div>
@@ -116,7 +116,7 @@ export const AiInsightPanel: React.FC = () => {
         <div className="p-4 sm:p-5 rounded-2xl bg-slate-950/70 border border-slate-800 text-slate-200 text-xs sm:text-sm leading-relaxed mb-4 sm:mb-6 shadow-inner">
           <div className="flex items-center gap-1.5 text-xs font-bold text-indigo-300 uppercase tracking-wider mb-1.5">
             <Bot className="w-4 h-4 text-indigo-400" />
-            <span>AI 財務分析助手 核心結論總評</span>
+            <span>基本面研究核心結論總評</span>
           </div>
           <p className="font-sans text-slate-300 leading-relaxed">
             {isInvestor ? (
@@ -404,8 +404,8 @@ export const AiInsightPanel: React.FC = () => {
             <Bot className="w-4 h-4 text-indigo-400" />
             <span>
               {isInvestor
-                ? '想了解更多估值與長期存股潛力？點擊右下角「AI 財務分析助手」進行深度問答 ➔'
-                : '需要更多情境推演或細部諮詢？點擊右下角「AI 財務分析助手」隨時開展對話 ➔'}
+                ? '想了解更多估值與長期存股潛力？點擊右下角「財務分析助手」進行深度問答 ➔'
+                : '需要更多情境推演或細部諮詢？點擊右下角「財務分析助手」隨時開展對話 ➔'}
             </span>
           </div>
           <span className="text-[10px] text-slate-500 font-mono">Financial Assistant</span>

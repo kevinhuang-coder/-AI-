@@ -759,7 +759,7 @@ export function generateLocalAiReport(companyName: string, periodsWithRatios: Pe
 }
 
 /**
- * 智慧型 AI 財務分析助手即時諮詢推演引擎 (Financial Copilot Inference Engine)
+ * 智慧型財務分析助手即時諮詢推演引擎 (Financial Copilot Inference Engine)
  * 根據使用者具體問題意圖與最新多維財報數據，動態產生具備深度基本面價值之分析推演
  */
 export function generateFinancialCopilotResponse(
@@ -769,14 +769,14 @@ export function generateFinancialCopilotResponse(
   aiReport?: AiDiagnosticReport | null
 ): string {
   if (!latest) {
-    return `【AI 財務分析助手】目前尚未載入「${companyName}」之財務數據，請先於上方選擇或匯入財務報表期別數據。`;
+    return `【財務分析助手】目前尚未載入「${companyName}」之財務數據，請先於上方選擇或匯入財務報表期別數據。`;
   }
 
   const q = question.toLowerCase().trim();
 
   // 0. 日常問候語友善引導 (Greeting Handler)
   if (['hi', 'hello', 'hey', '你好', '您好', '哈囉', '嗨', '早安', '午安', '晚安'].includes(q) || q === 'hi!' || q === 'hello!') {
-    return `您好！我是「AI 財務分析助手（Financial Copilot）」👋\n\n` +
+    return `您好！我是「財務分析助手（Financial Copilot）」👋\n\n` +
       `目前系統正在深入分析「${companyName}」在 ${latest.period} 的最新官方審計年報（毛利率 ${latest.ratios.grossMargin}%、ROE ${latest.ratios.roe}%）。\n\n` +
       `您可以向我詢問例如：\n` +
       `• 「這家公司具備長期的經濟護城河嗎？」\n` +
@@ -807,7 +807,7 @@ export function generateFinancialCopilotResponse(
     const isWarning = dso > 85;
     const cashRelease = Math.round(latest.revenue * (5 / 365) / 1000).toLocaleString();
 
-    return `【AI 財務分析助手・應收帳款與信用政策策略】\n\n` +
+    return `【財務分析助手・應收帳款與信用政策策略】\n\n` +
       `📊 1. 核心數據現況（基準期：${period}）：\n` +
       `• 應收帳款週轉率：${arTurnover} 次 / 年\n` +
       `• 平均收現天數 (DSO)：${dso} 天（行業標準優質區間約 45～65 天）\n` +
@@ -830,7 +830,7 @@ export function generateFinancialCopilotResponse(
     const isHigh = dsi > 85;
     const workingCapitalSaving = Math.round(latest.costOfGoodsSold * (8 / 365) / 1000).toLocaleString();
 
-    return `【AI 財務分析助手・存貨去化與供應鏈效能評估】\n\n` +
+    return `【財務分析助手・存貨去化與供應鏈效能評估】\n\n` +
       `📊 1. 核心數據現況（基準期：${period}）：\n` +
       `• 存貨週轉率：${invTurnover} 次 / 年\n` +
       `• 存貨週轉天數 (DSI)：${dsi} 天（健康基準通常為 50～75 天）\n` +
@@ -852,7 +852,7 @@ export function generateFinancialCopilotResponse(
     const isSuperEfficient = ccc <= 45;
     const cashPerDay = Math.round(latest.revenue / 365 / 1000).toLocaleString();
 
-    return `【AI 財務分析助手・現金轉換循環 (CCC) 與資金槓桿】\n\n` +
+    return `【財務分析助手・現金轉換循環 (CCC) 與資金槓桿】\n\n` +
       `📊 1. 現金循環拆解矩陣（基準期：${period}）：\n` +
       `• 應收帳款天數 (DSO)：${dso} 天\n` +
       `• 加上 存貨週轉天數 (DSI)：${dsi} 天\n` +
@@ -872,7 +872,7 @@ export function generateFinancialCopilotResponse(
   if (q.includes('roe') || q.includes('杜邦') || q.includes('獲利') || q.includes('毛利') || q.includes('淨利') || q.includes('純益') || q.includes('驅動')) {
     const isHighRoe = roe >= 18;
 
-    return `【AI 財務分析助手・杜邦分析三因子歸因與 ROE 驅動力】\n\n` +
+    return `【財務分析助手・杜邦分析三因子歸因與 ROE 驅動力】\n\n` +
       `📊 1. 杜邦分析三因子拆解公式（基準期：${period}）：\n` +
       `• 【稅後純益率】：${r.dupontNetMargin}% （營業毛利率 ${gm}%、營益率 ${om}%）\n` +
       `• 【總資產週轉率】：${r.dupontAssetTurnover} 次 / 年 （資產營運效率）\n` +
@@ -893,7 +893,7 @@ export function generateFinancialCopilotResponse(
     const moatLabel = moatType === 'wide' ? '👑 寬廣經濟護城河 (Wide Moat)' : moatType === 'narrow' ? '🛡️ 窄經濟護城河 (Narrow Moat)' : '⚠️ 無顯著護城河 (No Moat)';
     const fcfMillions = (r.freeCashFlow / 1000).toLocaleString('zh-TW', { maximumFractionDigits: 1 });
 
-    return `【AI 財務分析助手・企業經濟護城河 (Economic Moat) 深度評級】\n\n` +
+    return `【財務分析助手・企業經濟護城河 (Economic Moat) 深度評級】\n\n` +
       `🏰 1. 護城河評級結果：【 ${moatLabel} 】（基準期：${period}）\n` +
       `• 營業毛利率：${gm}% （反映定價權與技術/品牌溢價防護盾）\n` +
       `• 股東權益報酬率 (ROE)：${roe}% （反映股東資本複利累積效應）\n` +
@@ -915,7 +915,7 @@ export function generateFinancialCopilotResponse(
     const isGold = ocfRatio >= 100;
     const isWarning = ocfRatio < 70;
 
-    return `【AI 財務分析助手・獲利含金量與盈餘品質檢驗】\n\n` +
+    return `【財務分析助手・獲利含金量與盈餘品質檢驗】\n\n` +
       `💎 1. 核心含金量指標矩陣（基準期：${period}）：\n` +
       `• 營業活動現金流 (OCF)：NT$ ${ocfMillions} 百萬元\n` +
       `• 帳面稅後淨利 (Net Income)：NT$ ${(latest.netIncome / 1000).toLocaleString()} 百萬元\n` +
@@ -936,7 +936,7 @@ export function generateFinancialCopilotResponse(
     const zone = r.altmanZZone;
     const zoneLabel = zone === 'safe' ? '🏰 安全堡壘區 (Safe Zone - 破產風險極低)' : zone === 'grey' ? '⚖️ 灰色觀察區 (Grey Zone - 體質尚可)' : '🚨 財務困境區 (Distress Zone - 高風險警戒)';
 
-    return `【AI 財務分析助手・Altman Z-Score 破產防禦與財務健全度】\n\n` +
+    return `【財務分析助手・Altman Z-Score 破產防禦與財務健全度】\n\n` +
       `🛡️ 1. 華爾街經典 Altman Z-Score 評分：【 ${z} 分 】\n` +
       `• 判定等級：【 ${zoneLabel} 】\n` +
       `• 流動比率：${r.currentRatio}% ｜ 負債比率：${r.debtRatio}% ｜ 利息保障倍數：${r.interestCoverageRatio} 倍\n\n` +
@@ -952,7 +952,7 @@ export function generateFinancialCopilotResponse(
 
   // 8. 價值投資 / 存股 / 多空投資論點 (Bull vs Bear)
   if (q.includes('存股') || q.includes('投資') || q.includes('多空') || q.includes('價值') || q.includes('買進') || q.includes('長期')) {
-    return `【AI 財務分析助手・多空戰略觀點 (Bull vs. Bear Thesis)】\n\n` +
+    return `【財務分析助手・多空戰略觀點 (Bull vs. Bear Thesis)】\n\n` +
       `🟢 【多方看好理由 (Bull Case)】：\n` +
       `• 優異股東權益報酬率：ROE 達 ${roe}%，每股盈餘 EPS NT$ ${eps}，具備優異資本複利動能。\n` +
       `• 護城河與定價權：營業毛利率達 ${gm}%，產品具備定價優勢，抗通膨能力堅實。\n` +
@@ -964,7 +964,7 @@ export function generateFinancialCopilotResponse(
   }
 
   // 9. 自由提問與綜合諮詢通用高階解答
-  return `【AI 財務分析助手・經營與決策診斷】\n\n` +
+  return `【財務分析助手・經營與決策診斷】\n\n` +
     `針對您詢問「${question}」，結合「${companyName}」在 ${period} 的核心財務指標：\n\n` +
     `📊 1. 關鍵經營指標速覽：\n` +
     `• 營業收入：NT$ ${revMillions} 百萬元｜營業毛利率：${gm}%｜稅後淨利率：${nm}%\n` +

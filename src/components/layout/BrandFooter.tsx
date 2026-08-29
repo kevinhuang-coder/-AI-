@@ -31,7 +31,7 @@ export const BrandFooter: React.FC = () => {
                   </span>
                 </h3>
                 <p className="text-xs text-slate-400 font-medium">
-                  《凱文黃的知識天地》AI 財報分析工具
+                  《凱文黃的知識天地》財報分析工具
                 </p>
               </div>
             </div>
@@ -119,7 +119,7 @@ export const BrandFooter: React.FC = () => {
                 <span>訪問個人官方網站</span>
               </h4>
               <p className="text-xs text-slate-400 mt-1.5 leading-relaxed">
-                更多關於 AI、會計審計、稅法解析與學習工作法的深度原創文章：
+                更多關於會計審計、稅法解析與學習工作法的深度文章：
               </p>
             </div>
 

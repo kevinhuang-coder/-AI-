@@ -37,7 +37,7 @@ export const FloatingFinancialCopilot: React.FC = () => {
   const [chatHistory, setChatHistory] = useState<Array<{ role: 'user' | 'assistant'; text: string; time: string }>>([
     {
       role: 'assistant',
-      text: `您好！我是「AI 財務分析助手（Financial Copilot）」👋\n我已載入「${activeCompany.name}」連續 5 年官方審定年報四大表。\n\n您可以點擊下方的【快捷分析問題】，或直接向我詢問關於護城河定價權、現金流含金量、杜邦拆解或營運週轉的任何問題！`,
+      text: `您好！我是「財務分析助手（Financial Copilot）」👋\n我已載入「${activeCompany.name}」連續 5 年官方審定年報四大表。\n\n您可以點擊下方的【快捷分析問題】，或直接向我詢問關於護城河定價權、現金流含金量、杜邦拆解或營運週轉的任何問題！`,
       time: '剛剛',
     },
   ]);
@@ -191,7 +191,7 @@ export const FloatingFinancialCopilot: React.FC = () => {
     setChatHistory([
       {
         role: 'assistant',
-        text: `已重置對話記錄。我是「AI 財務分析助手」，隨時準備好為「${activeCompany.name}」進行深度財務分析與情境推演！`,
+        text: `已重置對話記錄。我是「財務分析助手」，隨時準備好為「${activeCompany.name}」進行深度財務分析與情境推演！`,
         time: '剛剛',
       },
     ]);
@@ -211,7 +211,7 @@ export const FloatingFinancialCopilot: React.FC = () => {
       <div className="fixed bottom-20 right-4 sm:bottom-6 sm:right-6 z-40">
         <button
           onClick={() => setIsOpen(!isOpen)}
-          title="開啟 AI 財務分析助手 (Financial Copilot)"
+          title="開啟財務分析助手 (Financial Copilot)"
           className={`group flex items-center space-x-2.5 px-4 py-3 rounded-full shadow-2xl transition-all duration-300 cursor-pointer active:scale-95 border ${
             isOpen
               ? 'bg-slate-800 text-slate-200 border-slate-700 hover:bg-slate-750'
@@ -225,7 +225,7 @@ export const FloatingFinancialCopilot: React.FC = () => {
             )}
           </div>
           <span className="text-xs sm:text-sm font-bold tracking-tight">
-            {isOpen ? '收起助手' : 'AI 財務分析助手'}
+            {isOpen ? '收起助手' : '財務分析助手'}
           </span>
           <Sparkles className="w-3.5 h-3.5 text-amber-300 hidden sm:inline" />
         </button>
@@ -243,10 +243,10 @@ export const FloatingFinancialCopilot: React.FC = () => {
               </div>
               <div className="min-w-0">
                 <h4 className="text-xs sm:text-sm font-bold text-white tracking-tight flex items-center gap-1.5 truncate">
-                  <span>AI 財務分析助手</span>
+                  <span>財務分析助手</span>
                   <span className="text-[9px] px-2 py-0.5 rounded-full bg-emerald-950 text-emerald-300 font-mono border border-emerald-500/30 flex items-center gap-1">
                     <Sparkles className="w-2.5 h-2.5 text-amber-300" />
-                    Gemini 2.5 Flash
+                    智能推演引擎
                   </span>
                 </h4>
                 <p className="text-[10px] sm:text-[11px] text-slate-400 truncate flex items-center gap-1">
@@ -365,7 +365,7 @@ export const FloatingFinancialCopilot: React.FC = () => {
             {isAsking && (
               <div className="flex items-center space-x-2 text-emerald-400 text-xs italic pl-8 py-1">
                 <Sparkles className="w-3.5 h-3.5 animate-spin flex-shrink-0 text-amber-300" />
-                <span>AI 助手正在計算官方財報數據並推演分析中...</span>
+                <span>正在深入計算財報數據並推演分析中...</span>
               </div>
             )}
 
@@ -393,8 +393,8 @@ export const FloatingFinancialCopilot: React.FC = () => {
               </button>
             </form>
             <div className="mt-1.5 flex items-center justify-between text-[9px] text-slate-500">
-              <span>※ AI 助手分析僅供研究與決策輔助參考，不構成投資或審計意見。</span>
-              <span className="text-slate-600">Financial Inference Engine</span>
+              <span>※ 財務分析推演僅供研究與決策輔助參考，不構成投資或審計意見。</span>
+              <span className="text-slate-600">Financial Analysis Engine</span>
             </div>
           </div>
 
