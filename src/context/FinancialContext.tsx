@@ -184,9 +184,13 @@ export const FinancialProvider: React.FC<{ children: React.ReactNode }> = ({ chi
     setAiError(null);
 
     try {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 8000);
+
       const res = await fetch('/api/financial/ai-analyze', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
+        signal: controller.signal,
         body: JSON.stringify({
           companyName: activeCompany.name,
           industry: activeCompany.industry,

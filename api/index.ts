@@ -20,12 +20,16 @@ function getGeminiClient(): GoogleGenAI | null {
 }
 
 async function generateWithFallback(ai: GoogleGenAI, prompt: string, jsonMode = false): Promise<string> {
-  const models = ['gemini-2.5-flash', 'gemini-flash-latest', 'gemini-1.5-flash', 'gemini-3.1-flash-lite'];
+  // 優先使用反應最快速的官方 flash 模型
+  const models = ['gemini-2.5-flash', 'gemini-1.5-flash'];
   let lastError: any = null;
 
   for (const model of models) {
     try {
-      const config: any = {};
+      const config: any = {
+        // 設定適當 token 避免生成過慢
+        maxOutputTokens: 2048,
+      };
       if (jsonMode) config.responseMimeType = 'application/json';
 
       const response = await ai.models.generateContent({
@@ -38,7 +42,7 @@ async function generateWithFallback(ai: GoogleGenAI, prompt: string, jsonMode = 
       if (text) return text;
     } catch (err) {
       lastError = err;
-      console.warn(`Vercel function model ${model} failed, trying next:`, err);
+      console.warn(`Model ${model} call failed:`, err);
     }
   }
 

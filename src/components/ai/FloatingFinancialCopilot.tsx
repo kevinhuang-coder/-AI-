@@ -52,9 +52,13 @@ export const FloatingFinancialCopilot: React.FC = () => {
     try {
       let answer = '';
       try {
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 6000);
+
         const res = await fetch('/api/financial/ai-chat', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
+          signal: controller.signal,
           body: JSON.stringify({
             question: query,
             companyName: activeCompany.name,
@@ -69,6 +73,8 @@ export const FloatingFinancialCopilot: React.FC = () => {
           }),
         });
 
+        clearTimeout(timeoutId);
+
         if (res.ok) {
           const json = await res.json();
           if (json.answer && typeof json.answer === 'string' && json.answer.trim().length > 10) {
@@ -76,7 +82,7 @@ export const FloatingFinancialCopilot: React.FC = () => {
           }
         }
       } catch (apiErr) {
-        console.warn('Remote AI Chat API unavailable, checking browser direct Gemini:', apiErr);
+        console.warn('Remote AI Chat API unavailable or timed out, checking browser direct Gemini:', apiErr);
       }
 
       // 若後端 API 未回傳，嘗試以瀏覽器直連 Gemini
