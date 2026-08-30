@@ -61,6 +61,21 @@ class FinancialDatabase {
               code: `${cleanKey}-TW`,
             });
           });
+
+          // 強制灌入並覆蓋官方最新審定之 5 年四大表數據
+          Object.entries(VERIFIED_TAIWAN_STOCKS).forEach(([code, stock]) => {
+            const cleanKey = normalizeStockCode(code);
+            cleanedCompanies[cleanKey] = sanitizeFinancialEntity({
+              id: `stock-${cleanKey}`,
+              name: stock.name,
+              code: `${cleanKey}-TW`,
+              industry: stock.industry,
+              currency: stock.currency,
+              description: stock.description,
+              periods: stock.periods,
+            });
+          });
+
           parsed.companies = cleanedCompanies;
           this.cache = parsed;
           this.saveToDisk();
