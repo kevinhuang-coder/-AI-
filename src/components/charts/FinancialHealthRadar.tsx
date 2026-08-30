@@ -49,6 +49,26 @@ export const FinancialHealthRadar: React.FC = () => {
     return { label: '待加強', color: 'text-rose-400 bg-rose-500/10 border-rose-500/30' };
   };
 
+  // 動態依綜合評分計算產業排名與實質風險等級
+  const getIndustryRank = (score: number) => {
+    if (score >= 88) return { text: '前 10% (頂尖)', color: 'text-emerald-400' };
+    if (score >= 75) return { text: '前 25% (優良)', color: 'text-cyan-300' };
+    if (score >= 60) return { text: '中前段 40%', color: 'text-blue-300' };
+    if (score >= 45) return { text: '中後段 65%', color: 'text-amber-400' };
+    return { text: '後 20% (落後)', color: 'text-rose-400' };
+  };
+
+  const getRiskLevel = (score: number) => {
+    if (score >= 88) return { text: '極低風險', color: 'text-emerald-400' };
+    if (score >= 75) return { text: '低風險', color: 'text-cyan-300' };
+    if (score >= 60) return { text: '中度穩健', color: 'text-blue-300' };
+    if (score >= 45) return { text: '警戒注意', color: 'text-amber-400' };
+    return { text: '高風險', color: 'text-rose-400' };
+  };
+
+  const rankInfo = getIndustryRank(health.totalScore);
+  const riskInfo = getRiskLevel(health.totalScore);
+
   const dimensionList = [
     {
       name: '獲利能力',
@@ -72,7 +92,7 @@ export const FinancialHealthRadar: React.FC = () => {
       score: health.solvencyScore,
       barColor: 'bg-indigo-500',
       icon: ShieldCheck,
-      highlight: `流動比率 ${r.currentRatio}% • 負債比 ${r.debtToAssetsRatio}%`,
+      highlight: `流動比率 ${r.currentRatio}% • 負債比 ${r.debtRatio}%`,
     },
     {
       name: '現金品質',
@@ -88,7 +108,7 @@ export const FinancialHealthRadar: React.FC = () => {
       score: health.assetEfficiencyScore,
       barColor: 'bg-amber-500',
       icon: Zap,
-      highlight: `總資產週轉率 ${r.dupontAssetTurnover} 次 • 應收週轉 ${r.accountsReceivableTurnover} 次`,
+      highlight: `總資產週轉率 ${r.dupontAssetTurnover} 次 • 應收週轉 ${r.arTurnover} 次`,
     },
   ];
 
@@ -168,12 +188,12 @@ export const FinancialHealthRadar: React.FC = () => {
           <div className="mt-4 pt-3 border-t border-slate-800/80 w-full flex items-center justify-around text-center text-xs">
             <div>
               <span className="text-[10px] text-slate-500 block">產業排名</span>
-              <span className="text-xs font-bold text-cyan-300 font-mono">前 15%</span>
+              <span className={`text-xs font-bold font-mono ${rankInfo.color}`}>{rankInfo.text}</span>
             </div>
             <div className="w-px h-6 bg-slate-800" />
             <div>
               <span className="text-[10px] text-slate-500 block">風險等級</span>
-              <span className="text-xs font-bold text-emerald-300 font-mono">低風險</span>
+              <span className={`text-xs font-bold font-mono ${riskInfo.color}`}>{riskInfo.text}</span>
             </div>
           </div>
         </div>
