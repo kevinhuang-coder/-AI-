@@ -377,6 +377,9 @@ export const FinancialProvider: React.FC<{ children: React.ReactNode }> = ({ chi
   const loadStockByCode = async (stockCode: string): Promise<boolean> => {
     try {
       const company = await fetchTaiwanStockFinancials(stockCode);
+      if (!company) {
+        throw new Error(`查無股票代號「${stockCode}」之公開財務報表數據`);
+      }
       addOrUpdateCompany(company, true, `自台灣證交所與金融資料庫載入「${company.name}」官方財報`);
       setActiveCompanyId(company.id);
       return true;
