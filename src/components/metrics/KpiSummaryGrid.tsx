@@ -26,28 +26,33 @@ export const KpiSummaryGrid: React.FC = () => {
   const industryStr = (activeCompany?.industry || '').toLowerCase();
 
   // 產業類型智慧判別 (Industry Archetype Detection)
-  const isSoftwareOrInternet =
-    industryStr.includes('軟體') ||
-    industryStr.includes('資訊服務') ||
-    industryStr.includes('網路') ||
-    industryStr.includes('電子商務') ||
-    industryStr.includes('遊戲') ||
-    industryStr.includes('saas') ||
-    industryStr.includes('數位');
-
   const isFinancial =
-    industryStr.includes('金融') ||
-    industryStr.includes('金控') ||
-    industryStr.includes('銀行') ||
-    industryStr.includes('保險') ||
-    industryStr.includes('證券');
+    (industryStr.includes('金融保險') ||
+      industryStr.includes('金控') ||
+      industryStr.includes('商業銀行') ||
+      industryStr.includes('人壽保險') ||
+      industryStr.includes('證券')) &&
+    !industryStr.includes('電子商務') &&
+    !industryStr.includes('人力銀行');
 
-  const isRetailOrConsumer =
+  const isRetailOrEcommerce =
+    industryStr.includes('電子商務') ||
     industryStr.includes('貿易百貨') ||
     industryStr.includes('觀光餐旅') ||
     industryStr.includes('零售') ||
     industryStr.includes('餐飲') ||
-    industryStr.includes('超商');
+    industryStr.includes('超商') ||
+    industryStr.includes('網購');
+
+  const isSoftwareOrSaaS =
+    !isFinancial &&
+    !isRetailOrEcommerce &&
+    (industryStr.includes('軟體') ||
+      industryStr.includes('資訊服務') ||
+      industryStr.includes('遊戲') ||
+      industryStr.includes('saas') ||
+      industryStr.includes('人力銀行') ||
+      industryStr.includes('數位科技'));
 
   const isConstruction =
     industryStr.includes('建材營造') ||
@@ -79,11 +84,11 @@ export const KpiSummaryGrid: React.FC = () => {
       {/* 產業特徵智慧辨識與分析模型適配提示條 */}
       <div className="px-3.5 py-1.5 rounded-xl bg-slate-900/60 border border-slate-800 flex items-center justify-between text-xs text-slate-400 gap-2 flex-wrap">
         <div className="flex items-center space-x-2">
-          {isSoftwareOrInternet ? (
+          {isSoftwareOrSaaS ? (
             <Globe className="w-3.5 h-3.5 text-cyan-400 flex-shrink-0" />
           ) : isFinancial ? (
             <Building className="w-3.5 h-3.5 text-amber-400 flex-shrink-0" />
-          ) : isRetailOrConsumer ? (
+          ) : isRetailOrEcommerce ? (
             <Store className="w-3.5 h-3.5 text-emerald-400 flex-shrink-0" />
           ) : (
             <Cpu className="w-3.5 h-3.5 text-indigo-400 flex-shrink-0" />
@@ -99,12 +104,12 @@ export const KpiSummaryGrid: React.FC = () => {
         <div className="flex items-center space-x-1.5 text-[11px] text-slate-400">
           <Info className="w-3.5 h-3.5 text-slate-500" />
           <span>
-            {isSoftwareOrInternet
-              ? '💡 軟體與網路平台模型：聚焦「營業利益率 (OPM) 與現金流」，已自動過濾無意義之實體存貨天數'
+            {isSoftwareOrSaaS
+              ? '💡 軟體與雲端平台模型：聚焦「營業利益率 (OPM) 與現金流」，已自動過濾無意義之實體存貨天數'
               : isFinancial
               ? '💡 金融控股模型：聚焦「資產報酬率 (ROA) 與槓桿品質」，免除製造業成本公式'
-              : isRetailOrConsumer
-              ? '💡 零售消費模型：聚焦「現金轉換循環 (CCC) 與營運週轉效率」'
+              : isRetailOrEcommerce
+              ? '💡 電子商務與零售模型：聚焦「進銷存毛利率、存貨天數與現金轉換循環 (CCC)」'
               : isConstruction
               ? '💡 營建地產模型：聚焦「合約負債預收款與在建工程資本結構」'
               : '💡 製造與硬體模型：聚焦「毛利率護城河、存貨週轉與產能資本支出」'}
@@ -115,20 +120,20 @@ export const KpiSummaryGrid: React.FC = () => {
       {/* 4 大核心 KPI 指標卡 */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5 sm:gap-4">
         
-        {/* 卡片 1：核心獲利護城河 (自適應：軟體業呈現營業利益率；製造業呈現毛利率；金融業呈現ROA) */}
+        {/* 卡片 1：核心獲利護城河 (自適應：軟體業呈現營業利益率；製造與電商業呈現毛利率；金融業呈現ROA) */}
         <div className="bg-slate-900/40 hover:bg-slate-900/60 border border-slate-800/60 hover:border-slate-700/80 rounded-2xl p-4 transition-all flex flex-col justify-between backdrop-blur-md shadow-xs">
           <div>
             <div className="flex items-center justify-between gap-2 mb-2">
               <span className="text-[11px] font-semibold text-slate-400 flex items-center gap-1.5">
                 <Crown className="w-3.5 h-3.5 text-amber-400 flex-shrink-0" />
-                {isSoftwareOrInternet ? '核心本業利潤率' : isFinancial ? '資產運用報酬 (ROA)' : '經濟護城河 (毛利率)'}
+                {isSoftwareOrSaaS ? '核心本業利潤率' : isFinancial ? '資產運用報酬 (ROA)' : '經濟護城河 (毛利率)'}
               </span>
               <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
                 curRatios.economicMoat === 'wide' ? 'bg-amber-500/10 text-amber-300 border border-amber-500/20' :
                 curRatios.economicMoat === 'narrow' ? 'bg-blue-500/10 text-blue-300 border border-blue-500/20' :
                 'bg-slate-800 text-slate-400'
               }`}>
-                {isSoftwareOrInternet
+                {isSoftwareOrSaaS
                   ? curRatios.operatingMargin >= 25 ? '頂級利潤率' : curRatios.operatingMargin >= 15 ? '穩健利潤率' : '一般利潤率'
                   : curRatios.economicMoat === 'wide' ? '寬護城河' : curRatios.economicMoat === 'narrow' ? '窄護城河' : '無顯著壁壘'}
               </span>
@@ -136,21 +141,21 @@ export const KpiSummaryGrid: React.FC = () => {
 
             <div className="flex items-baseline justify-between gap-2">
               <div className="text-xl sm:text-2xl font-bold text-white tracking-tight font-mono">
-                {isSoftwareOrInternet
+                {isSoftwareOrSaaS
                   ? `${curRatios.operatingMargin}%`
                   : isFinancial
                   ? `${curRatios.roa}%`
                   : `${curRatios.grossMargin}%`}
                 <span className="text-xs font-normal text-slate-400 ml-1.5 font-sans">
-                  {isSoftwareOrInternet ? '營業利益率' : isFinancial ? '資產報酬率' : '毛利率'}
+                  {isSoftwareOrSaaS ? '營業利益率' : isFinancial ? '資產報酬率' : '毛利率'}
                 </span>
               </div>
-              {(isSoftwareOrInternet ? opmDelta : roeDelta) && (
+              {(isSoftwareOrSaaS ? opmDelta : roeDelta) && (
                 <div className={`flex items-center text-[11px] font-semibold font-mono ${
-                  (isSoftwareOrInternet ? opmDelta : roeDelta)!.isUp ? 'text-emerald-400' : 'text-rose-400'
+                  (isSoftwareOrSaaS ? opmDelta : roeDelta)!.isUp ? 'text-emerald-400' : 'text-rose-400'
                 }`}>
-                  {(isSoftwareOrInternet ? opmDelta : roeDelta)!.isUp ? <TrendingUp className="w-3 h-3 mr-0.5" /> : <TrendingDown className="w-3 h-3 mr-0.5" />}
-                  {(isSoftwareOrInternet ? opmDelta : roeDelta)!.text}
+                  {(isSoftwareOrSaaS ? opmDelta : roeDelta)!.isUp ? <TrendingUp className="w-3 h-3 mr-0.5" /> : <TrendingDown className="w-3 h-3 mr-0.5" />}
+                  {(isSoftwareOrSaaS ? opmDelta : roeDelta)!.text}
                 </div>
               )}
             </div>
@@ -158,14 +163,14 @@ export const KpiSummaryGrid: React.FC = () => {
 
           <div className="mt-3 pt-2.5 border-t border-slate-800/60 flex items-center justify-between text-[11px] text-slate-400">
             <span>
-              {isSoftwareOrInternet
+              {isSoftwareOrSaaS
                 ? `輕資產平台 (毛利率 ${curRatios.grossMargin}%)`
                 : isFinancial
                 ? 'ROE 股東權益報酬率'
-                : 'ROE 複利率'}
+                : `營益率 ${curRatios.operatingMargin}%`}
             </span>
             <span className="font-semibold text-amber-400 font-mono">
-              {isSoftwareOrInternet ? `ROE ${curRatios.roe}%` : `${curRatios.roe}%`}
+              {isSoftwareOrSaaS ? `ROE ${curRatios.roe}%` : `ROE ${curRatios.roe}%`}
             </span>
           </div>
         </div>
@@ -211,7 +216,7 @@ export const KpiSummaryGrid: React.FC = () => {
             <div className="flex items-center justify-between gap-2 mb-2">
               <span className="text-[11px] font-semibold text-slate-400 flex items-center gap-1.5">
                 <Coins className="w-3.5 h-3.5 text-emerald-400 flex-shrink-0" />
-                {isSoftwareOrInternet ? '平台自由現金流' : '嚴謹自由現金流'}
+                {isSoftwareOrSaaS ? '平台自由現金流' : '嚴謹自由現金流'}
               </span>
               <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
                 curRatios.rigorousFcf > 0 ? 'bg-emerald-500/10 text-emerald-300 border border-emerald-500/20' :
@@ -232,7 +237,7 @@ export const KpiSummaryGrid: React.FC = () => {
 
           <div className="mt-3 pt-2.5 border-t border-slate-800/60 flex items-center justify-between text-[11px] text-slate-400">
             <span>
-              {isSoftwareOrInternet ? '低資本支出 (CapEx)' : '扣除 CapEx 資本支出'}
+              {isSoftwareOrSaaS ? '低資本支出 (CapEx)' : '扣除 CapEx 資本支出'}
             </span>
             <span className="font-semibold text-slate-300 font-mono">
               {formatMoney(latestPeriod.capitalExpenditures)}
@@ -246,7 +251,7 @@ export const KpiSummaryGrid: React.FC = () => {
             <div className="flex items-center justify-between gap-2 mb-2">
               <span className="text-[11px] font-semibold text-slate-400 flex items-center gap-1.5 truncate">
                 <ShieldCheck className="w-3.5 h-3.5 text-indigo-400 flex-shrink-0" />
-                {isSoftwareOrInternet ? '財務安全 / 淨現金體質' : 'Altman Z 破產防禦'}
+                {isSoftwareOrSaaS ? '財務安全 / 淨現金體質' : 'Altman Z 破產防禦'}
               </span>
               <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full flex-shrink-0 ${
                 curRatios.altmanZZone === 'safe' ? 'bg-emerald-500/10 text-emerald-300 border border-emerald-500/20' :

@@ -1370,7 +1370,7 @@ export const VERIFIED_TAIWAN_STOCKS: Record<string, Omit<AccountEntity, 'id'>> =
   '8044': {
     name: '網路家庭國際資訊 (PChome Online)',
     code: '8044-TW',
-    industry: '電子商務平台與數位金融服務',
+    industry: '電子商務業 (B2C網購與物流平台)',
     currency: 'NTD (千元)',
     description: '台灣早期 B2C 電商先驅，近年面臨外商與同業激烈價格戰競爭，營收承壓且本業持續虧損，積極推動組織瘦身轉型。',
     periods: [
@@ -2726,7 +2726,13 @@ export function sanitizeFinancialEntity(company: AccountEntity): AccountEntity {
 
   const cleanStockCode = company.code ? company.code.trim().toUpperCase().replace(/-?TW$/i, '').replace(/[^0-9A-Z]/g, '') : '';
   const stockMeta = TWSE_STOCK_DIRECTORY[cleanStockCode];
-  const isFinancial = stockMeta?.category === 'financial' || company.industry?.includes('金融') || company.industry?.includes('金控') || company.industry?.includes('銀行');
+  const ind = company.industry || '';
+  const isFinancial =
+    stockMeta?.category === 'financial' ||
+    ((ind.includes('金融保險') || ind.includes('金控') || ind.includes('商業銀行') || ind.includes('人壽保險') || ind.includes('證券')) &&
+      !ind.includes('電子商務') &&
+      !ind.includes('數位金融') &&
+      !ind.includes('人力銀行'));
 
   const cleanPeriods: FinancialPeriod[] = company.periods.map((p, idx) => {
     let rev = Math.max(0, Number(p.revenue) || 0);
