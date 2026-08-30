@@ -8,7 +8,6 @@ import {
   ShieldCheck,
   Coins,
   LayoutGrid,
-  FileDown,
 } from 'lucide-react';
 
 interface TabItem {
@@ -27,12 +26,11 @@ const TABS: TabItem[] = [
 ];
 
 export const MetricFilterTabs: React.FC = () => {
-  const { selectedCategory, setSelectedCategory, setIsPdfModalOpen } = useFinancial();
+  const { selectedCategory, setSelectedCategory } = useFinancial();
 
   return (
-    <div className="flex items-center justify-between gap-2 overflow-x-auto pb-1 scrollbar-none touch-pan-x">
-      <div className="flex items-center space-x-1">
-        {TABS.map((tab) => {
+    <div className="flex items-center space-x-1 overflow-x-auto pb-1 scrollbar-none touch-pan-x">
+      {TABS.map((tab) => {
         const Icon = tab.icon;
         const isSelected = selectedCategory === tab.id;
         return (
@@ -51,17 +49,7 @@ export const MetricFilterTabs: React.FC = () => {
           </button>
         );
       })}
-      </div>
-
-      {/* Quick Export PDF Report Button */}
-      <button
-        onClick={() => setIsPdfModalOpen(true)}
-        className="hidden md:flex items-center space-x-1.5 px-3 py-1.5 rounded-lg bg-emerald-600/90 hover:bg-emerald-600 text-white text-xs font-semibold whitespace-nowrap shadow-sm transition cursor-pointer flex-shrink-0"
-        title="預覽與產出單頁 A4 財務分析報告"
-      >
-        <FileDown className="w-3.5 h-3.5" />
-        <span>產出 PDF 報告</span>
-      </button>
     </div>
   );
 };
+

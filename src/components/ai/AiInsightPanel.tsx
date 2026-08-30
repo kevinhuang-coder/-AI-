@@ -14,11 +14,10 @@ import {
   Target,
   ArrowRight,
   Bot,
-  FileDown,
 } from 'lucide-react';
 
 export const AiInsightPanel: React.FC = () => {
-  const { aiReport, activeCompany, runAiDiagnostic, isLoadingAi, latestPeriod, viewMode, setIsPdfModalOpen } =
+  const { aiReport, activeCompany, runAiDiagnostic, isLoadingAi, latestPeriod, viewMode } =
     useFinancial();
 
   if (!latestPeriod) return null;
@@ -56,7 +55,7 @@ export const AiInsightPanel: React.FC = () => {
           <button
             onClick={runAiDiagnostic}
             disabled={isLoadingAi}
-            className="flex items-center justify-center space-x-2 px-4.5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs sm:text-sm font-bold shadow-md shadow-emerald-900/30 transition disabled:opacity-50 cursor-pointer flex-shrink-0 self-start md:self-center"
+            className="flex items-center space-x-2 px-5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold transition shadow-lg shadow-emerald-900/30 disabled:opacity-50 cursor-pointer self-start md:self-auto flex-shrink-0 min-h-[40px]"
           >
             <Sparkles className={`w-4 h-4 ${isLoadingAi ? 'animate-spin' : 'text-amber-300'}`} />
             <span>{isLoadingAi ? '正在運算診斷中...' : '✨ 立即啟動深度診斷'}</span>
@@ -104,15 +103,6 @@ export const AiInsightPanel: React.FC = () => {
           </div>
 
           <div className="flex items-center space-x-2 self-start sm:self-auto">
-            <button
-              onClick={() => setIsPdfModalOpen(true)}
-              className="flex items-center space-x-1.5 px-3.5 py-2 rounded-xl sm:rounded-2xl bg-emerald-600/90 hover:bg-emerald-600 text-white text-xs font-semibold shadow-sm transition min-h-[38px] cursor-pointer"
-              title="產出單頁 A4 財務分析報告 PDF"
-            >
-              <FileDown className="w-3.5 h-3.5" />
-              <span>產出 PDF 報告</span>
-            </button>
-
             <button
               onClick={runAiDiagnostic}
               disabled={isLoadingAi}
