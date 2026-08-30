@@ -526,72 +526,9 @@ export const PdfReportModal: React.FC = () => {
                 </div>
               </div>
 
-              {/* 5. 審計級底層數據計算過程與公式推導 (Audit Formula Proofs & Calculation Breakdown) */}
-              <div className="p-2 bg-slate-50 rounded-xl border border-slate-200 text-xs">
-                <div className="flex items-center justify-between px-1 mb-1">
-                  <span className="text-[10px] font-bold text-slate-900 flex items-center gap-1.5">
-                    <Calculator className="w-3.5 h-3.5 text-indigo-700 flex-shrink-0" />
-                    審計級底層數據計算過程與公式推導 (Audit Formula Proofs & Calculation Breakdown)
-                  </span>
-                  <span className="text-[8.5px] text-slate-500 font-mono">四表實數勾稽驗證</span>
-                </div>
-
-                <div className="grid grid-cols-2 gap-1.5 text-[9px]">
-                  
-                  {/* 1. 嚴謹自由現金流公式 */}
-                  <div className="p-1.5 bg-white rounded-lg border border-slate-200 flex flex-col justify-between">
-                    <div>
-                      <span className="font-bold text-slate-900 block text-[9px] mb-0.5">① 嚴謹自由現金流 (Rigorous FCF)</span>
-                      <span className="text-slate-500 font-mono text-[8px] block">公式：營業現金流 (OCF) - 資本支出 (CapEx)</span>
-                    </div>
-                    <div className="mt-1 pt-1 border-t border-slate-100 flex items-center justify-between font-mono text-[9px]">
-                      <span className="text-slate-700">${(latestPeriod.operatingCashFlow / 1000).toFixed(0)}M - ${(latestPeriod.capitalExpenditures / 1000).toFixed(0)}M</span>
-                      <span className={`font-bold ${r.rigorousFcf >= 0 ? 'text-emerald-800' : 'text-rose-800'}`}>= {formatMoney(r.rigorousFcf)}</span>
-                    </div>
-                  </div>
-
-                  {/* 2. 獲利現金含金量公式 */}
-                  <div className="p-1.5 bg-white rounded-lg border border-slate-200 flex flex-col justify-between">
-                    <div>
-                      <span className="font-bold text-slate-900 block text-[9px] mb-0.5">② 獲利現金含金量 (Cash Conversion)</span>
-                      <span className="text-slate-500 font-mono text-[8px] block">公式：營業現金流 ÷ 稅後純益 × 100%</span>
-                    </div>
-                    <div className="mt-1 pt-1 border-t border-slate-100 flex items-center justify-between font-mono text-[9px]">
-                      <span className="text-slate-700">${(latestPeriod.operatingCashFlow / 1000).toFixed(0)}M ÷ ${(latestPeriod.netIncome / 1000).toFixed(0)}M</span>
-                      <span className="font-bold text-cyan-900">= {r.coreCashConversionRatio}%</span>
-                    </div>
-                  </div>
-
-                  {/* 3. 杜邦分析三因子公式 */}
-                  <div className="p-1.5 bg-white rounded-lg border border-slate-200 flex flex-col justify-between">
-                    <div>
-                      <span className="font-bold text-slate-900 block text-[9px] mb-0.5">③ 杜邦分析三因子歸因 (DuPont 3-Way)</span>
-                      <span className="text-slate-500 font-mono text-[8px] block">公式：純益率 × 資產週轉率 × 權益乘數</span>
-                    </div>
-                    <div className="mt-1 pt-1 border-t border-slate-100 flex items-center justify-between font-mono text-[9px]">
-                      <span className="text-slate-700">{r.dupontNetMargin}% × {r.dupontAssetTurnover}次 × {r.dupontEquityMultiplier}倍</span>
-                      <span className="font-bold text-amber-900">= ROE {r.dupontRoe}%</span>
-                    </div>
-                  </div>
-
-                  {/* 4. Altman Z 破產防禦公式 */}
-                  <div className="p-1.5 bg-white rounded-lg border border-slate-200 flex flex-col justify-between">
-                    <div>
-                      <span className="font-bold text-slate-900 block text-[9px] mb-0.5">④ Altman Z 破產防禦評分模型</span>
-                      <span className="text-slate-500 font-mono text-[8px] block">公式：1.2X₁ + 1.4X₂ + 3.3X₃ + 0.6X₄ + 0.999X₅</span>
-                    </div>
-                    <div className="mt-1 pt-1 border-t border-slate-100 flex items-center justify-between font-mono text-[9px]">
-                      <span className="text-slate-700">純計息負債比 {r.interestBearingDebtRatio}%</span>
-                      <span className="font-bold text-purple-900">= {r.altmanZScore} 分 ({r.altmanZZone === 'safe' ? '安全堡壘' : '灰色考驗'})</span>
-                    </div>
-                  </div>
-
-                </div>
-              </div>
-
-              {/* 6. 價值投資人長期策略指引 (Investment Guidance & Action Matrix) */}
+              {/* 5. 價值投資人長期策略指引 (Investment Guidance & Action Matrix) */}
               <div>
-                <div className="flex items-center space-x-1.5 text-[10px] font-bold text-indigo-900 uppercase tracking-wider mb-1">
+                <div className="flex items-center space-x-1.5 text-[9.5px] font-bold text-indigo-900 uppercase tracking-wider mb-1">
                   <Target className="w-3.5 h-3.5 text-indigo-600 flex-shrink-0" />
                   <span>價值投資人長期策略指引 (Value Investment Strategy Guidance)</span>
                 </div>
@@ -599,62 +536,155 @@ export const PdfReportModal: React.FC = () => {
                 <div className="grid grid-cols-3 gap-1.5 text-xs">
                   
                   {/* Pillar 1 */}
-                  <div className="p-2 bg-slate-50 rounded-xl border border-slate-200 flex flex-col justify-between">
+                  <div className="p-1.5 bg-slate-50 rounded-xl border border-slate-200 flex flex-col justify-between">
                     <div>
                       <div className="flex items-center justify-between mb-0.5">
                         <span className="text-[9px] font-bold text-slate-900">長線複利潛力</span>
-                        <span className="text-[8px] font-bold px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-800 border border-emerald-300">
+                        <span className="text-[7.5px] font-bold px-1.5 py-0.2 rounded bg-emerald-100 text-emerald-800 border border-emerald-300">
                           {latestPeriod.netIncome < 0 ? '承壓虧損' : r.roe >= 15 ? '優質複利' : '穩健持平'}
                         </span>
                       </div>
-                      <p className="text-[8.5px] text-slate-700 leading-snug">
+                      <p className="text-[8px] text-slate-700 leading-snug">
                         {latestPeriod.netIncome < 0
                           ? `ROE 為負值 (${r.roe}%)，本業虧損，投資人應避免盲目抄底。`
                           : `具備高 ROE (${r.roe}%)，適合價值型投資者逢回檔分批評估持有價值。`}
                       </p>
                     </div>
-                    <div className="mt-1 pt-1 border-t border-slate-200 text-[8px] text-emerald-800 font-semibold">
+                    <div className="mt-0.5 pt-0.5 border-t border-slate-200 text-[7.5px] text-emerald-800 font-semibold">
                       關注: {latestPeriod.netIncome < 0 ? '何時由虧轉盈及毛利回升' : '每季毛利率與 EPS 成長性'}
                     </div>
                   </div>
 
                   {/* Pillar 2 */}
-                  <div className="p-2 bg-slate-50 rounded-xl border border-slate-200 flex flex-col justify-between">
+                  <div className="p-1.5 bg-slate-50 rounded-xl border border-slate-200 flex flex-col justify-between">
                     <div>
                       <div className="flex items-center justify-between mb-0.5">
                         <span className="text-[9px] font-bold text-slate-900">股息與自由現金保護</span>
-                        <span className="text-[8px] font-bold px-1.5 py-0.5 rounded bg-blue-100 text-blue-800 border border-blue-300">
+                        <span className="text-[7.5px] font-bold px-1.5 py-0.2 rounded bg-blue-100 text-blue-800 border border-blue-300">
                           {r.rigorousFcf <= 0 ? '現金吃緊' : '現金流充沛'}
                         </span>
                       </div>
-                      <p className="text-[8.5px] text-slate-700 leading-snug">
+                      <p className="text-[8px] text-slate-700 leading-snug">
                         {r.rigorousFcf <= 0
                           ? `自由現金流赤字 (NT$ ${(r.rigorousFcf / 1000).toLocaleString(undefined, { maximumFractionDigits: 1 })}M)，短期缺乏實質現金股息支撐。`
                           : `自由現金流充沛，具備持續穩定配發現金股息之財務實力，下行防禦性高。`}
                       </p>
                     </div>
-                    <div className="mt-1 pt-1 border-t border-slate-200 text-[8px] text-blue-800 font-semibold">
+                    <div className="mt-0.5 pt-0.5 border-t border-slate-200 text-[7.5px] text-blue-800 font-semibold">
                       關注: {r.rigorousFcf <= 0 ? '防範再籌資與現金存量消耗' : '檢驗 CapEx 對 FCF 之佔用比'}
                     </div>
                   </div>
 
                   {/* Pillar 3 */}
-                  <div className="p-2 bg-slate-50 rounded-xl border border-slate-200 flex flex-col justify-between">
+                  <div className="p-1.5 bg-slate-50 rounded-xl border border-slate-200 flex flex-col justify-between">
                     <div>
                       <div className="flex items-center justify-between mb-0.5">
                         <span className="text-[9px] font-bold text-slate-900">破產防禦與安全邊際</span>
-                        <span className="text-[8px] font-bold px-1.5 py-0.5 rounded bg-purple-100 text-purple-800 border border-purple-300">
+                        <span className="text-[7.5px] font-bold px-1.5 py-0.2 rounded bg-purple-100 text-purple-800 border border-purple-300">
                           {r.altmanZZone === 'safe' ? '堡壘級' : r.altmanZZone === 'grey' ? '觀察區' : '困境警戒'}
                         </span>
                       </div>
-                      <p className="text-[8.5px] text-slate-700 leading-snug">
+                      <p className="text-[8px] text-slate-700 leading-snug">
                         {r.altmanZZone === 'safe'
                           ? `Altman Z 達 ${r.altmanZScore} 分，負債結構穩固，即使遭遇大環境逆風亦無財務危機隱憂。`
                           : `Altman Z 為 ${r.altmanZScore} 分，需密切留意營運資金週轉與短期借款展延能力。`}
                       </p>
                     </div>
-                    <div className="mt-1 pt-1 border-t border-slate-200 text-[8px] text-purple-800 font-semibold">
+                    <div className="mt-0.5 pt-0.5 border-t border-slate-200 text-[7.5px] text-purple-800 font-semibold">
                       關注: {r.altmanZZone === 'distress' ? '防範流動性危機與信用風險' : '確保流動比率維持在 180% 以上'}
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+
+              {/* 6. 審計級底層數據計算過程與公式推導 (Audit Formula Proofs & Calculation Breakdown - 4 Full Rows) */}
+              <div className="p-2 bg-slate-50 rounded-xl border border-slate-200 text-xs">
+                <div className="flex items-center justify-between px-1 mb-1">
+                  <span className="text-[10px] font-bold text-slate-900 flex items-center gap-1.5">
+                    <Calculator className="w-3.5 h-3.5 text-indigo-700 flex-shrink-0" />
+                    審計級底層數據計算過程與公式推導 (Audit Formula Proofs & Calculation Breakdown)
+                  </span>
+                  <span className="text-[8px] text-slate-500 font-mono">四大財務報表實數完整勾稽與實質推理</span>
+                </div>
+
+                <div className="space-y-1">
+                  
+                  {/* Row 1: 嚴謹自由現金流 */}
+                  <div className="p-1.5 bg-white rounded-lg border border-slate-200 flex flex-col justify-between">
+                    <div className="flex items-center justify-between gap-2 flex-wrap mb-0.5">
+                      <div className="flex items-center gap-1.5">
+                        <span className="font-bold text-slate-900 text-[9px]">① 嚴謹自由現金流 (Rigorous FCF)</span>
+                        <span className="text-slate-500 font-mono text-[8px]">公式：營業現金流 (OCF) - 資本支出 (CapEx)</span>
+                      </div>
+                      <div className="font-mono text-[9px]">
+                        <span className="text-slate-600">${(latestPeriod.operatingCashFlow / 1000).toFixed(0)}M - ${(latestPeriod.capitalExpenditures / 1000).toFixed(0)}M</span>
+                        <span className={`font-bold ml-1.5 ${r.rigorousFcf >= 0 ? 'text-emerald-800' : 'text-rose-800'}`}>= {formatMoney(r.rigorousFcf)}</span>
+                      </div>
+                    </div>
+                    <div className="text-[8px] text-slate-600 leading-tight">
+                      <strong>【會計勾稽與推論】</strong>
+                      {r.rigorousFcf >= 0
+                        ? `本期營業活動實質帶入現金 ${formatMoney(latestPeriod.operatingCashFlow)}，在扣除維持競爭力必要之 CapEx 支出 ${formatMoney(latestPeriod.capitalExpenditures)} 後，產生實質自由現金流 ${formatMoney(r.rigorousFcf)}，代表企業無須依賴外部融資即具備充沛自我造血與股息分派實力。`
+                        : `本期嚴謹自由現金流呈現赤字 (${formatMoney(r.rigorousFcf)})，主因營業現金流不足以支應當期資本支出，需留意營運資金消耗與融資調度壓力。`}
+                    </div>
+                  </div>
+
+                  {/* Row 2: 獲利現金含金量 */}
+                  <div className="p-1.5 bg-white rounded-lg border border-slate-200 flex flex-col justify-between">
+                    <div className="flex items-center justify-between gap-2 flex-wrap mb-0.5">
+                      <div className="flex items-center gap-1.5">
+                        <span className="font-bold text-slate-900 text-[9px]">② 獲利現金含金量 (Cash Conversion Quality)</span>
+                        <span className="text-slate-500 font-mono text-[8px]">公式：營業現金流 (OCF) ÷ 稅後純益 (Net Income) × 100%</span>
+                      </div>
+                      <div className="font-mono text-[9px]">
+                        <span className="text-slate-600">${(latestPeriod.operatingCashFlow / 1000).toFixed(0)}M ÷ ${(latestPeriod.netIncome / 1000).toFixed(0)}M</span>
+                        <span className="font-bold text-cyan-900 ml-1.5">= {r.coreCashConversionRatio}%</span>
+                      </div>
+                    </div>
+                    <div className="text-[8px] text-slate-600 leading-tight">
+                      <strong>【會計勾稽與推論】</strong>
+                      {r.coreCashConversionRatio >= 100
+                        ? `核心現金轉換率達 ${r.coreCashConversionRatio}%（大幅超越標準 ≥ 100%），證明帳面獲利 100% 轉化為真金白銀流入公司帳戶，有效排除應收帳款滯納或存貨虛增美化財報之潛在地雷。`
+                        : `核心現金轉換率為 ${r.coreCashConversionRatio}%（低於 100% 理想水準），顯示部分帳面盈餘仍滯留於應收帳款或存貨形式，需追蹤後續貨款收現效率。`}
+                    </div>
+                  </div>
+
+                  {/* Row 3: 杜邦分析三因子歸因 */}
+                  <div className="p-1.5 bg-white rounded-lg border border-slate-200 flex flex-col justify-between">
+                    <div className="flex items-center justify-between gap-2 flex-wrap mb-0.5">
+                      <div className="flex items-center gap-1.5">
+                        <span className="font-bold text-slate-900 text-[9px]">③ 杜邦分析三因子連乘歸因 (DuPont 3-Way Attribution)</span>
+                        <span className="text-slate-500 font-mono text-[8px]">公式：稅後純益率 × 總資產週轉率 × 權益乘數</span>
+                      </div>
+                      <div className="font-mono text-[9px]">
+                        <span className="text-slate-600">{r.dupontNetMargin}% × {r.dupontAssetTurnover}次 × {r.dupontEquityMultiplier}倍</span>
+                        <span className="font-bold text-amber-900 ml-1.5">= ROE {r.dupontRoe}%</span>
+                      </div>
+                    </div>
+                    <div className="text-[8px] text-slate-600 leading-tight">
+                      <strong>【會計勾稽與推論】</strong>
+                      ROE 股東權益報酬率達 {r.dupontRoe}%，經三因子拆解顯示主要受「{r.dupontNetMargin >= 15 ? '高產品淨利率 (利潤驅動)' : '高資產週轉效率 (薄利多銷)'}」所帶動，權益乘數維持在 {r.dupontEquityMultiplier} 倍（財務槓桿穩健），屬高品質之長期複利回報結構。
+                    </div>
+                  </div>
+
+                  {/* Row 4: Altman Z 破產防禦模型 */}
+                  <div className="p-1.5 bg-white rounded-lg border border-slate-200 flex flex-col justify-between">
+                    <div className="flex items-center justify-between gap-2 flex-wrap mb-0.5">
+                      <div className="flex items-center gap-1.5">
+                        <span className="font-bold text-slate-900 text-[9px]">④ Altman Z 破產防禦評分模型 (5-Factor Z-Score Model)</span>
+                        <span className="text-slate-500 font-mono text-[8px]">公式：1.2X₁(營運資金/資產) + 1.4X₂(保留盈餘/資產) + 3.3X₃(EBIT/資產) + 0.6X₄(權益/負債) + 0.999X₅(營收/資產)</span>
+                      </div>
+                      <div className="font-mono text-[9px]">
+                        <span className="text-slate-600">計息負債比 {r.interestBearingDebtRatio}%</span>
+                        <span className="font-bold text-purple-900 ml-1.5">= {r.altmanZScore} 分 ({r.altmanZZone === 'safe' ? '安全堡壘' : r.altmanZZone === 'grey' ? '灰色區域' : '警戒區'})</span>
+                      </div>
+                    </div>
+                    <div className="text-[8px] text-slate-600 leading-tight">
+                      <strong>【會計勾稽與推論】</strong>
+                      {r.altmanZZone === 'safe'
+                        ? `綜合評分達 ${r.altmanZScore} 分（遠高於安全門檻 2.99 分），受惠於扎實的息稅前利潤 (X₃) 與穩固的股東權益緩衝 (X₄)，純計息負債比僅 ${r.interestBearingDebtRatio}%，未來 2 年內破產違約機率極低，具備強大抗風險底氣。`
+                        : `綜合評分 ${r.altmanZScore} 分落入「${r.altmanZZone === 'grey' ? '灰色過渡區' : '財務困境警戒區'}」，需持續關注短期流動性 (X₁) 與債務展延壓力。`}
                     </div>
                   </div>
 
