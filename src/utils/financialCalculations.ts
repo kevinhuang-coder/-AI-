@@ -384,83 +384,100 @@ export function calculateAllPeriodsRatios(periods: FinancialPeriod[]): PeriodWit
 
 /**
  * 計算五維度財務健康綜合雷達評分 (0-100)
+ * 採用杜邦資本回報、現金流量品質與破產防禦之全產業通用量化模型
  */
 export function calculateHealthDimensions(latest: PeriodWithRatios) {
   const r = latest.ratios;
 
-  // 1. 獲利能力得分 (毛利率, 營益率, ROE)
-  let profitScore = 40;
-  if (r.netMargin < 0) {
-    profitScore = Math.max(5, Math.round(20 + r.netMargin * 2));
-    if (r.operatingMargin < 0) profitScore = Math.max(5, profitScore - 12);
+  // 1. 獲利能力得分 (杜邦資本回報 ROE、本業營業利益率與實質獲利規模)
+  let profitScore = 35;
+  if (r.netMargin < 0 || latest.netIncome < 0) {
+    profitScore = Math.max(5, Math.round(25 + r.netMargin * 2));
+    if (r.operatingMargin < 0) profitScore = Math.max(5, profitScore - 15);
   } else {
-    if (r.grossMargin >= 40) profitScore += 20;
-    else if (r.grossMargin >= 25) profitScore += 12;
-    else if (r.grossMargin >= 15) profitScore += 6;
+    // A. 營業利益率 (本業獲利純度，最高 35 分)
+    if (r.operatingMargin >= 25) profitScore += 35;
+    else if (r.operatingMargin >= 15) profitScore += 28;
+    else if (r.operatingMargin >= 8) profitScore += 20;
+    else if (r.operatingMargin >= 3) profitScore += 15; // EMS製造代工/零售業極優門檻
+    else if (r.operatingMargin > 0) profitScore += 8;
 
-    if (r.operatingMargin >= 15) profitScore += 20;
-    else if (r.operatingMargin >= 8) profitScore += 12;
-    else if (r.operatingMargin > 0) profitScore += 5;
+    // B. 杜邦 ROE 股東權益報酬率 (全產業通用資本回報引擎，最高 35 分)
+    if (r.roe >= 22) profitScore += 35;
+    else if (r.roe >= 15) profitScore += 28;
+    else if (r.roe >= 10) profitScore += 18;
+    else if (r.roe >= 5) profitScore += 10;
 
-    if (r.roe >= 18) profitScore += 20;
-    else if (r.roe >= 12) profitScore += 12;
-    else if (r.roe >= 6) profitScore += 6;
+    // C. 營收規模與抗風險底氣 (最高 15 分)
+    if (latest.revenue >= 1000000000) profitScore += 15; // 兆元/千億級產業龍頭
+    else if (latest.revenue >= 100000000) profitScore += 10;
+    else if (latest.revenue >= 10000000) profitScore += 5;
   }
   profitScore = Math.min(100, Math.max(5, profitScore));
 
-  // 2. 營運週轉效率得分 (應收天數 DSO, 存貨天數 DSI, 現金循環 CCC)
-  let turnoverScore = 50;
-  if (r.dso <= 45) turnoverScore += 20;
-  else if (r.dso <= 65) turnoverScore += 12;
-  else if (r.dso <= 90) turnoverScore += 4;
-  else turnoverScore -= 15;
+  // 2. 營運週轉效率得分 (應收天數 DSO, 現金循環 CCC, 總資產週轉驅動)
+  let turnoverScore = 45;
+  if (r.dso <= 25) turnoverScore += 22; // 餐飲/超商/電商/高效收現
+  else if (r.dso <= 55) turnoverScore += 16;
+  else if (r.dso <= 85) turnoverScore += 8;
+  else turnoverScore -= 10;
 
-  if (r.dsi <= 60) turnoverScore += 20;
-  else if (r.dsi <= 90) turnoverScore += 12;
-  else if (r.dsi <= 120) turnoverScore += 4;
-  else turnoverScore -= 15;
+  if (r.cashConversionCycle <= 30) turnoverScore += 22;
+  else if (r.cashConversionCycle <= 60) turnoverScore += 15;
+  else if (r.cashConversionCycle <= 90) turnoverScore += 8;
+  else turnoverScore -= 10;
 
-  if (r.cashConversionCycle <= 50) turnoverScore += 10;
-  else if (r.cashConversionCycle > 100) turnoverScore -= 10;
+  if (r.totalAssetTurnover >= 1.2) turnoverScore += 18; // 高週轉薄利多銷加分
+  else if (r.totalAssetTurnover >= 0.7) turnoverScore += 10;
   turnoverScore = Math.min(100, Math.max(10, turnoverScore));
 
-  // 3. 償債安全與槓桿得分 (流動比, 速動比, 負債比)
-  let solvencyScore = 40;
-  if (r.currentRatio >= 200) solvencyScore += 20;
-  else if (r.currentRatio >= 150) solvencyScore += 14;
-  else if (r.currentRatio >= 110) solvencyScore += 6;
+  // 3. 償債安全與槓桿得分 (純計息負債比, 流動比率, 破產防禦 Altman Z)
+  let solvencyScore = 45;
+  // A. 純計息負債比 (實質需付息之銀行借款)
+  if (r.interestBearingDebtRatio <= 15) solvencyScore += 25; // 幾乎無銀行借款 (極安全)
+  else if (r.interestBearingDebtRatio <= 28) solvencyScore += 18;
+  else if (r.interestBearingDebtRatio <= 40) solvencyScore += 10;
   else solvencyScore -= 15;
 
-  if (r.quickRatio >= 130) solvencyScore += 20;
-  else if (r.quickRatio >= 100) solvencyScore += 12;
-  else if (r.quickRatio < 70) solvencyScore -= 10;
+  // B. 流動比率安全墊
+  if (r.currentRatio >= 180) solvencyScore += 15;
+  else if (r.currentRatio >= 130) solvencyScore += 10;
+  else if (r.currentRatio < 100) solvencyScore -= 15;
 
-  if (r.debtRatio <= 45) solvencyScore += 20;
-  else if (r.debtRatio <= 60) solvencyScore += 10;
-  else if (r.debtRatio > 70) solvencyScore -= 20;
+  // C. Altman Z 破產防禦
+  if (r.altmanZScore >= 2.99) solvencyScore += 15;
+  else if (r.altmanZScore >= 1.81) solvencyScore += 8;
+  else solvencyScore -= 15;
   solvencyScore = Math.min(100, Math.max(10, solvencyScore));
 
-  // 4. 現金流品質得分 (OCF / Net Income, 自由現金流)
-  let cashflowScore = 45;
+  // 4. 現金流品質得分 (現金轉換含金量, 自由現金流充沛性)
+  let cashflowScore = 40;
   if (latest.operatingCashFlow < 0) {
     cashflowScore = Math.max(5, Math.round(20 + (latest.operatingCashFlow / (latest.revenue || 1)) * 300));
-  } else if (r.ocfToNetIncome >= 110) cashflowScore += 30;
-  else if (r.ocfToNetIncome >= 80) cashflowScore += 18;
-  else if (r.ocfToNetIncome >= 50) cashflowScore += 8;
-  else cashflowScore -= 15;
+  } else {
+    // 營業現金流轉化率 (獲利變真金)
+    if (r.coreCashConversionRatio >= 110) cashflowScore += 32;
+    else if (r.coreCashConversionRatio >= 85) cashflowScore += 22;
+    else if (r.coreCashConversionRatio >= 60) cashflowScore += 12;
 
-  if (r.freeCashFlow > 0) cashflowScore += 25;
-  else cashflowScore -= 15;
+    // 自由現金流充沛度
+    if (r.rigorousFcf > 0) {
+      cashflowScore += 25;
+      if (r.rigorousFcf > latest.netIncome * 0.5) cashflowScore += 10;
+    } else {
+      cashflowScore -= 12;
+    }
+  }
   cashflowScore = Math.min(100, Math.max(5, cashflowScore));
 
-  // 5. 資產運用與槓桿綜效 (總資產週轉率, 杜邦權益乘數適度性)
-  let assetEfficiencyScore = 50;
-  if (r.totalAssetTurnover >= 1.2) assetEfficiencyScore += 30;
-  else if (r.totalAssetTurnover >= 0.8) assetEfficiencyScore += 18;
-  else if (r.totalAssetTurnover >= 0.5) assetEfficiencyScore += 8;
+  // 5. 資產運用與杜邦綜效 (總資產週轉率, 杜邦權益乘數適度性)
+  let assetEfficiencyScore = 45;
+  if (r.totalAssetTurnover >= 1.3) assetEfficiencyScore += 30; // 鴻海/超商/餐飲等高週轉典範
+  else if (r.totalAssetTurnover >= 0.8) assetEfficiencyScore += 20;
+  else if (r.totalAssetTurnover >= 0.45) assetEfficiencyScore += 12;
 
-  if (r.dupontEquityMultiplier >= 1.2 && r.dupontEquityMultiplier <= 2.5) assetEfficiencyScore += 20;
-  else if (r.dupontEquityMultiplier > 3.5) assetEfficiencyScore -= 10;
+  if (r.roe >= 15) assetEfficiencyScore += 25;
+  else if (r.roe >= 10) assetEfficiencyScore += 15;
   assetEfficiencyScore = Math.min(100, Math.max(10, assetEfficiencyScore));
 
   const totalScore = Math.round((profitScore + turnoverScore + solvencyScore + cashflowScore + assetEfficiencyScore) / 5);
@@ -472,6 +489,18 @@ export function calculateHealthDimensions(latest: PeriodWithRatios) {
   else if (totalScore >= 45) rating = '需注意 (Watchlist)';
   else rating = '高風險 (High Risk)';
 
+  // 商業模式驅動引擎客觀標籤 (Business Model Archetype)
+  let businessEngine = '均衡成長型';
+  if (r.dupontNetMargin >= 22) {
+    businessEngine = '高毛利護城河';
+  } else if (r.dupontAssetTurnover >= 1.1) {
+    businessEngine = '高週轉規模典範';
+  } else if (r.coreCashConversionRatio >= 110) {
+    businessEngine = '高現金智財型';
+  } else if (r.roe >= 16) {
+    businessEngine = '高資本複利型';
+  }
+
   return {
     profitScore,
     turnoverScore,
@@ -480,11 +509,12 @@ export function calculateHealthDimensions(latest: PeriodWithRatios) {
     assetEfficiencyScore,
     totalScore,
     rating,
+    businessEngine,
     radarData: [
       { subject: '獲利能力', score: profitScore, fullMark: 100 },
       { subject: '營運週轉', score: turnoverScore, fullMark: 100 },
       { subject: '償債流動', score: solvencyScore, fullMark: 100 },
-      { subject: '現金流品質', score: cashflowScore, fullMark: 100 },
+      { subject: '現金品質', score: cashflowScore, fullMark: 100 },
       { subject: '資產效率', score: assetEfficiencyScore, fullMark: 100 },
     ],
   };

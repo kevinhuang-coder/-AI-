@@ -185,15 +185,16 @@ export const FinancialHealthRadar: React.FC = () => {
             </p>
           </div>
 
-          <div className="mt-4 pt-3 border-t border-slate-800/80 w-full flex items-center justify-around text-center text-xs">
-            <div>
-              <span className="text-[10px] text-slate-500 block">產業排名</span>
+          <div className="mt-4 pt-3 border-t border-slate-800/80 w-full grid grid-cols-2 gap-2 text-center text-xs">
+            <div className="bg-slate-900/80 p-1.5 rounded-lg border border-slate-800">
+              <span className="text-[10px] text-slate-400 block mb-0.5">市場健全評位</span>
               <span className={`text-xs font-bold font-mono ${rankInfo.color}`}>{rankInfo.text}</span>
             </div>
-            <div className="w-px h-6 bg-slate-800" />
-            <div>
-              <span className="text-[10px] text-slate-500 block">風險等級</span>
-              <span className={`text-xs font-bold font-mono ${riskInfo.color}`}>{riskInfo.text}</span>
+            <div className="bg-slate-900/80 p-1.5 rounded-lg border border-slate-800">
+              <span className="text-[10px] text-slate-400 block mb-0.5">杜邦商業引擎</span>
+              <span className="text-xs font-bold font-sans text-indigo-300 truncate block">
+                {health.businessEngine || '均衡成長型'}
+              </span>
             </div>
           </div>
         </div>
