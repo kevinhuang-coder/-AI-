@@ -277,7 +277,7 @@ export const PdfReportModal: React.FC = () => {
               minHeight: '1122px',
               maxHeight: '1122px',
               boxSizing: 'border-box',
-              padding: '20px 24px',
+              padding: '24px 28px',
               display: 'flex',
               flexDirection: 'column',
               justifyContent: 'space-between',
@@ -287,29 +287,29 @@ export const PdfReportModal: React.FC = () => {
           >
             
             {/* Top Main Section */}
-            <div className="space-y-2">
+            <div className="space-y-2.5">
               
               {/* 1. Header Banner */}
-              <div className="border-b-2 border-slate-900 pb-1.5">
+              <div className="border-b-2 border-slate-900 pb-2">
                 <div className="flex justify-between items-start gap-2">
                   <div>
-                    <div className="flex items-center space-x-1.5 text-emerald-800 font-bold text-[10px] uppercase tracking-wider mb-0.5">
-                      <Building2 className="w-3.5 h-3.5 text-emerald-700" />
+                    <div className="flex items-center space-x-1.5 text-emerald-800 font-bold text-xs uppercase tracking-wider mb-0.5">
+                      <Building2 className="w-4 h-4 text-emerald-700 flex-shrink-0" />
                       <span>{activeCompany.industry} • 《凱文黃的知識天地》價值投資與基本面深度診斷報告</span>
                     </div>
-                    <h1 className="text-xl font-black text-slate-950 tracking-tight leading-tight">
+                    <h1 className="text-2xl font-black text-slate-950 tracking-tight leading-tight">
                       {activeCompany.name}
                     </h1>
-                    <p className="text-[10px] text-slate-600 mt-0.5">
+                    <p className="text-[11px] text-slate-600 mt-1">
                       股票代號 / 識別碼：<span className="font-mono font-bold text-slate-800">{activeCompany.code}</span> • 報告基準期：<span className="font-bold text-slate-900">{latestPeriod.period} 官方審定年報</span>
                     </p>
                   </div>
                   <div className="text-right flex-shrink-0">
-                    <div className="inline-flex items-center px-3 py-1 rounded bg-slate-900 text-white font-mono font-bold text-xs border border-slate-700">
+                    <div className="inline-flex items-center px-3.5 py-1.5 rounded-lg bg-slate-900 text-white font-mono font-bold text-xs border border-slate-700 shadow-xs">
                       <span>綜合財務評級：{health.rating} ({health.totalScore}分)</span>
                     </div>
-                    <div className="text-[9.5px] text-slate-500 mt-1 flex items-center justify-end space-x-1">
-                      <Calendar className="w-3 h-3" />
+                    <div className="text-[10px] text-slate-500 mt-1.5 flex items-center justify-end space-x-1">
+                      <Calendar className="w-3.5 h-3.5" />
                       <span>產出日期: {currentDate}</span>
                     </div>
                   </div>
@@ -317,17 +317,17 @@ export const PdfReportModal: React.FC = () => {
               </div>
 
               {/* 2. 核心指標矩陣 (4 Core KPI Summary Cards - YoY 比較) */}
-              <div className="grid grid-cols-4 gap-2 text-xs">
+              <div className="grid grid-cols-4 gap-2.5 text-xs">
                 
                 {/* Card 1: 經濟護城河 */}
-                <div className="p-2 bg-slate-50 rounded-xl border border-slate-200 flex flex-col justify-between">
+                <div className="p-2.5 bg-slate-50 rounded-xl border border-slate-200 flex flex-col justify-between">
                   <div>
                     <div className="flex items-center justify-between gap-1 mb-1">
-                      <span className="text-[9px] font-bold text-slate-700 flex items-center gap-1">
-                        <Crown className="w-3 h-3 text-amber-600 flex-shrink-0" />
+                      <span className="text-[10px] font-bold text-slate-700 flex items-center gap-1">
+                        <Crown className="w-3.5 h-3.5 text-amber-600 flex-shrink-0" />
                         經濟護城河
                       </span>
-                      <span className={`text-[8px] font-bold px-1.5 py-0.5 rounded ${
+                      <span className={`text-[8.5px] font-bold px-1.5 py-0.5 rounded ${
                         r.economicMoat === 'wide' ? 'bg-amber-100 text-amber-800 border border-amber-300' :
                         r.economicMoat === 'narrow' ? 'bg-blue-100 text-blue-800 border border-blue-300' :
                         'bg-slate-200 text-slate-700'
@@ -337,12 +337,12 @@ export const PdfReportModal: React.FC = () => {
                     </div>
 
                     <div className="flex items-baseline justify-between gap-1">
-                      <div className="text-sm font-bold text-slate-950 font-mono">
+                      <div className="text-base font-black text-slate-950 font-mono">
                         {r.grossMargin}%
-                        <span className="text-[8.5px] font-normal text-slate-600 ml-1 font-sans">毛利</span>
+                        <span className="text-[9px] font-normal text-slate-600 ml-1 font-sans">毛利</span>
                       </div>
                       {roeDelta && (
-                        <div className={`flex items-center text-[9px] font-bold font-mono ${
+                        <div className={`flex items-center text-[10px] font-bold font-mono ${
                           roeDelta.isUp ? 'text-emerald-700' : 'text-rose-700'
                         }`} title="與前一年度 (YoY) 相比之 ROE 增減">
                           <span>{roeDelta.isUp ? '📈' : '📉'}{roeDelta.text}</span>
@@ -351,21 +351,21 @@ export const PdfReportModal: React.FC = () => {
                     </div>
                   </div>
 
-                  <div className="mt-1 pt-1 border-t border-slate-200 flex items-center justify-between text-[8.5px] text-slate-600">
+                  <div className="mt-1 pt-1 border-t border-slate-200 flex items-center justify-between text-[9.5px] text-slate-600">
                     <span>ROE 複利率</span>
                     <span className="font-bold text-amber-900 font-mono">{r.roe}%</span>
                   </div>
                 </div>
 
                 {/* Card 2: 獲利現金含金量 */}
-                <div className="p-2 bg-slate-50 rounded-xl border border-slate-200 flex flex-col justify-between">
+                <div className="p-2.5 bg-slate-50 rounded-xl border border-slate-200 flex flex-col justify-between">
                   <div>
                     <div className="flex items-center justify-between gap-1 mb-1">
-                      <span className="text-[9px] font-bold text-slate-700 flex items-center gap-1">
-                        <Sparkles className="w-3 h-3 text-cyan-600 flex-shrink-0" />
+                      <span className="text-[10px] font-bold text-slate-700 flex items-center gap-1">
+                        <Sparkles className="w-3.5 h-3.5 text-cyan-600 flex-shrink-0" />
                         獲利現金含金量
                       </span>
-                      <span className={`text-[8px] font-bold px-1.5 py-0.5 rounded ${
+                      <span className={`text-[8.5px] font-bold px-1.5 py-0.5 rounded ${
                         r.coreCashConversionRatio >= 100 ? 'bg-emerald-100 text-emerald-800 border border-emerald-300' :
                         r.coreCashConversionRatio >= 70 ? 'bg-blue-100 text-blue-800 border border-blue-300' :
                         'bg-amber-100 text-amber-800 border border-amber-300'
@@ -375,28 +375,28 @@ export const PdfReportModal: React.FC = () => {
                     </div>
 
                     <div className="flex items-baseline justify-between gap-1">
-                      <div className="text-sm font-bold text-slate-950 font-mono">
+                      <div className="text-base font-black text-slate-950 font-mono">
                         {r.coreCashConversionRatio}%
                       </div>
-                      <span className="text-[8px] text-slate-500 font-mono">標準 &ge; 100%</span>
+                      <span className="text-[9px] text-slate-500 font-mono">標準 &ge; 100%</span>
                     </div>
                   </div>
 
-                  <div className="mt-1 pt-1 border-t border-slate-200 flex items-center justify-between text-[8.5px] text-slate-600">
+                  <div className="mt-1 pt-1 border-t border-slate-200 flex items-center justify-between text-[9.5px] text-slate-600">
                     <span>營業現金流 (OCF)</span>
                     <span className="font-bold text-cyan-900 font-mono">{formatMoney(latestPeriod.operatingCashFlow)}</span>
                   </div>
                 </div>
 
                 {/* Card 3: 嚴謹自由現金流 */}
-                <div className="p-2 bg-slate-50 rounded-xl border border-slate-200 flex flex-col justify-between">
+                <div className="p-2.5 bg-slate-50 rounded-xl border border-slate-200 flex flex-col justify-between">
                   <div>
                     <div className="flex items-center justify-between gap-1 mb-1">
-                      <span className="text-[9px] font-bold text-slate-700 flex items-center gap-1">
-                        <Coins className="w-3 h-3 text-emerald-600 flex-shrink-0" />
+                      <span className="text-[10px] font-bold text-slate-700 flex items-center gap-1">
+                        <Coins className="w-3.5 h-3.5 text-emerald-600 flex-shrink-0" />
                         嚴謹自由現金流
                       </span>
-                      <span className={`text-[8px] font-bold px-1.5 py-0.5 rounded ${
+                      <span className={`text-[8.5px] font-bold px-1.5 py-0.5 rounded ${
                         r.rigorousFcf > 0 ? 'bg-emerald-100 text-emerald-800 border border-emerald-300' :
                         'bg-rose-100 text-rose-800 border border-rose-300'
                       }`}>
@@ -405,7 +405,7 @@ export const PdfReportModal: React.FC = () => {
                     </div>
 
                     <div className="flex items-baseline justify-between gap-1">
-                      <div className={`text-sm font-bold font-mono ${
+                      <div className={`text-base font-black font-mono ${
                         r.rigorousFcf >= 0 ? 'text-slate-950' : 'text-rose-700'
                       }`}>
                         {formatMoney(r.rigorousFcf)}
@@ -413,21 +413,21 @@ export const PdfReportModal: React.FC = () => {
                     </div>
                   </div>
 
-                  <div className="mt-1 pt-1 border-t border-slate-200 flex items-center justify-between text-[8.5px] text-slate-600">
+                  <div className="mt-1 pt-1 border-t border-slate-200 flex items-center justify-between text-[9.5px] text-slate-600">
                     <span>扣除 CapEx 資本支出</span>
                     <span className="font-bold text-slate-800 font-mono">{formatMoney(latestPeriod.capitalExpenditures)}</span>
                   </div>
                 </div>
 
                 {/* Card 4: Altman Z 破產防禦 */}
-                <div className="p-2 bg-slate-50 rounded-xl border border-slate-200 flex flex-col justify-between">
+                <div className="p-2.5 bg-slate-50 rounded-xl border border-slate-200 flex flex-col justify-between">
                   <div>
                     <div className="flex items-center justify-between gap-1 mb-1">
-                      <span className="text-[9px] font-bold text-slate-700 flex items-center gap-1 truncate">
-                        <ShieldCheck className="w-3 h-3 text-indigo-600 flex-shrink-0" />
+                      <span className="text-[10px] font-bold text-slate-700 flex items-center gap-1 truncate">
+                        <ShieldCheck className="w-3.5 h-3.5 text-indigo-600 flex-shrink-0" />
                         Altman Z 破產防禦
                       </span>
-                      <span className={`text-[8px] font-bold px-1.5 py-0.5 rounded flex-shrink-0 ${
+                      <span className={`text-[8.5px] font-bold px-1.5 py-0.5 rounded flex-shrink-0 ${
                         r.altmanZZone === 'safe' ? 'bg-emerald-100 text-emerald-800 border border-emerald-300' :
                         r.altmanZZone === 'grey' ? 'bg-amber-100 text-amber-800 border border-amber-300' :
                         'bg-rose-100 text-rose-800 border border-rose-300'
@@ -437,12 +437,12 @@ export const PdfReportModal: React.FC = () => {
                     </div>
 
                     <div className="flex items-baseline justify-between gap-1">
-                      <div className="text-sm font-bold text-slate-950 font-mono">
+                      <div className="text-base font-black text-slate-950 font-mono">
                         {r.altmanZScore}
-                        <span className="text-[8.5px] font-normal text-slate-600 ml-1 font-sans">分</span>
+                        <span className="text-[9px] font-normal text-slate-600 ml-1 font-sans">分</span>
                       </div>
                       {zDelta && (
-                        <div className={`flex items-center text-[9px] font-bold font-mono ${
+                        <div className={`flex items-center text-[10px] font-bold font-mono ${
                           zDelta.isUp ? 'text-emerald-700' : 'text-rose-700'
                         }`} title="與前一年度 (YoY) 相比之 Altman Z 分數增減">
                           <span>{zDelta.isUp ? '📈' : '📉'}{zDelta.text}</span>
@@ -451,7 +451,7 @@ export const PdfReportModal: React.FC = () => {
                     </div>
                   </div>
 
-                  <div className="mt-1 pt-1 border-t border-slate-200 flex items-center justify-between text-[8.5px] text-slate-600">
+                  <div className="mt-1 pt-1 border-t border-slate-200 flex items-center justify-between text-[9.5px] text-slate-600">
                     <span>純計息負債比</span>
                     <span className="font-bold text-indigo-900 font-mono">{r.interestBearingDebtRatio}%</span>
                   </div>
@@ -460,12 +460,12 @@ export const PdfReportModal: React.FC = () => {
               </div>
 
               {/* 3. 基本面研究核心結論總評 (Executive Summary Narrative) */}
-              <div className="p-2.5 bg-slate-50 rounded-xl border border-slate-200">
-                <div className="flex items-center gap-1.5 text-[10.5px] font-bold text-indigo-900 uppercase tracking-wider mb-1">
-                  <Bot className="w-3.5 h-3.5 text-indigo-600" />
+              <div className="p-3 bg-slate-50 rounded-xl border border-slate-200">
+                <div className="flex items-center gap-1.5 text-xs font-bold text-indigo-900 uppercase tracking-wider mb-1">
+                  <Bot className="w-4 h-4 text-indigo-600 flex-shrink-0" />
                   <span>基本面研究核心結論總評 (Executive Diagnostic Conclusion)</span>
                 </div>
-                <p className="text-[9.5px] text-slate-800 leading-relaxed font-normal">
+                <p className="text-[10px] text-slate-800 leading-relaxed font-normal">
                   {latestPeriod.netIncome < 0 ? (
                     `【價值投資視角總評】${activeCompany.name} 在 ${latestPeriod.period} 處於「營運虧損與基本面承壓期」，稅後淨損達 NT$ ${(Math.abs(latestPeriod.netIncome) / 1000).toLocaleString()} 百萬元（ROE 為 ${r.roe}%，每股虧損 NT$ ${r.eps}）。雖然營業毛利率為 ${r.grossMargin}%，但嚴謹自由現金流為實質赤字 NT$ ${(r.rigorousFcf / 1000).toLocaleString(undefined, { maximumFractionDigits: 1 })} 百萬元，且 Altman Z 破產防禦分數僅 ${r.altmanZScore} 分（落入 ${r.altmanZZone === 'distress' ? '財務困境警戒區' : '灰色考驗區'}），整體缺乏價值投資安全邊際，應嚴密防範營運現金持續消耗與流動性風險。`
                   ) : r.economicMoat === 'wide' ? (
@@ -477,18 +477,18 @@ export const PdfReportModal: React.FC = () => {
               </div>
 
               {/* 4. 多空投資論點對比 (Bull Case vs Bear Case) */}
-              <div className="grid grid-cols-2 gap-2 text-xs">
+              <div className="grid grid-cols-2 gap-2.5 text-xs">
                 
                 {/* 多方看好亮點 */}
-                <div className="p-2 bg-emerald-50/70 border border-emerald-200 rounded-xl">
-                  <div className="flex items-center space-x-1.5 text-emerald-900 font-bold mb-1 text-[10px]">
-                    <CheckCircle2 className="w-3 h-3 text-emerald-700 flex-shrink-0" />
+                <div className="p-3 bg-emerald-50/70 border border-emerald-200 rounded-xl">
+                  <div className="flex items-center space-x-1.5 text-emerald-900 font-bold mb-1.5 text-xs">
+                    <CheckCircle2 className="w-3.5 h-3.5 text-emerald-700 flex-shrink-0" />
                     <span>🟢 核心競爭優勢與多方亮點 (Bull Case Thesis)</span>
                   </div>
-                  <ul className="space-y-1 text-emerald-950 text-[9px] leading-snug">
+                  <ul className="space-y-1.5 text-emerald-950 text-[9.5px] leading-snug">
                     {latestPeriod.netIncome < 0 ? (
                       <>
-                        <li>• <strong>本業現金流入：</strong>營業現金流達 NT$ ${(latestPeriod.operatingCashFlow / 1000).toLocaleString()} 百萬元，日常營運未斷流。</li>
+                        <li>• <strong>本業現金流入：</strong>營業現金流達 NT$ ${(latestPeriod.operatingCashFlow / 1000).toLocaleString()} 百萬元，日常營運維持現金運轉。</li>
                         <li>• <strong>產品毛利空間：</strong>營業毛利率維持在 {r.grossMargin}%，仍具備基礎毛利防線。</li>
                         <li>• <strong>轉型重整契機：</strong>若能加速處分虧損事業與優化費用結構，具備轉虧為盈題材。</li>
                       </>
@@ -503,12 +503,12 @@ export const PdfReportModal: React.FC = () => {
                 </div>
 
                 {/* 空方風險地雷提示 */}
-                <div className="p-2 bg-amber-50/70 border border-amber-200 rounded-xl">
-                  <div className="flex items-center space-x-1.5 text-amber-900 font-bold mb-1 text-[10px]">
-                    <AlertTriangle className="w-3 h-3 text-amber-700 flex-shrink-0" />
+                <div className="p-3 bg-amber-50/70 border border-amber-200 rounded-xl">
+                  <div className="flex items-center space-x-1.5 text-amber-900 font-bold mb-1.5 text-xs">
+                    <AlertTriangle className="w-3.5 h-3.5 text-amber-700 flex-shrink-0" />
                     <span>🔴 潛在風險警訊與隱憂提示 (Bear Case Risks)</span>
                   </div>
-                  <ul className="space-y-1 text-amber-950 text-[9px] leading-snug">
+                  <ul className="space-y-1.5 text-amber-950 text-[9.5px] leading-snug">
                     {latestPeriod.netIncome < 0 ? (
                       <>
                         <li>• <strong>實質虧損侵蝕淨值：</strong>稅後淨損達 NT$ ${(Math.abs(latestPeriod.netIncome) / 1000).toLocaleString()} 百萬元，淨值遭減損。</li>
@@ -528,69 +528,69 @@ export const PdfReportModal: React.FC = () => {
 
               {/* 5. 價值投資人長期策略指引 (Investment Guidance & Action Matrix) */}
               <div>
-                <div className="flex items-center space-x-1.5 text-[9.5px] font-bold text-indigo-900 uppercase tracking-wider mb-1">
+                <div className="flex items-center space-x-1.5 text-xs font-bold text-indigo-900 uppercase tracking-wider mb-1">
                   <Target className="w-3.5 h-3.5 text-indigo-600 flex-shrink-0" />
                   <span>價值投資人長期策略指引 (Value Investment Strategy Guidance)</span>
                 </div>
 
-                <div className="grid grid-cols-3 gap-1.5 text-xs">
+                <div className="grid grid-cols-3 gap-2 text-xs">
                   
                   {/* Pillar 1 */}
-                  <div className="p-1.5 bg-slate-50 rounded-xl border border-slate-200 flex flex-col justify-between">
+                  <div className="p-2.5 bg-slate-50 rounded-xl border border-slate-200 flex flex-col justify-between">
                     <div>
-                      <div className="flex items-center justify-between mb-0.5">
-                        <span className="text-[9px] font-bold text-slate-900">長線複利潛力</span>
-                        <span className="text-[7.5px] font-bold px-1.5 py-0.2 rounded bg-emerald-100 text-emerald-800 border border-emerald-300">
+                      <div className="flex items-center justify-between mb-1">
+                        <span className="text-[10px] font-bold text-slate-900">長線複利潛力</span>
+                        <span className="text-[8.5px] font-bold px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-800 border border-emerald-300">
                           {latestPeriod.netIncome < 0 ? '承壓虧損' : r.roe >= 15 ? '優質複利' : '穩健持平'}
                         </span>
                       </div>
-                      <p className="text-[8px] text-slate-700 leading-snug">
+                      <p className="text-[9px] text-slate-700 leading-snug">
                         {latestPeriod.netIncome < 0
                           ? `ROE 為負值 (${r.roe}%)，本業虧損，投資人應避免盲目抄底。`
                           : `具備高 ROE (${r.roe}%)，適合價值型投資者逢回檔分批評估持有價值。`}
                       </p>
                     </div>
-                    <div className="mt-0.5 pt-0.5 border-t border-slate-200 text-[7.5px] text-emerald-800 font-semibold">
+                    <div className="mt-1 pt-1 border-t border-slate-200 text-[8.5px] text-emerald-800 font-semibold">
                       關注: {latestPeriod.netIncome < 0 ? '何時由虧轉盈及毛利回升' : '每季毛利率與 EPS 成長性'}
                     </div>
                   </div>
 
                   {/* Pillar 2 */}
-                  <div className="p-1.5 bg-slate-50 rounded-xl border border-slate-200 flex flex-col justify-between">
+                  <div className="p-2.5 bg-slate-50 rounded-xl border border-slate-200 flex flex-col justify-between">
                     <div>
-                      <div className="flex items-center justify-between mb-0.5">
-                        <span className="text-[9px] font-bold text-slate-900">股息與自由現金保護</span>
-                        <span className="text-[7.5px] font-bold px-1.5 py-0.2 rounded bg-blue-100 text-blue-800 border border-blue-300">
+                      <div className="flex items-center justify-between mb-1">
+                        <span className="text-[10px] font-bold text-slate-900">股息與自由現金保護</span>
+                        <span className="text-[8.5px] font-bold px-1.5 py-0.5 rounded bg-blue-100 text-blue-800 border border-blue-300">
                           {r.rigorousFcf <= 0 ? '現金吃緊' : '現金流充沛'}
                         </span>
                       </div>
-                      <p className="text-[8px] text-slate-700 leading-snug">
+                      <p className="text-[9px] text-slate-700 leading-snug">
                         {r.rigorousFcf <= 0
                           ? `自由現金流赤字 (NT$ ${(r.rigorousFcf / 1000).toLocaleString(undefined, { maximumFractionDigits: 1 })}M)，短期缺乏實質現金股息支撐。`
                           : `自由現金流充沛，具備持續穩定配發現金股息之財務實力，下行防禦性高。`}
                       </p>
                     </div>
-                    <div className="mt-0.5 pt-0.5 border-t border-slate-200 text-[7.5px] text-blue-800 font-semibold">
+                    <div className="mt-1 pt-1 border-t border-slate-200 text-[8.5px] text-blue-800 font-semibold">
                       關注: {r.rigorousFcf <= 0 ? '防範再籌資與現金存量消耗' : '檢驗 CapEx 對 FCF 之佔用比'}
                     </div>
                   </div>
 
                   {/* Pillar 3 */}
-                  <div className="p-1.5 bg-slate-50 rounded-xl border border-slate-200 flex flex-col justify-between">
+                  <div className="p-2.5 bg-slate-50 rounded-xl border border-slate-200 flex flex-col justify-between">
                     <div>
-                      <div className="flex items-center justify-between mb-0.5">
-                        <span className="text-[9px] font-bold text-slate-900">破產防禦與安全邊際</span>
-                        <span className="text-[7.5px] font-bold px-1.5 py-0.2 rounded bg-purple-100 text-purple-800 border border-purple-300">
+                      <div className="flex items-center justify-between mb-1">
+                        <span className="text-[10px] font-bold text-slate-900">破產防禦與安全邊際</span>
+                        <span className="text-[8.5px] font-bold px-1.5 py-0.5 rounded bg-purple-100 text-purple-800 border border-purple-300">
                           {r.altmanZZone === 'safe' ? '堡壘級' : r.altmanZZone === 'grey' ? '觀察區' : '困境警戒'}
                         </span>
                       </div>
-                      <p className="text-[8px] text-slate-700 leading-snug">
+                      <p className="text-[9px] text-slate-700 leading-snug">
                         {r.altmanZZone === 'safe'
                           ? `Altman Z 達 ${r.altmanZScore} 分，負債結構穩固，即使遭遇大環境逆風亦無財務危機隱憂。`
                           : `Altman Z 為 ${r.altmanZScore} 分，需密切留意營運資金週轉與短期借款展延能力。`}
                       </p>
                     </div>
-                    <div className="mt-0.5 pt-0.5 border-t border-slate-200 text-[7.5px] text-purple-800 font-semibold">
+                    <div className="mt-1 pt-1 border-t border-slate-200 text-[8.5px] text-purple-800 font-semibold">
                       關注: {r.altmanZZone === 'distress' ? '防範流動性危機與信用風險' : '確保流動比率維持在 180% 以上'}
                     </div>
                   </div>
@@ -599,50 +599,50 @@ export const PdfReportModal: React.FC = () => {
               </div>
 
               {/* 6. 審計級底層數據計算過程與公式推導 (Audit Formula Proofs & Calculation Breakdown - 4 Full Rows) */}
-              <div className="p-2 bg-slate-50 rounded-xl border border-slate-200 text-xs">
-                <div className="flex items-center justify-between px-1 mb-1">
-                  <span className="text-[10px] font-bold text-slate-900 flex items-center gap-1.5">
+              <div className="p-2.5 bg-slate-50 rounded-xl border border-slate-200 text-xs">
+                <div className="flex items-center justify-between px-1 mb-1.5">
+                  <span className="text-[11px] font-bold text-slate-900 flex items-center gap-1.5">
                     <Calculator className="w-3.5 h-3.5 text-indigo-700 flex-shrink-0" />
                     審計級底層數據計算過程與公式推導 (Audit Formula Proofs & Calculation Breakdown)
                   </span>
-                  <span className="text-[8px] text-slate-500 font-mono">四大財務報表實數完整勾稽與實質推理</span>
+                  <span className="text-[9px] text-slate-500 font-mono">四大財務報表實數完整勾稽與實質推理</span>
                 </div>
 
-                <div className="space-y-1">
+                <div className="space-y-1.5">
                   
                   {/* Row 1: 嚴謹自由現金流 */}
-                  <div className="p-1.5 bg-white rounded-lg border border-slate-200 flex flex-col justify-between">
+                  <div className="p-2 bg-white rounded-lg border border-slate-200 flex flex-col justify-between">
                     <div className="flex items-center justify-between gap-2 flex-wrap mb-0.5">
                       <div className="flex items-center gap-1.5">
-                        <span className="font-bold text-slate-900 text-[9px]">① 嚴謹自由現金流 (Rigorous FCF)</span>
-                        <span className="text-slate-500 font-mono text-[8px]">公式：營業現金流 (OCF) - 資本支出 (CapEx)</span>
+                        <span className="font-bold text-slate-900 text-[10px]">① 嚴謹自由現金流 (Rigorous FCF)</span>
+                        <span className="text-slate-500 font-mono text-[9px]">公式：營業現金流 (OCF) - 資本支出 (CapEx)</span>
                       </div>
-                      <div className="font-mono text-[9px]">
+                      <div className="font-mono text-[10px]">
                         <span className="text-slate-600">${(latestPeriod.operatingCashFlow / 1000).toFixed(0)}M - ${(latestPeriod.capitalExpenditures / 1000).toFixed(0)}M</span>
                         <span className={`font-bold ml-1.5 ${r.rigorousFcf >= 0 ? 'text-emerald-800' : 'text-rose-800'}`}>= {formatMoney(r.rigorousFcf)}</span>
                       </div>
                     </div>
-                    <div className="text-[8px] text-slate-600 leading-tight">
+                    <div className="text-[9px] text-slate-600 leading-normal">
                       <strong>【會計勾稽與推論】</strong>
                       {r.rigorousFcf >= 0
-                        ? `本期營業活動實質帶入現金 ${formatMoney(latestPeriod.operatingCashFlow)}，在扣除維持競爭力必要之 CapEx 支出 ${formatMoney(latestPeriod.capitalExpenditures)} 後，產生實質自由現金流 ${formatMoney(r.rigorousFcf)}，代表企業無須依賴外部融資即具備充沛自我造血與股息分派實力。`
+                        ? `本期營業活動實質帶入現金 ${formatMoney(latestPeriod.operatingCashFlow)}，在扣除維持競爭力必要之 CapEx 支出 ${formatMoney(latestPeriod.capitalExpenditures)} 後，產生實質自由現金流 ${formatMoney(r.rigorousFcf)}，代表企業無須依賴外部融資即具備充沛本業現金創造力與實質股息分派實力。`
                         : `本期嚴謹自由現金流呈現赤字 (${formatMoney(r.rigorousFcf)})，主因營業現金流不足以支應當期資本支出，需留意營運資金消耗與融資調度壓力。`}
                     </div>
                   </div>
 
                   {/* Row 2: 獲利現金含金量 */}
-                  <div className="p-1.5 bg-white rounded-lg border border-slate-200 flex flex-col justify-between">
+                  <div className="p-2 bg-white rounded-lg border border-slate-200 flex flex-col justify-between">
                     <div className="flex items-center justify-between gap-2 flex-wrap mb-0.5">
                       <div className="flex items-center gap-1.5">
-                        <span className="font-bold text-slate-900 text-[9px]">② 獲利現金含金量 (Cash Conversion Quality)</span>
-                        <span className="text-slate-500 font-mono text-[8px]">公式：營業現金流 (OCF) ÷ 稅後純益 (Net Income) × 100%</span>
+                        <span className="font-bold text-slate-900 text-[10px]">② 獲利現金含金量 (Cash Conversion Quality)</span>
+                        <span className="text-slate-500 font-mono text-[9px]">公式：營業現金流 (OCF) ÷ 稅後純益 (Net Income) × 100%</span>
                       </div>
-                      <div className="font-mono text-[9px]">
+                      <div className="font-mono text-[10px]">
                         <span className="text-slate-600">${(latestPeriod.operatingCashFlow / 1000).toFixed(0)}M ÷ ${(latestPeriod.netIncome / 1000).toFixed(0)}M</span>
                         <span className="font-bold text-cyan-900 ml-1.5">= {r.coreCashConversionRatio}%</span>
                       </div>
                     </div>
-                    <div className="text-[8px] text-slate-600 leading-tight">
+                    <div className="text-[9px] text-slate-600 leading-normal">
                       <strong>【會計勾稽與推論】</strong>
                       {r.coreCashConversionRatio >= 100
                         ? `核心現金轉換率達 ${r.coreCashConversionRatio}%（大幅超越標準 ≥ 100%），證明帳面獲利 100% 轉化為真金白銀流入公司帳戶，有效排除應收帳款滯納或存貨虛增美化財報之潛在地雷。`
@@ -651,36 +651,36 @@ export const PdfReportModal: React.FC = () => {
                   </div>
 
                   {/* Row 3: 杜邦分析三因子歸因 */}
-                  <div className="p-1.5 bg-white rounded-lg border border-slate-200 flex flex-col justify-between">
+                  <div className="p-2 bg-white rounded-lg border border-slate-200 flex flex-col justify-between">
                     <div className="flex items-center justify-between gap-2 flex-wrap mb-0.5">
                       <div className="flex items-center gap-1.5">
-                        <span className="font-bold text-slate-900 text-[9px]">③ 杜邦分析三因子連乘歸因 (DuPont 3-Way Attribution)</span>
-                        <span className="text-slate-500 font-mono text-[8px]">公式：稅後純益率 × 總資產週轉率 × 權益乘數</span>
+                        <span className="font-bold text-slate-900 text-[10px]">③ 杜邦分析三因子連乘歸因 (DuPont 3-Way Attribution)</span>
+                        <span className="text-slate-500 font-mono text-[9px]">公式：稅後純益率 × 總資產週轉率 × 權益乘數</span>
                       </div>
-                      <div className="font-mono text-[9px]">
+                      <div className="font-mono text-[10px]">
                         <span className="text-slate-600">{r.dupontNetMargin}% × {r.dupontAssetTurnover}次 × {r.dupontEquityMultiplier}倍</span>
                         <span className="font-bold text-amber-900 ml-1.5">= ROE {r.dupontRoe}%</span>
                       </div>
                     </div>
-                    <div className="text-[8px] text-slate-600 leading-tight">
+                    <div className="text-[9px] text-slate-600 leading-normal">
                       <strong>【會計勾稽與推論】</strong>
                       ROE 股東權益報酬率達 {r.dupontRoe}%，經三因子拆解顯示主要受「{r.dupontNetMargin >= 15 ? '高產品淨利率 (利潤驅動)' : '高資產週轉效率 (薄利多銷)'}」所帶動，權益乘數維持在 {r.dupontEquityMultiplier} 倍（財務槓桿穩健），屬高品質之長期複利回報結構。
                     </div>
                   </div>
 
                   {/* Row 4: Altman Z 破產防禦模型 */}
-                  <div className="p-1.5 bg-white rounded-lg border border-slate-200 flex flex-col justify-between">
+                  <div className="p-2 bg-white rounded-lg border border-slate-200 flex flex-col justify-between">
                     <div className="flex items-center justify-between gap-2 flex-wrap mb-0.5">
                       <div className="flex items-center gap-1.5">
-                        <span className="font-bold text-slate-900 text-[9px]">④ Altman Z 破產防禦評分模型 (5-Factor Z-Score Model)</span>
-                        <span className="text-slate-500 font-mono text-[8px]">公式：1.2X₁(營運資金/資產) + 1.4X₂(保留盈餘/資產) + 3.3X₃(EBIT/資產) + 0.6X₄(權益/負債) + 0.999X₅(營收/資產)</span>
+                        <span className="font-bold text-slate-900 text-[10px]">④ Altman Z 破產防禦評分模型 (5-Factor Z-Score Model)</span>
+                        <span className="text-slate-500 font-mono text-[9px]">公式：1.2X₁(營運資金/資產) + 1.4X₂(保留盈餘/資產) + 3.3X₃(EBIT/資產) + 0.6X₄(權益/負債) + 0.999X₅(營收/資產)</span>
                       </div>
-                      <div className="font-mono text-[9px]">
+                      <div className="font-mono text-[10px]">
                         <span className="text-slate-600">計息負債比 {r.interestBearingDebtRatio}%</span>
                         <span className="font-bold text-purple-900 ml-1.5">= {r.altmanZScore} 分 ({r.altmanZZone === 'safe' ? '安全堡壘' : r.altmanZZone === 'grey' ? '灰色區域' : '警戒區'})</span>
                       </div>
                     </div>
-                    <div className="text-[8px] text-slate-600 leading-tight">
+                    <div className="text-[9px] text-slate-600 leading-normal">
                       <strong>【會計勾稽與推論】</strong>
                       {r.altmanZZone === 'safe'
                         ? `綜合評分達 ${r.altmanZScore} 分（遠高於安全門檻 2.99 分），受惠於扎實的息稅前利潤 (X₃) 與穩固的股東權益緩衝 (X₄)，純計息負債比僅 ${r.interestBearingDebtRatio}%，未來 2 年內破產違約機率極低，具備強大抗風險底氣。`
@@ -694,12 +694,12 @@ export const PdfReportModal: React.FC = () => {
             </div>
 
             {/* 7. Footer Sign-off & Disclaimer (Bottom Pinned) */}
-            <div className="border-t border-slate-200 pt-1.5 space-y-0.5 text-[8px] text-slate-500">
+            <div className="border-t border-slate-200 pt-2 space-y-0.5 text-[9px] text-slate-500">
               <div className="flex justify-between items-center">
                 <span>報告由「價值決策 (Value Decision) 財報分析工具」自動生成 • 內部研究參考文件</span>
                 <span className="font-bold">第 1 頁 / 共 1 頁</span>
               </div>
-              <p className="text-[7.5px] text-slate-400 leading-tight">
+              <p className="text-[8px] text-slate-400 leading-snug">
                 【免責聲明】本分析報告及其財務指標、杜邦拆解與建議僅供基本面學術研討與決策輔助參考，不構成任何形式之法定簽證、公開財務確信、稅務或特定個股投資買賣建議。
               </p>
             </div>
