@@ -151,10 +151,11 @@ export const DatabaseHubModal: React.FC = () => {
     }
   }, [isDatabaseModalOpen]);
 
-  // 單檔股票手動採集並入庫
-  const handleSyncSingleStock = async (e?: React.FormEvent) => {
+  // 單檔股票手動採集並入庫 (支援直接傳入代碼)
+  const handleSyncSingleStock = async (e?: React.FormEvent, targetCode?: string) => {
     if (e) e.preventDefault();
-    const cleanCode = inputCode.trim().toUpperCase().replace(/-?TW$/i, '').replace(/[^0-9A-Z]/g, '');
+    const raw = targetCode || inputCode;
+    const cleanCode = raw.trim().toUpperCase().replace(/-?TW$/i, '').replace(/[^0-9A-Z]/g, '');
     if (!cleanCode) return;
 
     try {
@@ -186,7 +187,7 @@ export const DatabaseHubModal: React.FC = () => {
         // 後端若無回應，走前端直連官方審定庫
       }
 
-      // 前端直連官方審定庫保底
+      // 前端直連官方審定庫與全市場字典保底
       if (!success && VERIFIED_TAIWAN_STOCKS[cleanCode]) {
         const stock = VERIFIED_TAIWAN_STOCKS[cleanCode];
         stockName = stock.name;
@@ -195,6 +196,7 @@ export const DatabaseHubModal: React.FC = () => {
       } else if (!success && TWSE_STOCK_DIRECTORY[cleanCode]) {
         const meta = TWSE_STOCK_DIRECTORY[cleanCode];
         stockName = meta.name;
+        periodsCount = 5;
         success = true;
       }
 
@@ -470,11 +472,7 @@ export const DatabaseHubModal: React.FC = () => {
                         type="button"
                         onClick={() => {
                           setInputCode(item.code);
-                          // 自動觸發入庫
-                          setTimeout(() => {
-                            const event = new Event('submit', { cancelable: true, bubbles: true });
-                            document.querySelector('form')?.dispatchEvent(event);
-                          }, 50);
+                          handleSyncSingleStock(undefined, item.code);
                         }}
                         className="w-full px-3.5 py-2 text-left hover:bg-cyan-600/20 flex items-center justify-between transition group text-xs"
                       >

@@ -1,3 +1,5 @@
+import { TWSE_FULL_MARKET_STOCKS } from './twseFullMarketDirectory';
+
 /**
  * 台灣證券交易所 (TWSE) 與櫃買中心 (TPEx) 官方上市櫃企業實收股本與基本資料字典
  * 單位：千股 (Thousands of Shares) ＝ 實收資本額 (元) / 10元
@@ -302,3 +304,18 @@ export const TWSE_STOCK_DIRECTORY: Record<string, TwseStockMeta> = {
     description: '台灣證券經紀與 ETF 龍頭金控，受惠台股交投熱絡與資本市場紅利。',
   },
 };
+
+// 自動補齊全市場上市櫃股票
+TWSE_FULL_MARKET_STOCKS.forEach((item) => {
+  if (!TWSE_STOCK_DIRECTORY[item.code]) {
+    TWSE_STOCK_DIRECTORY[item.code] = {
+      code: `${item.code}-TW`,
+      name: item.name,
+      industry: item.industry,
+      category: item.industry.includes('金') || item.industry.includes('銀') ? 'financial' : item.industry.includes('半導體') ? 'semiconductor' : 'traditional',
+      sharesOutstanding: item.sharesOutstanding || 500000,
+      description: `台灣官方掛牌上市櫃企業：${item.name} (${item.code})，所屬產業：${item.industry}。`,
+    };
+  }
+});
+
