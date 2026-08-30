@@ -461,19 +461,22 @@ export const PdfReportModal: React.FC = () => {
 
               {/* 3. 基本面研究核心結論總評 (Executive Summary Narrative) */}
               <div className="p-3 bg-slate-50 rounded-xl border border-slate-200">
-                <div className="flex items-center gap-1.5 text-xs font-bold text-indigo-900 uppercase tracking-wider mb-1">
+                <div className="flex items-center gap-1.5 text-xs font-bold text-indigo-900 uppercase tracking-wider mb-1.5">
                   <Bot className="w-4 h-4 text-indigo-600 flex-shrink-0" />
                   <span>基本面研究核心結論總評 (Executive Diagnostic Conclusion)</span>
                 </div>
-                <p className="text-[10px] text-slate-800 leading-relaxed font-normal">
-                  {latestPeriod.netIncome < 0 ? (
-                    `【價值投資視角總評】${activeCompany.name} 在 ${latestPeriod.period} 處於「營運虧損與基本面承壓期」，稅後淨損達 NT$ ${(Math.abs(latestPeriod.netIncome) / 1000).toLocaleString()} 百萬元（ROE 為 ${r.roe}%，每股虧損 NT$ ${r.eps}）。雖然營業毛利率為 ${r.grossMargin}%，但嚴謹自由現金流為實質赤字 NT$ ${(r.rigorousFcf / 1000).toLocaleString(undefined, { maximumFractionDigits: 1 })} 百萬元，且 Altman Z 破產防禦分數僅 ${r.altmanZScore} 分（落入 ${r.altmanZZone === 'distress' ? '財務困境警戒區' : '灰色考驗區'}），整體缺乏價值投資安全邊際，應嚴密防範營運現金持續消耗與流動性風險。`
-                  ) : r.economicMoat === 'wide' ? (
-                    `【價值投資視角總評】${activeCompany.name} 在 ${latestPeriod.period} 展現出「寬廣經濟護城河 (Wide Moat)」，營業毛利率 ${r.grossMargin}% 與 ROE ${r.roe}% 展現出強大的定價自主權與長期資本複利潛力。核心本業現金轉換率達 ${r.coreCashConversionRatio}%，創造嚴謹自由現金流 NT$ ${(r.rigorousFcf / 1000).toLocaleString(undefined, { maximumFractionDigits: 1 })} 百萬元，Altman Z 評分達 ${r.altmanZScore} 分（處於 安全堡壘區），具備極高基本面安全邊際。`
-                  ) : (
-                    `【價值投資視角總評】${activeCompany.name} 在 ${latestPeriod.period} 展現出「${r.economicMoat === 'narrow' ? '中度競爭壁壘' : '一般競爭結構'}」，營業毛利率 ${r.grossMargin}%，ROE 為 ${r.roe}%。核心本業現金轉換率達 ${r.coreCashConversionRatio}%，自由現金流為 NT$ ${(r.rigorousFcf / 1000).toLocaleString(undefined, { maximumFractionDigits: 1 })} 百萬元，Altman Z 破產防禦分數為 ${r.altmanZScore} 分（處於 ${r.altmanZZone === 'safe' ? '安全堡壘區' : r.altmanZZone === 'grey' ? '灰色過渡區' : '警戒區'}）。`
-                  )}
-                </p>
+                <div className="flex items-start gap-1.5 text-[10px] text-slate-800 leading-relaxed font-normal">
+                  <span className="font-bold text-indigo-950 flex-shrink-0">【價值投資視角總評】</span>
+                  <p className="flex-1">
+                    {latestPeriod.netIncome < 0 ? (
+                      `${activeCompany.name} 在 ${latestPeriod.period} 處於「營運虧損與基本面承壓期」，稅後淨損達 NT$ ${(Math.abs(latestPeriod.netIncome) / 1000).toLocaleString()} 百萬元（ROE 為 ${r.roe}%，每股虧損 NT$ ${r.eps}）。雖然營業毛利率為 ${r.grossMargin}%，但嚴謹自由現金流為實質赤字 NT$ ${(r.rigorousFcf / 1000).toLocaleString(undefined, { maximumFractionDigits: 1 })} 百萬元，且 Altman Z 破產防禦分數僅 ${r.altmanZScore} 分（落入 ${r.altmanZZone === 'distress' ? '財務困境警戒區' : '灰色考驗區'}），整體缺乏價值投資安全邊際，應嚴密防範營運現金持續消耗與流動性風險。`
+                    ) : r.economicMoat === 'wide' ? (
+                      `${activeCompany.name} 在 ${latestPeriod.period} 展現出「寬廣經濟護城河 (Wide Moat)」，營業毛利率 ${r.grossMargin}% 與 ROE ${r.roe}% 展現出強大的定價自主權與長期資本複利潛力。核心本業現金轉換率達 ${r.coreCashConversionRatio}%，創造嚴謹自由現金流 NT$ ${(r.rigorousFcf / 1000).toLocaleString(undefined, { maximumFractionDigits: 1 })} 百萬元，Altman Z 評分達 ${r.altmanZScore} 分（處於 安全堡壘區），具備極高基本面安全邊際。`
+                    ) : (
+                      `${activeCompany.name} 在 ${latestPeriod.period} 展現出「${r.economicMoat === 'narrow' ? '中度競爭壁壘' : '一般競爭結構'}」，營業毛利率 ${r.grossMargin}%，ROE 為 ${r.roe}%。核心本業現金轉換率達 ${r.coreCashConversionRatio}%，自由現金流為 NT$ ${(r.rigorousFcf / 1000).toLocaleString(undefined, { maximumFractionDigits: 1 })} 百萬元，Altman Z 破產防禦分數為 ${r.altmanZScore} 分（處於 ${r.altmanZZone === 'safe' ? '安全堡壘區' : r.altmanZZone === 'grey' ? '灰色過渡區' : '警戒區'}）。`
+                    )}
+                  </p>
+                </div>
               </div>
 
               {/* 4. 多空投資論點對比 (Bull Case vs Bear Case) */}
@@ -488,15 +491,39 @@ export const PdfReportModal: React.FC = () => {
                   <ul className="space-y-1.5 text-emerald-950 text-[9.5px] leading-snug">
                     {latestPeriod.netIncome < 0 ? (
                       <>
-                        <li>• <strong>本業現金流入：</strong>營業現金流達 NT$ ${(latestPeriod.operatingCashFlow / 1000).toLocaleString()} 百萬元，日常營運維持現金運轉。</li>
-                        <li>• <strong>產品毛利空間：</strong>營業毛利率維持在 {r.grossMargin}%，仍具備基礎毛利防線。</li>
-                        <li>• <strong>轉型重整契機：</strong>若能加速處分虧損事業與優化費用結構，具備轉虧為盈題材。</li>
+                        <li className="flex items-start gap-1">
+                          <span className="text-emerald-700 font-bold flex-shrink-0">•</span>
+                          <span className="font-bold flex-shrink-0">本業現金流入：</span>
+                          <span className="flex-1">營業現金流達 NT$ ${(latestPeriod.operatingCashFlow / 1000).toLocaleString()} 百萬元，日常營運維持現金運轉。</span>
+                        </li>
+                        <li className="flex items-start gap-1">
+                          <span className="text-emerald-700 font-bold flex-shrink-0">•</span>
+                          <span className="font-bold flex-shrink-0">產品毛利空間：</span>
+                          <span className="flex-1">營業毛利率維持在 {r.grossMargin}%，仍具備基礎毛利防線。</span>
+                        </li>
+                        <li className="flex items-start gap-1">
+                          <span className="text-emerald-700 font-bold flex-shrink-0">•</span>
+                          <span className="font-bold flex-shrink-0">轉型重整契機：</span>
+                          <span className="flex-1">若能加速處分虧損事業與優化費用結構，具備轉虧為盈題材。</span>
+                        </li>
                       </>
                     ) : (
                       <>
-                        <li>• <strong>資本回報力：</strong>ROE 達 {r.roe}%，每股盈餘 EPS 達 NT$ {r.eps}，展現長期複利滾動潛力。</li>
-                        <li>• <strong>現金流入扎實：</strong>核心現金轉換率 {r.coreCashConversionRatio}%，營業現金流高於帳面利潤，盈餘品質佳。</li>
-                        <li>• <strong>安全堡壘防禦：</strong>Altman Z-Score {r.altmanZScore} 分，純計息負債比僅 {r.interestBearingDebtRatio}%，具抗風險底氣。</li>
+                        <li className="flex items-start gap-1">
+                          <span className="text-emerald-700 font-bold flex-shrink-0">•</span>
+                          <span className="font-bold flex-shrink-0">資本回報力：</span>
+                          <span className="flex-1">ROE 達 {r.roe}%，每股盈餘 EPS 達 NT$ {r.eps}，展現長期複利滾動潛力。</span>
+                        </li>
+                        <li className="flex items-start gap-1">
+                          <span className="text-emerald-700 font-bold flex-shrink-0">•</span>
+                          <span className="font-bold flex-shrink-0">現金流入扎實：</span>
+                          <span className="flex-1">核心現金轉換率 {r.coreCashConversionRatio}%，營業現金流高於帳面利潤，盈餘品質佳。</span>
+                        </li>
+                        <li className="flex items-start gap-1">
+                          <span className="text-emerald-700 font-bold flex-shrink-0">•</span>
+                          <span className="font-bold flex-shrink-0">安全堡壘防禦：</span>
+                          <span className="flex-1">Altman Z-Score {r.altmanZScore} 分，純計息負債比僅 {r.interestBearingDebtRatio}%，具抗風險底氣。</span>
+                        </li>
                       </>
                     )}
                   </ul>
@@ -511,15 +538,39 @@ export const PdfReportModal: React.FC = () => {
                   <ul className="space-y-1.5 text-amber-950 text-[9.5px] leading-snug">
                     {latestPeriod.netIncome < 0 ? (
                       <>
-                        <li>• <strong>實質虧損侵蝕淨值：</strong>稅後淨損達 NT$ ${(Math.abs(latestPeriod.netIncome) / 1000).toLocaleString()} 百萬元，淨值遭減損。</li>
-                        <li>• <strong>自由現金流赤字：</strong>FCF 淨流出 NT$ ${(Math.abs(r.rigorousFcf) / 1000).toLocaleString(undefined, { maximumFractionDigits: 1 })} 百萬元，營運現金消耗。</li>
-                        <li>• <strong>破產防禦落入警戒：</strong>Altman Z 分數僅 {r.altmanZScore} 分，需防範債務展延與流動性風險。</li>
+                        <li className="flex items-start gap-1">
+                          <span className="text-amber-700 font-bold flex-shrink-0">•</span>
+                          <span className="font-bold flex-shrink-0">實質虧損侵蝕淨值：</span>
+                          <span className="flex-1">稅後淨損達 NT$ ${(Math.abs(latestPeriod.netIncome) / 1000).toLocaleString()} 百萬元，淨值遭減損。</span>
+                        </li>
+                        <li className="flex items-start gap-1">
+                          <span className="text-amber-700 font-bold flex-shrink-0">•</span>
+                          <span className="font-bold flex-shrink-0">自由現金流赤字：</span>
+                          <span className="flex-1">FCF 淨流出 NT$ ${(Math.abs(r.rigorousFcf) / 1000).toLocaleString(undefined, { maximumFractionDigits: 1 })} 百萬元，營運現金消耗。</span>
+                        </li>
+                        <li className="flex items-start gap-1">
+                          <span className="text-amber-700 font-bold flex-shrink-0">•</span>
+                          <span className="font-bold flex-shrink-0">破產防禦落入警戒：</span>
+                          <span className="flex-1">Altman Z 分數僅 {r.altmanZScore} 分，需防範債務展延與流動性風險。</span>
+                        </li>
                       </>
                     ) : (
                       <>
-                        <li>• <strong>資本支出折舊壓力：</strong>本期 CapEx 達 NT$ ${(latestPeriod.capitalExpenditures / 1000).toLocaleString()} 百萬元，需追蹤新產能毛利效益。</li>
-                        <li>• <strong>產業毛利防禦：</strong>面對同業價格競爭，需嚴密防範毛利率是否出現逐季侵蝕跡象。</li>
-                        <li>• <strong>估值防禦與市場預期：</strong>若市場給予高本益比評價，需確保營收成長率能如期兌現以支撐估值。</li>
+                        <li className="flex items-start gap-1">
+                          <span className="text-amber-700 font-bold flex-shrink-0">•</span>
+                          <span className="font-bold flex-shrink-0">資本支出折舊壓力：</span>
+                          <span className="flex-1">本期 CapEx 達 NT$ ${(latestPeriod.capitalExpenditures / 1000).toLocaleString()} 百萬元，需追蹤新產能毛利效益。</span>
+                        </li>
+                        <li className="flex items-start gap-1">
+                          <span className="text-amber-700 font-bold flex-shrink-0">•</span>
+                          <span className="font-bold flex-shrink-0">產業毛利防禦：</span>
+                          <span className="flex-1">面對同業價格競爭，需嚴密防範毛利率是否出現逐季侵蝕跡象。</span>
+                        </li>
+                        <li className="flex items-start gap-1">
+                          <span className="text-amber-700 font-bold flex-shrink-0">•</span>
+                          <span className="font-bold flex-shrink-0">估值防禦與市場預期：</span>
+                          <span className="flex-1">若市場給予高本益比評價，需確保營收成長率能如期兌現以支撐估值。</span>
+                        </li>
                       </>
                     )}
                   </ul>
@@ -550,8 +601,9 @@ export const PdfReportModal: React.FC = () => {
                           : `具備高 ROE (${r.roe}%)，適合價值型投資者逢回檔分批評估持有價值。`}
                       </p>
                     </div>
-                    <div className="mt-1 pt-1 border-t border-slate-200 text-[8.5px] text-emerald-800 font-semibold">
-                      關注: {latestPeriod.netIncome < 0 ? '何時由虧轉盈及毛利回升' : '每季毛利率與 EPS 成長性'}
+                    <div className="mt-1 pt-1 border-t border-slate-200 text-[8.5px] text-emerald-800 font-semibold flex items-start gap-1">
+                      <span className="flex-shrink-0">關注：</span>
+                      <span className="flex-1">{latestPeriod.netIncome < 0 ? '何時由虧轉盈及毛利回升' : '每季毛利率與 EPS 成長性'}</span>
                     </div>
                   </div>
 
@@ -570,8 +622,9 @@ export const PdfReportModal: React.FC = () => {
                           : `自由現金流充沛，具備持續穩定配發現金股息之財務實力，下行防禦性高。`}
                       </p>
                     </div>
-                    <div className="mt-1 pt-1 border-t border-slate-200 text-[8.5px] text-blue-800 font-semibold">
-                      關注: {r.rigorousFcf <= 0 ? '防範再籌資與現金存量消耗' : '檢驗 CapEx 對 FCF 之佔用比'}
+                    <div className="mt-1 pt-1 border-t border-slate-200 text-[8.5px] text-blue-800 font-semibold flex items-start gap-1">
+                      <span className="flex-shrink-0">關注：</span>
+                      <span className="flex-1">{r.rigorousFcf <= 0 ? '防範再籌資與現金存量消耗' : '檢驗 CapEx 對 FCF 之佔用比'}</span>
                     </div>
                   </div>
 
@@ -590,8 +643,9 @@ export const PdfReportModal: React.FC = () => {
                           : `Altman Z 為 ${r.altmanZScore} 分，需密切留意營運資金週轉與短期借款展延能力。`}
                       </p>
                     </div>
-                    <div className="mt-1 pt-1 border-t border-slate-200 text-[8.5px] text-purple-800 font-semibold">
-                      關注: {r.altmanZZone === 'distress' ? '防範流動性危機與信用風險' : '確保流動比率維持在 180% 以上'}
+                    <div className="mt-1 pt-1 border-t border-slate-200 text-[8.5px] text-purple-800 font-semibold flex items-start gap-1">
+                      <span className="flex-shrink-0">關注：</span>
+                      <span className="flex-1">{r.altmanZZone === 'distress' ? '防範流動性危機與信用風險' : '確保流動比率維持在 180% 以上'}</span>
                     </div>
                   </div>
 
@@ -622,11 +676,13 @@ export const PdfReportModal: React.FC = () => {
                         <span className={`font-bold ml-1.5 ${r.rigorousFcf >= 0 ? 'text-emerald-800' : 'text-rose-800'}`}>= {formatMoney(r.rigorousFcf)}</span>
                       </div>
                     </div>
-                    <div className="text-[9px] text-slate-600 leading-normal">
-                      <strong>【會計勾稽與推論】</strong>
-                      {r.rigorousFcf >= 0
-                        ? `本期營業活動實質帶入現金 ${formatMoney(latestPeriod.operatingCashFlow)}，在扣除維持競爭力必要之 CapEx 支出 ${formatMoney(latestPeriod.capitalExpenditures)} 後，產生實質自由現金流 ${formatMoney(r.rigorousFcf)}，代表企業無須依賴外部融資即具備充沛本業現金創造力與實質股息分派實力。`
-                        : `本期嚴謹自由現金流呈現赤字 (${formatMoney(r.rigorousFcf)})，主因營業現金流不足以支應當期資本支出，需留意營運資金消耗與融資調度壓力。`}
+                    <div className="flex items-start gap-1.5 text-[9px] text-slate-600 leading-normal">
+                      <span className="font-bold text-slate-900 flex-shrink-0">【會計勾稽與推論】</span>
+                      <p className="flex-1">
+                        {r.rigorousFcf >= 0
+                          ? `本期營業活動實質帶入現金 ${formatMoney(latestPeriod.operatingCashFlow)}，在扣除維持競爭力必要之 CapEx 支出 ${formatMoney(latestPeriod.capitalExpenditures)} 後，產生實質自由現金流 ${formatMoney(r.rigorousFcf)}，代表企業無須依賴外部融資即具備充沛本業現金創造力與實質股息分派實力。`
+                          : `本期嚴謹自由現金流呈現赤字 (${formatMoney(r.rigorousFcf)})，主因營業現金流不足以支應當期資本支出，需留意營運資金消耗與融資調度壓力。`}
+                      </p>
                     </div>
                   </div>
 
@@ -642,11 +698,13 @@ export const PdfReportModal: React.FC = () => {
                         <span className="font-bold text-cyan-900 ml-1.5">= {r.coreCashConversionRatio}%</span>
                       </div>
                     </div>
-                    <div className="text-[9px] text-slate-600 leading-normal">
-                      <strong>【會計勾稽與推論】</strong>
-                      {r.coreCashConversionRatio >= 100
-                        ? `核心現金轉換率達 ${r.coreCashConversionRatio}%（大幅超越標準 ≥ 100%），證明帳面獲利 100% 轉化為真金白銀流入公司帳戶，有效排除應收帳款滯納或存貨虛增美化財報之潛在地雷。`
-                        : `核心現金轉換率為 ${r.coreCashConversionRatio}%（低於 100% 理想水準），顯示部分帳面盈餘仍滯留於應收帳款或存貨形式，需追蹤後續貨款收現效率。`}
+                    <div className="flex items-start gap-1.5 text-[9px] text-slate-600 leading-normal">
+                      <span className="font-bold text-slate-900 flex-shrink-0">【會計勾稽與推論】</span>
+                      <p className="flex-1">
+                        {r.coreCashConversionRatio >= 100
+                          ? `核心現金轉換率達 ${r.coreCashConversionRatio}%（大幅超越標準 ≥ 100%），證明帳面獲利 100% 轉化為真金白銀流入公司帳戶，有效排除應收帳款滯納或存貨虛增美化財報之潛在地雷。`
+                          : `核心現金轉換率為 ${r.coreCashConversionRatio}%（低於 100% 理想水準），顯示部分帳面盈餘仍滯留於應收帳款或存貨形式，需追蹤後續貨款收現效率。`}
+                      </p>
                     </div>
                   </div>
 
@@ -662,9 +720,11 @@ export const PdfReportModal: React.FC = () => {
                         <span className="font-bold text-amber-900 ml-1.5">= ROE {r.dupontRoe}%</span>
                       </div>
                     </div>
-                    <div className="text-[9px] text-slate-600 leading-normal">
-                      <strong>【會計勾稽與推論】</strong>
-                      ROE 股東權益報酬率達 {r.dupontRoe}%，經三因子拆解顯示主要受「{r.dupontNetMargin >= 15 ? '高產品淨利率 (利潤驅動)' : '高資產週轉效率 (薄利多銷)'}」所帶動，權益乘數維持在 {r.dupontEquityMultiplier} 倍（財務槓桿穩健），屬高品質之長期複利回報結構。
+                    <div className="flex items-start gap-1.5 text-[9px] text-slate-600 leading-normal">
+                      <span className="font-bold text-slate-900 flex-shrink-0">【會計勾稽與推論】</span>
+                      <p className="flex-1">
+                        ROE 股東權益報酬率達 {r.dupontRoe}%，經三因子拆解顯示主要受「{r.dupontNetMargin >= 15 ? '高產品淨利率 (利潤驅動)' : '高資產週轉效率 (薄利多銷)'}」所帶動，權益乘數維持在 {r.dupontEquityMultiplier} 倍（財務槓桿穩健），屬高品質之長期複利回報結構。
+                      </p>
                     </div>
                   </div>
 
@@ -680,11 +740,13 @@ export const PdfReportModal: React.FC = () => {
                         <span className="font-bold text-purple-900 ml-1.5">= {r.altmanZScore} 分 ({r.altmanZZone === 'safe' ? '安全堡壘' : r.altmanZZone === 'grey' ? '灰色區域' : '警戒區'})</span>
                       </div>
                     </div>
-                    <div className="text-[9px] text-slate-600 leading-normal">
-                      <strong>【會計勾稽與推論】</strong>
-                      {r.altmanZZone === 'safe'
-                        ? `綜合評分達 ${r.altmanZScore} 分（遠高於安全門檻 2.99 分），受惠於扎實的息稅前利潤 (X₃) 與穩固的股東權益緩衝 (X₄)，純計息負債比僅 ${r.interestBearingDebtRatio}%，未來 2 年內破產違約機率極低，具備強大抗風險底氣。`
-                        : `綜合評分 ${r.altmanZScore} 分落入「${r.altmanZZone === 'grey' ? '灰色過渡區' : '財務困境警戒區'}」，需持續關注短期流動性 (X₁) 與債務展延壓力。`}
+                    <div className="flex items-start gap-1.5 text-[9px] text-slate-600 leading-normal">
+                      <span className="font-bold text-slate-900 flex-shrink-0">【會計勾稽與推論】</span>
+                      <p className="flex-1">
+                        {r.altmanZZone === 'safe'
+                          ? `綜合評分達 ${r.altmanZScore} 分（遠高於安全門檻 2.99 分），受惠於扎實的息稅前利潤 (X₃) 與穩固的股東權益緩衝 (X₄)，純計息負債比僅 ${r.interestBearingDebtRatio}%，未來 2 年內破產違約機率極低，具備強大抗風險底氣。`
+                          : `綜合評分 ${r.altmanZScore} 分落入「${r.altmanZZone === 'grey' ? '灰色過渡區' : '財務困境警戒區'}」，需持續關注短期流動性 (X₁) 與債務展延壓力。`}
+                      </p>
                     </div>
                   </div>
 
