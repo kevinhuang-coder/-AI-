@@ -61,8 +61,8 @@ interface FinancialContextType {
 
 const FinancialContext = createContext<FinancialContextType | undefined>(undefined);
 
-const LOCAL_STORAGE_KEY = 'financial_analyzer_companies_v3';
-const HISTORY_STORAGE_KEY = 'financial_analyzer_history_v3';
+const LOCAL_STORAGE_KEY = 'financial_analyzer_companies_v4';
+const HISTORY_STORAGE_KEY = 'financial_analyzer_history_v4';
 
 export const FinancialProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   // 從 LocalStorage 讀取自訂公司或使用預設範例
