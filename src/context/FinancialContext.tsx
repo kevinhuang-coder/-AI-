@@ -61,8 +61,8 @@ interface FinancialContextType {
 
 const FinancialContext = createContext<FinancialContextType | undefined>(undefined);
 
-const LOCAL_STORAGE_KEY = 'financial_analyzer_companies_v1';
-const HISTORY_STORAGE_KEY = 'financial_analyzer_history_v1';
+const LOCAL_STORAGE_KEY = 'financial_analyzer_companies_v3';
+const HISTORY_STORAGE_KEY = 'financial_analyzer_history_v3';
 
 export const FinancialProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   // 從 LocalStorage 讀取自訂公司或使用預設範例
@@ -79,11 +79,11 @@ export const FinancialProvider: React.FC<{ children: React.ReactNode }> = ({ chi
     return SAMPLE_COMPANIES;
   });
 
-  const [activeCompanyId, setActiveCompanyId] = useState<string>('company-tech-group');
+  const [activeCompanyId, setActiveCompanyId] = useState<string>('company-tsmc-2330');
   const [compareCompanyIds, setCompareCompanyIds] = useState<string[]>([
-    'company-tech-group',
-    'company-precision-mfg',
-    'company-ecommerce-retail',
+    'company-tsmc-2330',
+    'company-mediatek-2454',
+    'company-foxconn-2317',
   ]);
   const [selectedCategory, setSelectedCategory] = useState<MetricCategory>('all');
   const [viewMode, setViewMode] = useState<ViewMode>('investor');
