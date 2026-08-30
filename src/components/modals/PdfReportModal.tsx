@@ -84,6 +84,16 @@ export const PdfReportModal: React.FC = () => {
     return `$${(val / 1000).toFixed(0)} M`;
   };
 
+  // Altman Z 五因子動態計算值 (X1 ~ X5)
+  const totalAssets = latestPeriod.totalAssets || 1;
+  const workingCapital = (latestPeriod.currentAssets || 0) - (latestPeriod.currentLiabilities || 0);
+  const zX1 = (workingCapital / totalAssets).toFixed(2);
+  const zX2 = (latestPeriod.netIncome / totalAssets).toFixed(2);
+  const zX3 = (latestPeriod.operatingIncome / totalAssets).toFixed(2);
+  const zX4 = (latestPeriod.stockholdersEquity / (latestPeriod.totalLiabilities || 1)).toFixed(2);
+  const zX5 = (latestPeriod.revenue / totalAssets).toFixed(2);
+
+
   /**
    * 獨立單頁 A4 隔離列印引擎
    * 徹底隔離背景網頁，保證輸出精準 1 頁 A4，絕不溢出多頁！
@@ -736,7 +746,7 @@ export const PdfReportModal: React.FC = () => {
                         <span className="text-slate-500 font-mono text-[9px]">公式：1.2X₁ + 1.4X₂ + 3.3X₃ + 0.6X₄ + 0.999X₅</span>
                       </div>
                       <div className="font-mono text-[10px]">
-                        <span className="text-slate-600">1.2(0.36) + 1.4(0.16) + 3.3(0.18) + 0.6(2.71) + 1.0(0.69)</span>
+                        <span className="text-slate-600">1.2({zX1}) + 1.4({zX2}) + 3.3({zX3}) + 0.6({zX4}) + 1.0({zX5})</span>
                         <span className="font-bold text-purple-900 ml-1.5">= {r.altmanZScore} 分 ({r.altmanZZone === 'safe' ? '安全堡壘' : r.altmanZZone === 'grey' ? '灰色區域' : '警戒區'})</span>
                       </div>
                     </div>
@@ -744,7 +754,7 @@ export const PdfReportModal: React.FC = () => {
                       <span className="font-bold text-slate-900 flex-shrink-0">【會計勾稽與推論】</span>
                       <p className="flex-1">
                         {r.altmanZZone === 'safe'
-                          ? `五因子加權總評分達 ${r.altmanZScore} 分（遠高於安全門檻 2.99 分），主要受惠於穩固的股東權益資本緩衝 (X₄=2.71) 與強勁的本業資產息稅前獲利率 (X₃=0.18)，純計息負債比僅 ${r.interestBearingDebtRatio}%，未來 2 年內破產違約機率極低，具備強大抗風險底氣。`
+                          ? `五因子加權總評分達 ${r.altmanZScore} 分（遠高於安全門檻 2.99 分），主要受惠於穩固的股東權益資本緩衝 (X₄=${zX4}) 與強勁的本業資產息稅前獲利率 (X₃=${zX3})，純計息負債比僅 ${r.interestBearingDebtRatio}%，未來 2 年內破產違約機率極低，具備強大抗風險底氣。`
                           : `五因子加權總評分 ${r.altmanZScore} 分落入「${r.altmanZZone === 'grey' ? '灰色過渡區' : '財務困境警戒區'}」，需持續關注短期營運流動性 (X₁) 與債務展延壓力。`}
                       </p>
                     </div>
