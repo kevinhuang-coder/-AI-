@@ -3,6 +3,8 @@ import path from 'path';
 import { createServer as createViteServer } from 'vite';
 import { GoogleGenAI } from '@google/genai';
 import dotenv from 'dotenv';
+import { financialDb } from './src/server/database';
+import { financialCollector } from './src/server/collector';
 
 dotenv.config();
 
@@ -521,12 +523,92 @@ app.post('/api/financial/parse-pdf', async (req, res) => {
   }
 });
 
+// ==========================================
+// 🏛️ 專屬台股財務資料庫 REST API (Financial Warehouse Engine)
+// ==========================================
+
+// 1. 取得資料庫全貌健康統計 (總收錄數、期數、容量、最後更新時間)
+app.get('/api/financial/db/stats', (req, res) => {
+  try {
+    const stats = financialDb.getStats();
+    return res.json({ success: true, stats });
+  } catch (err: any) {
+    return res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// 2. 取得資料庫中所有已收錄公司清單概要
+app.get('/api/financial/db/stocks', (req, res) => {
+  try {
+    const list = financialDb.listCompanies();
+    return res.json({ success: true, companies: list });
+  } catch (err: any) {
+    return res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// 3. 查詢指定股票代號之官方審定財報 (0 延遲，< 1ms)
+app.get('/api/financial/db/stock/:code', (req, res) => {
+  try {
+    const code = req.params.code;
+    const company = financialDb.getCompany(code);
+    if (!company) {
+      return res.status(404).json({ success: false, error: `資料庫內暫無代號「${code}」之審定財報` });
+    }
+    return res.json({ success: true, company });
+  } catch (err: any) {
+    return res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// 4. 同步/採集單檔股票並寫入資料庫
+app.post('/api/financial/db/sync', async (req, res) => {
+  try {
+    const { code } = req.body;
+    if (!code) {
+      return res.status(400).json({ success: false, error: '請提供欲同步之台股代號' });
+    }
+    const result = await financialCollector.collectAndStoreStock(code);
+    return res.json({ success: result.success, result });
+  } catch (err: any) {
+    return res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// 5. 批次一鍵同步台灣 50 (0050) 核心標竿企業群
+app.post('/api/financial/db/batch-sync', async (req, res) => {
+  try {
+    const results = await financialCollector.syncCoreStocks();
+    const stats = financialDb.getStats();
+    return res.json({ success: true, results, stats });
+  } catch (err: any) {
+    return res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// 6. 刪除指定股票
+app.delete('/api/financial/db/stock/:code', (req, res) => {
+  try {
+    const code = req.params.code;
+    const deleted = financialDb.deleteCompany(code);
+    return res.json({ success: deleted });
+  } catch (err: any) {
+    return res.status(500).json({ success: false, error: err.message });
+  }
+});
+
 // 台股代號一鍵即時聯網財報查詢 API (支援全台灣 2000+ 上市、上櫃與興櫃所有股票)
 app.get('/api/financial/fetch-stock', async (req, res) => {
   try {
     const rawCode = (req.query.code as string || '').trim().toUpperCase().replace(/[^0-9A-Z]/g, '');
     if (!rawCode) {
       return res.status(400).json({ success: false, error: '請輸入有效之台股代號' });
+    }
+
+    // 0. 第零層：優先自專屬本機財務資料庫讀取 (< 1ms 極速秒開)
+    const localDbStock = financialDb.getCompany(rawCode);
+    if (localDbStock && localDbStock.periods && localDbStock.periods.length > 0) {
+      return res.json({ success: true, company: localDbStock, source: 'warehouse_db' });
     }
 
     const ai = getGeminiClient();
@@ -691,7 +773,13 @@ app.get('/api/financial/fetch-stock', async (req, res) => {
 
         if (parsed && Array.isArray(parsed.periods) && parsed.periods.length > 0) {
           parsed.id = `stock-${rawCode}-${Date.now()}`;
-          return res.json({ success: true, company: parsed });
+          // 自動存入專屬資料庫
+          try {
+            financialDb.saveCompany(parsed);
+          } catch (dbSaveErr) {
+            console.warn('[DB Save] Failed to auto-save Gemini stock:', dbSaveErr);
+          }
+          return res.json({ success: true, company: parsed, source: 'gemini_ai' });
         }
       } catch (geminiError: any) {
         console.warn(`[Stock Fetch Gemini] ${rawCode} AI lookup failed, falling back to public datasets:`, geminiError?.message || geminiError);
@@ -755,17 +843,27 @@ app.get('/api/financial/fetch-stock', async (req, res) => {
             };
           });
 
+          const companyData = {
+            id: `stock-${rawCode}-${Date.now()}`,
+            name: `台股代號 ${rawCode} (公開申報實體)`,
+            code: `${rawCode}-TW`,
+            industry: '台灣證券交易所/櫃買中心公開申報實體',
+            currency: 'NTD (千元)',
+            description: `自台灣證券交易所公開資訊觀測站即時獲取之 ${rawCode} 官方標準財報。`,
+            periods,
+          };
+
+          // 自動存入專屬資料庫
+          try {
+            financialDb.saveCompany(companyData as any);
+          } catch (dbSaveErr) {
+            console.warn('[DB Save] Failed to auto-save FinMind stock:', dbSaveErr);
+          }
+
           return res.json({
             success: true,
-            company: {
-              id: `stock-${rawCode}-${Date.now()}`,
-              name: `台股代號 ${rawCode} (公開申報實體)`,
-              code: `${rawCode}-TW`,
-              industry: '台灣證券交易所/櫃買中心公開申報實體',
-              currency: 'NTD (千元)',
-              description: `自台灣證券交易所公開資訊觀測站即時獲取之 ${rawCode} 官方標準財報。`,
-              periods,
-            },
+            company: companyData,
+            source: 'finmind_api',
           });
         }
       }

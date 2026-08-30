@@ -13,6 +13,7 @@ import {
   Check,
   ShieldCheck,
   FileDown,
+  Database,
 } from 'lucide-react';
 
 export const Navbar: React.FC = () => {
@@ -24,6 +25,7 @@ export const Navbar: React.FC = () => {
     setIsDataEditorOpen,
     setIsDisclaimerOpen,
     setIsPdfModalOpen,
+    setIsDatabaseModalOpen,
     setEditingCompany,
     resetToSampleData,
   } = useFinancial();
@@ -139,6 +141,17 @@ export const Navbar: React.FC = () => {
             >
               <ShieldCheck className="w-3.5 h-3.5 text-amber-400" />
               <span className="hidden sm:inline">使用須知</span>
+            </button>
+
+            {/* Database Hub Trigger */}
+            <button
+              id="database-hub-btn"
+              onClick={() => setIsDatabaseModalOpen(true)}
+              className="flex items-center space-x-1.5 px-3 py-1.5 rounded-xl bg-indigo-950/70 hover:bg-indigo-900/90 border border-indigo-700/60 text-indigo-300 hover:text-white text-xs font-semibold transition cursor-pointer shadow-xs"
+              title="開啟專屬台股財務資料庫管理中心"
+            >
+              <Database className="w-3.5 h-3.5 text-indigo-400" />
+              <span className="hidden sm:inline">財務資料庫</span>
             </button>
 
             {/* Search/Import Trigger */}

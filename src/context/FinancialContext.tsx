@@ -54,6 +54,8 @@ interface FinancialContextType {
   setIsDisclaimerOpen: (open: boolean) => void;
   isPdfModalOpen: boolean;
   setIsPdfModalOpen: (open: boolean) => void;
+  isDatabaseModalOpen: boolean;
+  setIsDatabaseModalOpen: (open: boolean) => void;
   editingCompany: AccountEntity | null;
   setEditingCompany: (company: AccountEntity | null) => void;
   loadStockByCode: (code: string) => Promise<boolean>;
@@ -106,6 +108,7 @@ export const FinancialProvider: React.FC<{ children: React.ReactNode }> = ({ chi
   const [isDataEditorOpen, setIsDataEditorOpen] = useState(false);
   const [isDisclaimerOpen, setIsDisclaimerOpen] = useState(false);
   const [isPdfModalOpen, setIsPdfModalOpen] = useState(false);
+  const [isDatabaseModalOpen, setIsDatabaseModalOpen] = useState(false);
   const [editingCompany, setEditingCompany] = useState<AccountEntity | null>(null);
 
   // 最近修改歷史紀錄 (Change History)
@@ -418,6 +421,8 @@ export const FinancialProvider: React.FC<{ children: React.ReactNode }> = ({ chi
         setIsDisclaimerOpen,
         isPdfModalOpen,
         setIsPdfModalOpen,
+        isDatabaseModalOpen,
+        setIsDatabaseModalOpen,
         editingCompany,
         setEditingCompany,
         loadStockByCode,

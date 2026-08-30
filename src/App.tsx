@@ -16,6 +16,7 @@ import { FloatingFinancialCopilot } from './components/ai/FloatingFinancialCopil
 import { DataEditorModal } from './components/modals/DataEditorModal';
 import { WelcomeDisclaimerModal } from './components/modals/WelcomeDisclaimerModal';
 import { PdfReportModal } from './components/modals/PdfReportModal';
+import { DatabaseHubModal } from './components/modals/DatabaseHubModal';
 import { BrandFooter } from './components/layout/BrandFooter';
 
 const DashboardContent: React.FC = () => {
@@ -120,6 +121,7 @@ export default function App() {
         <DataEditorModal />
         <WelcomeDisclaimerModal />
         <PdfReportModal />
+        <DatabaseHubModal />
       </div>
     </FinancialProvider>
   );
