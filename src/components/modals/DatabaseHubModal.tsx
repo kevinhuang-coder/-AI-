@@ -75,7 +75,7 @@ function buildPresetStats(): DbStats {
 }
 
 export const DatabaseHubModal: React.FC = () => {
-  const { isDatabaseModalOpen, setIsDatabaseModalOpen, loadStockByCode } = useFinancial();
+  const { isDatabaseModalOpen, setIsDatabaseModalOpen, loadStockByCode, resetToSampleData } = useFinancial();
 
   // 預設直接加載內建審定庫數據，絕不呈現 0 家空白
   const [stats, setStats] = useState<DbStats>(buildPresetStats);
@@ -344,16 +344,33 @@ export const DatabaseHubModal: React.FC = () => {
 
           <div className="flex items-center space-x-2">
             <button
+              onClick={() => {
+                if (confirm('確定要一鍵清除所有快取與自訂暫存，並重設為 100% 官方純淨審定資料庫嗎？')) {
+                  localStorage.clear();
+                  resetToSampleData();
+                  setCompanies(buildPresetSummaries());
+                  setStats(buildPresetStats());
+                  addLog('🧹 已成功清空所有瀏覽器快取與自訂資料，重設為官方審定標準。');
+                  alert('已清空快取！網頁即將重新整理以應用乾淨環境。');
+                  window.location.reload();
+                }
+              }}
+              className="px-2.5 py-2 rounded-xl bg-rose-950/40 hover:bg-rose-900/60 border border-rose-700/40 text-rose-300 hover:text-white transition text-xs font-semibold flex items-center gap-1.5 cursor-pointer"
+              title="一鍵深度清理瀏覽器舊版快取並重設為純淨審定庫"
+            >
+              <span>🧹 清理快取重置</span>
+            </button>
+            <button
               onClick={fetchDbOverview}
               disabled={isLoading}
-              className="p-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 transition text-xs flex items-center gap-1.5"
+              className="p-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 transition text-xs flex items-center gap-1.5 cursor-pointer"
               title="重新整理資料庫現況"
             >
               <RefreshCw className={`w-4 h-4 ${isLoading ? 'animate-spin text-cyan-400' : ''}`} />
             </button>
             <button
               onClick={() => setIsDatabaseModalOpen(false)}
-              className="p-2 rounded-xl bg-slate-800/80 hover:bg-rose-950/50 hover:text-rose-400 text-slate-400 transition"
+              className="p-2 rounded-xl bg-slate-800/80 hover:bg-rose-950/50 hover:text-rose-400 text-slate-400 transition cursor-pointer"
             >
               <X className="w-5 h-5" />
             </button>

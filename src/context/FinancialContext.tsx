@@ -63,10 +63,26 @@ interface FinancialContextType {
 
 const FinancialContext = createContext<FinancialContextType | undefined>(undefined);
 
-const LOCAL_STORAGE_KEY = 'financial_analyzer_companies_v4';
-const HISTORY_STORAGE_KEY = 'financial_analyzer_history_v4';
+const LOCAL_STORAGE_KEY = 'financial_analyzer_companies_v5';
+const HISTORY_STORAGE_KEY = 'financial_analyzer_history_v5';
 
 export const FinancialProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  // 自動清理舊版污染之快取
+  useEffect(() => {
+    try {
+      if (typeof window !== 'undefined') {
+        const keysToRemove: string[] = [];
+        for (let i = 0; i < localStorage.length; i++) {
+          const key = localStorage.key(i);
+          if (key && (key.startsWith('cached_stock_') || key.includes('_v4') || key.includes('_v3'))) {
+            keysToRemove.push(key);
+          }
+        }
+        keysToRemove.forEach((k) => localStorage.removeItem(k));
+      }
+    } catch {}
+  }, []);
+
   // 從 LocalStorage 讀取自訂公司或使用預設範例
   const [companies, setCompanies] = useState<AccountEntity[]>(() => {
     try {

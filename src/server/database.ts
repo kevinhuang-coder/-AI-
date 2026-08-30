@@ -241,6 +241,28 @@ class FinancialDatabase {
   }
 
   /**
+   * 徹底清理並重設為 100% 官方審定純淨標竿庫
+   */
+  public resetToCleanVerifiedBase(): boolean {
+    this.cache.companies = {};
+    Object.entries(VERIFIED_TAIWAN_STOCKS).forEach(([code, stock]) => {
+      const cleanKey = normalizeStockCode(code);
+      const entity: AccountEntity = {
+        id: `stock-${cleanKey}`,
+        name: stock.name,
+        code: `${cleanKey}-TW`,
+        industry: stock.industry,
+        currency: stock.currency,
+        description: stock.description,
+        periods: stock.periods,
+      };
+      this.cache.companies[cleanKey] = sanitizeFinancialEntity(entity);
+    });
+    this.cache.lastUpdated = new Date().toISOString();
+    return this.saveToDisk();
+  }
+
+  /**
    * 刪除指定股票
    */
   public deleteCompany(stockCode: string): boolean {
