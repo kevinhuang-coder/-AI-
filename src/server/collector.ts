@@ -6,6 +6,7 @@ import { financialDb, normalizeStockCode } from './database';
 export const TAIWAN_CORE_STOCKS: Array<{ code: string; name: string; industry: string }> = [
   // 1. 半導體晶圓與 IC 設計
   { code: '2330', name: '台積電', industry: '半導體晶圓代工' },
+  { code: '5274', name: '信驊', industry: '伺服器遠端管理晶片 (BMC) 龍頭' },
   { code: '2454', name: '聯發科', industry: '半導體 IC 設計' },
   { code: '2303', name: '聯電', industry: '晶圓專工與成熟製程' },
   { code: '3711', name: '日月光投控', industry: '半導體封裝與測試' },
