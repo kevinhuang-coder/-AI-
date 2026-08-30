@@ -2,6 +2,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { useFinancial } from '../../context/FinancialContext';
 import { VERIFIED_TAIWAN_STOCKS, sanitizeFinancialEntity } from '../../utils/stockFetcher';
 import { TWSE_STOCK_DIRECTORY } from '../../data/twseStockDirectory';
+import { searchTaiwanMarketStocks, MarketStockItem } from '../../data/twseFullMarketDirectory';
 import {
   X,
   Database,
@@ -448,17 +449,53 @@ export const DatabaseHubModal: React.FC = () => {
               </div>
             )}
 
-            {/* Single Stock Ingest Form */}
-            <form onSubmit={handleSyncSingleStock} className="flex gap-2">
+            {/* Single Stock Ingest Form with Autocomplete */}
+            <form onSubmit={handleSyncSingleStock} className="flex gap-2 relative">
               <div className="relative flex-1">
                 <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500" />
                 <input
                   type="text"
                   value={inputCode}
                   onChange={(e) => setInputCode(e.target.value)}
-                  placeholder="輸入任意台股代號（例如：2330 台積電、2002 中鋼、2727 王品、2881 富邦金）..."
+                  placeholder="輸入任意 4 碼代號或公司中文名稱（例如：2330、台積電、2002、中鋼、2727、王品）..."
                   className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-slate-900 border border-slate-700/80 text-white text-xs placeholder:text-slate-500 focus:outline-none focus:border-cyan-500 transition font-mono"
                 />
+
+                {/* Instant Full-Market Autocomplete Suggestions Dropdown */}
+                {inputCode.trim().length >= 1 && searchTaiwanMarketStocks(inputCode, 6).length > 0 && (
+                  <div className="absolute left-0 right-0 top-full mt-1.5 bg-slate-900 border border-slate-700 rounded-xl shadow-2xl z-50 overflow-hidden divide-y divide-slate-800">
+                    {searchTaiwanMarketStocks(inputCode, 6).map((item) => (
+                      <button
+                        key={item.code}
+                        type="button"
+                        onClick={() => {
+                          setInputCode(item.code);
+                          // 自動觸發入庫
+                          setTimeout(() => {
+                            const event = new Event('submit', { cancelable: true, bubbles: true });
+                            document.querySelector('form')?.dispatchEvent(event);
+                          }, 50);
+                        }}
+                        className="w-full px-3.5 py-2 text-left hover:bg-cyan-600/20 flex items-center justify-between transition group text-xs"
+                      >
+                        <div className="flex items-center space-x-2">
+                          <span className="font-mono font-bold text-cyan-400 group-hover:text-cyan-300">
+                            {item.code}
+                          </span>
+                          <span className="font-medium text-white group-hover:text-cyan-200">
+                            {item.name}
+                          </span>
+                        </div>
+                        <div className="flex items-center space-x-2 text-[10px] text-slate-400">
+                          <span>{item.industry}</span>
+                          <span className="px-1.5 py-0.5 rounded bg-slate-800 text-slate-300 font-mono">
+                            {item.market}
+                          </span>
+                        </div>
+                      </button>
+                    ))}
+                  </div>
+                )}
               </div>
               <button
                 type="submit"

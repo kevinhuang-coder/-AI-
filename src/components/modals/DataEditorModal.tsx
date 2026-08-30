@@ -3,6 +3,7 @@ import { useFinancial } from '../../context/FinancialContext';
 import { AccountEntity, FinancialPeriod, FinancialChangeRecord } from '../../types/financial';
 import { ChangeHistoryPanel } from './ChangeHistoryPanel';
 import { fetchTaiwanStockFinancials, VERIFIED_TAIWAN_STOCKS } from '../../utils/stockFetcher';
+import { searchTaiwanMarketStocks, MarketStockItem } from '../../data/twseFullMarketDirectory';
 import {
   X,
   Plus,
@@ -719,7 +720,7 @@ export const DataEditorModal: React.FC = () => {
                 </div>
 
                 {/* Input & Search Trigger */}
-                <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
+                <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 relative">
                   <div className="relative flex-1">
                     <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
                     <input
@@ -727,9 +728,41 @@ export const DataEditorModal: React.FC = () => {
                       value={stockCodeInput}
                       onChange={(e) => setStockCodeInput(e.target.value)}
                       onKeyDown={(e) => e.key === 'Enter' && handleStockSearch()}
-                      placeholder="輸入 4 碼台股代號 (例：2330、8044、2317、2454、8454)..."
+                      placeholder="輸入 4 碼代號或公司中文名稱 (例：2330、台積電、聯發科、鈊象、中鋼)..."
                       className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-slate-900/90 border border-slate-700/80 text-white placeholder-slate-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 text-xs font-mono"
                     />
+
+                    {/* Instant Full-Market Autocomplete Suggestions Dropdown */}
+                    {stockCodeInput.trim().length >= 1 && searchTaiwanMarketStocks(stockCodeInput, 6).length > 0 && (
+                      <div className="absolute left-0 right-0 top-full mt-1.5 bg-slate-900 border border-slate-700 rounded-xl shadow-2xl z-50 overflow-hidden divide-y divide-slate-800">
+                        {searchTaiwanMarketStocks(stockCodeInput, 6).map((item) => (
+                          <button
+                            key={item.code}
+                            type="button"
+                            onClick={() => {
+                              setStockCodeInput(item.code);
+                              handleStockSearch(item.code);
+                            }}
+                            className="w-full px-3.5 py-2 text-left hover:bg-blue-600/20 flex items-center justify-between transition group text-xs"
+                          >
+                            <div className="flex items-center space-x-2">
+                              <span className="font-mono font-bold text-cyan-400 group-hover:text-cyan-300">
+                                {item.code}
+                              </span>
+                              <span className="font-medium text-white group-hover:text-blue-200">
+                                {item.name}
+                              </span>
+                            </div>
+                            <div className="flex items-center space-x-2 text-[10px] text-slate-400">
+                              <span>{item.industry}</span>
+                              <span className="px-1.5 py-0.5 rounded bg-slate-800 text-slate-300 font-mono">
+                                {item.market}
+                              </span>
+                            </div>
+                          </button>
+                        ))}
+                      </div>
+                    )}
                   </div>
 
                   <button
