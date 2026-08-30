@@ -530,6 +530,42 @@ export function calculateHealthDimensions(latest: PeriodWithRatios) {
   };
 }
 
+/**
+ * 智慧貨幣格式化器 (自動判定「兆元」、「億元」或「萬元」，並強制加上千分位逗號)
+ * @param amountInThousands 數值 (單位為千元 NTD)
+ */
+export function formatSmartCurrency(amountInThousands: number, options: { withSymbol?: boolean; precision?: number } = {}): string {
+  const symbol = options.withSymbol ? '$' : '';
+  const abs = Math.abs(amountInThousands);
+  const sign = amountInThousands < 0 ? '-' : '';
+
+  // 1 兆元 = 1,000,000,000 千元
+  if (abs >= 1000000000) {
+    const val = (abs / 1000000000).toLocaleString('zh-TW', {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    });
+    return `${symbol}${sign}${val} 兆元`;
+  }
+  // 1 億元 = 100,000 千元
+  if (abs >= 100000) {
+    const val = (abs / 100000).toLocaleString('zh-TW', {
+      minimumFractionDigits: 1,
+      maximumFractionDigits: 1,
+    });
+    return `${symbol}${sign}${val} 億元`;
+  }
+  // 1 萬元 = 10 千元
+  if (abs >= 10) {
+    const val = (abs / 10).toLocaleString('zh-TW', {
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0,
+    });
+    return `${symbol}${sign}${val} 萬元`;
+  }
+  return `${symbol}${sign}${abs.toLocaleString('zh-TW')} 千元`;
+}
+
 export interface InvestorTrustMetrics {
   periodCount: number;
   yearsSpan: string;
@@ -595,7 +631,7 @@ export function calculateInvestorTrustMetrics(periodsWithRatios: PeriodWithRatio
   const earliest = sorted[0];
   const latest = sorted[sorted.length - 1];
   const periodCount = sorted.length;
-  const yearsSpan = `${earliest.year} ~ ${latest.year} (${periodCount} 年期累計)`;
+  const yearsSpan = sorted.length > 1 ? `${earliest.year} ~ ${latest.year} (${periodCount} 年期累計)` : `${latest.year} (單期)`;
 
   // 1. 5 年累計真金白銀總帳
   let sumRevenue = 0;
@@ -668,7 +704,8 @@ export function calculateInvestorTrustMetrics(periodsWithRatios: PeriodWithRatio
   const topRisks: string[] = [];
 
   if (latest.capitalExpenditures >= latest.operatingCashFlow * 0.45 && latest.capitalExpenditures > 10000000) {
-    topRisks.push(`年資本支出高達 $${(latest.capitalExpenditures / 100000).toFixed(0)} 億元，折舊負擔沉重，需持續關注全球終端半導體需求與產能稼動率。`);
+    const capexStr = formatSmartCurrency(latest.capitalExpenditures, { withSymbol: true });
+    topRisks.push(`年資本支出高達 ${capexStr}，折舊負擔沉重，需持續關注全球終端半導體需求與產能稼動率。`);
   }
   if (latest.ratios.grossMargin <= 10) {
     topRisks.push(`本業毛利率 (${latest.ratios.grossMargin}%) 與營益率 (${latest.ratios.operatingMargin}%) 偏薄，對原物料上漲、匯率波動及單一品牌客戶砍價敏感。`);

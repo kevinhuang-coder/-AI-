@@ -7,20 +7,16 @@ import {
   Crown,
   Sparkles,
   Coins,
-  Activity,
 } from 'lucide-react';
+import { formatSmartCurrency } from '../../utils/financialCalculations';
 
 export const KpiSummaryGrid: React.FC = () => {
-  const { activeCompanyPeriodsWithRatios, latestPeriod } = useFinancial();
+  const { latestPeriod, previousPeriod } = useFinancial();
 
-  if (!latestPeriod || activeCompanyPeriodsWithRatios.length === 0) return null;
+  if (!latestPeriod) return null;
 
   const curRatios = latestPeriod.ratios;
-  const prevPeriod =
-    activeCompanyPeriodsWithRatios.length > 1
-      ? activeCompanyPeriodsWithRatios[activeCompanyPeriodsWithRatios.length - 2]
-      : null;
-  const prevRatios = prevPeriod?.ratios;
+  const prevRatios = previousPeriod?.ratios;
 
   // Delta calculation helper
   const calcDelta = (current: number, previous?: number, isPercentage = false) => {
@@ -36,12 +32,9 @@ export const KpiSummaryGrid: React.FC = () => {
   const roeDelta = calcDelta(curRatios.roe, prevRatios?.roe, true);
   const zDelta = calcDelta(curRatios.altmanZScore, prevRatios?.altmanZScore);
 
-  // Format currency in Billions / Millions NTD
+  // Format currency
   const formatMoney = (val: number) => {
-    if (Math.abs(val) >= 1000000) {
-      return `$${(val / 1000000).toFixed(1)} 億`;
-    }
-    return `$${(val / 1000).toFixed(0)} M`;
+    return formatSmartCurrency(val, { withSymbol: true });
   };
 
   return (

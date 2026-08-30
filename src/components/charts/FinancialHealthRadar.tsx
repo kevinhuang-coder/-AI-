@@ -9,7 +9,7 @@ import {
   Radar,
   Tooltip,
 } from 'recharts';
-import { calculateHealthDimensions, calculateInvestorTrustMetrics } from '../../utils/financialCalculations';
+import { calculateHealthDimensions, calculateInvestorTrustMetrics, formatSmartCurrency } from '../../utils/financialCalculations';
 import {
   Activity,
   ShieldCheck,
@@ -105,7 +105,7 @@ export const FinancialHealthRadar: React.FC = () => {
       score: health.cashflowScore,
       barColor: 'bg-cyan-500',
       icon: Layers,
-      highlight: `營業現金流 $${(latestPeriod.operatingCashFlow / 1000).toFixed(0)}M • FCF $${(r.freeCashFlow / 1000).toFixed(0)}M`,
+      highlight: `營業現金流 ${formatSmartCurrency(latestPeriod.operatingCashFlow, { withSymbol: true })} • FCF ${formatSmartCurrency(r.freeCashFlow, { withSymbol: true })}`,
     },
     {
       name: '資產效率',
@@ -324,15 +324,15 @@ export const FinancialHealthRadar: React.FC = () => {
             <div className="space-y-1.5 text-xs">
               <div className="flex justify-between text-slate-400">
                 <span>累計稅後淨利:</span>
-                <span className="font-mono font-semibold text-slate-200">${(trustMetrics.sumNetIncome / 100000).toFixed(1)} 億</span>
+                <span className="font-mono font-semibold text-slate-200">{formatSmartCurrency(trustMetrics.sumNetIncome, { withSymbol: true })}</span>
               </div>
               <div className="flex justify-between text-slate-400">
                 <span>累計營業現金(OCF):</span>
-                <span className="font-mono font-semibold text-emerald-400">${(trustMetrics.sumOCF / 100000).toFixed(1)} 億</span>
+                <span className="font-mono font-semibold text-emerald-400">{formatSmartCurrency(trustMetrics.sumOCF, { withSymbol: true })}</span>
               </div>
               <div className="flex justify-between text-slate-400">
                 <span>累計嚴謹自由現金(FCF):</span>
-                <span className="font-mono font-semibold text-cyan-300">${(trustMetrics.sumFCF / 100000).toFixed(1)} 億</span>
+                <span className="font-mono font-semibold text-cyan-300">{formatSmartCurrency(trustMetrics.sumFCF, { withSymbol: true })}</span>
               </div>
             </div>
             <div className="mt-2.5 pt-2 border-t border-slate-800/60 text-[11px] font-medium text-emerald-400 truncate">
@@ -354,12 +354,12 @@ export const FinancialHealthRadar: React.FC = () => {
             <div className="space-y-1.5 text-xs">
               <div className="flex justify-between text-slate-400">
                 <span>期末手握現金與約當:</span>
-                <span className="font-mono font-semibold text-slate-200">${(trustMetrics.cashAndEquivalents / 100000).toFixed(1)} 億</span>
+                <span className="font-mono font-semibold text-slate-200">{formatSmartCurrency(trustMetrics.cashAndEquivalents, { withSymbol: true })}</span>
               </div>
               <div className="flex justify-between text-slate-400">
                 <span>利息保障倍數:</span>
                 <span className="font-mono font-semibold text-blue-300">
-                  {trustMetrics.interestCoverage >= 50 ? '> 50 倍 (極安全)' : `${trustMetrics.interestCoverage} 倍`}
+                  {trustMetrics.interestCoverage >= 50 ? '> 50 倍 (極安全)' : `${trustMetrics.interestCoverage.toLocaleString('zh-TW')} 倍`}
                 </span>
               </div>
               <div className="flex justify-between text-slate-400">

@@ -1,6 +1,6 @@
 import React, { useRef, useState, useMemo } from 'react';
 import { useFinancial } from '../../context/FinancialContext';
-import { calculateHealthDimensions, generateLocalAiReport } from '../../utils/financialCalculations';
+import { calculateHealthDimensions, generateLocalAiReport, formatSmartCurrency } from '../../utils/financialCalculations';
 import {
   X,
   Printer,
@@ -58,19 +58,17 @@ export const PdfReportModal: React.FC = () => {
     day: 'numeric',
   });
 
-  const prevPeriod =
-    activeCompanyPeriodsWithRatios.length > 1
-      ? activeCompanyPeriodsWithRatios[activeCompanyPeriodsWithRatios.length - 2]
-      : null;
+  const periods = activeCompanyPeriodsWithRatios || [];
+  const prevPeriod = periods.length > 1 ? periods[periods.length - 2] : null;
   const prevRatios = prevPeriod?.ratios;
 
   // 近 5 個年度歷史財報數據
   const historyPeriods = activeCompanyPeriodsWithRatios.slice(-5);
 
-  // YoY Delta helper (和前一年度相比之年增減)
-  const calcDelta = (current: number, previous?: number, isPercentage = false) => {
-    if (previous === undefined || previous === null || isNaN(previous)) return null;
-    const diff = current - previous;
+  // 計算 YoY 變動輔助函式
+  const calcDelta = (cur: number, prev: number | undefined, isPercentage: boolean = false) => {
+    if (prev === undefined || prev === 0) return null;
+    const diff = cur - prev;
     const isUp = diff >= 0;
     const text = isPercentage
       ? `${isUp ? '+' : ''}${diff.toFixed(1)}%p`
@@ -82,10 +80,7 @@ export const PdfReportModal: React.FC = () => {
   const zDelta = calcDelta(r.altmanZScore, prevRatios?.altmanZScore);
 
   const formatMoney = (val: number) => {
-    if (Math.abs(val) >= 1000000) {
-      return `$${(val / 1000000).toFixed(1)} 億`;
-    }
-    return `$${(val / 1000).toFixed(0)} M`;
+    return formatSmartCurrency(val, { withSymbol: true });
   };
 
   // Altman Z 五因子動態計算值 (X1 ~ X5)
