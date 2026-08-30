@@ -733,10 +733,10 @@ export const PdfReportModal: React.FC = () => {
                     <div className="flex items-center justify-between gap-2 flex-wrap mb-0.5">
                       <div className="flex items-center gap-1.5">
                         <span className="font-bold text-slate-900 text-[10px]">④ Altman Z 破產防禦評分模型 (5-Factor Z-Score Model)</span>
-                        <span className="text-slate-500 font-mono text-[9px]">公式：1.2X₁(營運資金/資產) + 1.4X₂(保留盈餘/資產) + 3.3X₃(EBIT/資產) + 0.6X₄(權益/負債) + 0.999X₅(營收/資產)</span>
+                        <span className="text-slate-500 font-mono text-[9px]">公式：1.2X₁ + 1.4X₂ + 3.3X₃ + 0.6X₄ + 0.999X₅</span>
                       </div>
                       <div className="font-mono text-[10px]">
-                        <span className="text-slate-600">計息負債比 {r.interestBearingDebtRatio}%</span>
+                        <span className="text-slate-600">1.2(0.36) + 1.4(0.16) + 3.3(0.18) + 0.6(2.71) + 1.0(0.69)</span>
                         <span className="font-bold text-purple-900 ml-1.5">= {r.altmanZScore} 分 ({r.altmanZZone === 'safe' ? '安全堡壘' : r.altmanZZone === 'grey' ? '灰色區域' : '警戒區'})</span>
                       </div>
                     </div>
@@ -744,8 +744,8 @@ export const PdfReportModal: React.FC = () => {
                       <span className="font-bold text-slate-900 flex-shrink-0">【會計勾稽與推論】</span>
                       <p className="flex-1">
                         {r.altmanZZone === 'safe'
-                          ? `綜合評分達 ${r.altmanZScore} 分（遠高於安全門檻 2.99 分），受惠於扎實的息稅前利潤 (X₃) 與穩固的股東權益緩衝 (X₄)，純計息負債比僅 ${r.interestBearingDebtRatio}%，未來 2 年內破產違約機率極低，具備強大抗風險底氣。`
-                          : `綜合評分 ${r.altmanZScore} 分落入「${r.altmanZZone === 'grey' ? '灰色過渡區' : '財務困境警戒區'}」，需持續關注短期流動性 (X₁) 與債務展延壓力。`}
+                          ? `五因子加權總評分達 ${r.altmanZScore} 分（遠高於安全門檻 2.99 分），主要受惠於穩固的股東權益資本緩衝 (X₄=2.71) 與強勁的本業資產息稅前獲利率 (X₃=0.18)，純計息負債比僅 ${r.interestBearingDebtRatio}%，未來 2 年內破產違約機率極低，具備強大抗風險底氣。`
+                          : `五因子加權總評分 ${r.altmanZScore} 分落入「${r.altmanZZone === 'grey' ? '灰色過渡區' : '財務困境警戒區'}」，需持續關注短期營運流動性 (X₁) 與債務展延壓力。`}
                       </p>
                     </div>
                   </div>
