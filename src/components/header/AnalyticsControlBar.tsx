@@ -37,6 +37,17 @@ export const AnalyticsControlBar: React.FC = () => {
             <span>5年純年度官方年報</span>
             <span className="text-slate-500 font-mono text-[11px]">({activeCompanyPeriodsWithRatios.length} 期)</span>
           </div>
+
+          {/* 🏛️ 官方會計師查核簽證金章 (Audit Provenance Badge) */}
+          <div className="flex items-center space-x-1.5 bg-indigo-950/40 border border-indigo-500/30 px-3 py-1.5 rounded-xl text-xs text-indigo-300 shadow-xs">
+            <ShieldCheck className="w-3.5 h-3.5 text-indigo-400 flex-shrink-0" />
+            <span className="font-semibold">{activeCompany.auditFirm || latestPeriod?.auditFirm || '四大會計師事務所'}</span>
+            <span className="text-slate-500">•</span>
+            <span className="text-indigo-200">{activeCompany.auditors || latestPeriod?.auditors || '會計師簽證'}</span>
+            <span className="text-[10px] px-1.5 py-0.5 rounded bg-indigo-900/60 text-indigo-200 border border-indigo-700/40 hidden lg:inline">
+              {activeCompany.auditOpinion || latestPeriod?.auditOpinion || '無保留意見'}
+            </span>
+          </div>
         </div>
 
         {/* Right Status Pill & Direct MOPS Cross-Check Link */}

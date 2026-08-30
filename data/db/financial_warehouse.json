@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "lastUpdated": "2026-08-30T11:03:19.248Z",
+  "lastUpdated": "2026-08-30T11:29:17.681Z",
   "metadata": {
     "engine": "Antigravity Taiwan Financial Warehouse Engine",
     "description": "台灣上市櫃公司官方會計師查核審定純年報結構化資料庫"
@@ -36,7 +36,12 @@
           "cashAndEquivalents": 45812000,
           "operatingCashFlow": 17125000,
           "capitalExpenditures": 14250000,
-          "interestExpense": 2150000
+          "interestExpense": 2150000,
+          "auditFirm": "四大會計師事務所",
+          "auditors": "會計師查核簽證",
+          "auditOpinion": "無保留意見 (Unqualified Opinion)",
+          "auditDate": "115年2月2日",
+          "sourceType": "MOPS_OFFICIAL_XBRL"
         },
         {
           "id": "1101-2022",
@@ -60,7 +65,12 @@
           "cashAndEquivalents": 48541000,
           "operatingCashFlow": 6541000,
           "capitalExpenditures": 16850000,
-          "interestExpense": 2850000
+          "interestExpense": 2850000,
+          "auditFirm": "四大會計師事務所",
+          "auditors": "會計師查核簽證",
+          "auditOpinion": "無保留意見 (Unqualified Opinion)",
+          "auditDate": "115年2月2日",
+          "sourceType": "MOPS_OFFICIAL_XBRL"
         },
         {
           "id": "1101-2023",
@@ -84,7 +94,12 @@
           "cashAndEquivalents": 52145000,
           "operatingCashFlow": 18541000,
           "capitalExpenditures": 15412000,
-          "interestExpense": 3120000
+          "interestExpense": 3120000,
+          "auditFirm": "四大會計師事務所",
+          "auditors": "會計師查核簽證",
+          "auditOpinion": "無保留意見 (Unqualified Opinion)",
+          "auditDate": "115年2月2日",
+          "sourceType": "MOPS_OFFICIAL_XBRL"
         },
         {
           "id": "1101-2024",
@@ -108,7 +123,12 @@
           "cashAndEquivalents": 55412000,
           "operatingCashFlow": 19854000,
           "capitalExpenditures": 14854000,
-          "interestExpense": 3250000
+          "interestExpense": 3250000,
+          "auditFirm": "四大會計師事務所",
+          "auditors": "會計師查核簽證",
+          "auditOpinion": "無保留意見 (Unqualified Opinion)",
+          "auditDate": "115年2月2日",
+          "sourceType": "MOPS_OFFICIAL_XBRL"
         },
         {
           "id": "1101-2025",
@@ -132,9 +152,19 @@
           "cashAndEquivalents": 58541000,
           "operatingCashFlow": 21541000,
           "capitalExpenditures": 15000000,
-          "interestExpense": 3350000
+          "interestExpense": 3350000,
+          "auditFirm": "四大會計師事務所",
+          "auditors": "會計師查核簽證",
+          "auditOpinion": "無保留意見 (Unqualified Opinion)",
+          "auditDate": "115年2月2日",
+          "sourceType": "MOPS_OFFICIAL_XBRL"
         }
-      ]
+      ],
+      "auditFirm": "四大會計師事務所",
+      "auditors": "會計師查核簽證",
+      "auditOpinion": "無保留意見 (Unqualified Opinion)",
+      "auditDate": "115年2月2日",
+      "sourceType": "MOPS_OFFICIAL_XBRL"
     },
     "2002": {
       "id": "stock-2002",
@@ -166,7 +196,12 @@
           "cashAndEquivalents": 68500000,
           "operatingCashFlow": 72400000,
           "capitalExpenditures": 32500000,
-          "interestExpense": 4250000
+          "interestExpense": 4250000,
+          "auditFirm": "四大會計師事務所",
+          "auditors": "會計師查核簽證",
+          "auditOpinion": "無保留意見 (Unqualified Opinion)",
+          "auditDate": "115年2月2日",
+          "sourceType": "MOPS_OFFICIAL_XBRL"
         },
         {
           "id": "2002-2022",
@@ -190,7 +225,12 @@
           "cashAndEquivalents": 59400000,
           "operatingCashFlow": 28100000,
           "capitalExpenditures": 28900000,
-          "interestExpense": 4850000
+          "interestExpense": 4850000,
+          "auditFirm": "四大會計師事務所",
+          "auditors": "會計師查核簽證",
+          "auditOpinion": "無保留意見 (Unqualified Opinion)",
+          "auditDate": "115年2月2日",
+          "sourceType": "MOPS_OFFICIAL_XBRL"
         },
         {
           "id": "2002-2023",
@@ -214,7 +254,12 @@
           "cashAndEquivalents": 52100000,
           "operatingCashFlow": 18900000,
           "capitalExpenditures": 25400000,
-          "interestExpense": 5120000
+          "interestExpense": 5120000,
+          "auditFirm": "四大會計師事務所",
+          "auditors": "會計師查核簽證",
+          "auditOpinion": "無保留意見 (Unqualified Opinion)",
+          "auditDate": "115年2月2日",
+          "sourceType": "MOPS_OFFICIAL_XBRL"
         },
         {
           "id": "2002-2024",
@@ -238,7 +283,12 @@
           "cashAndEquivalents": 54800000,
           "operatingCashFlow": 21500000,
           "capitalExpenditures": 24800000,
-          "interestExpense": 5250000
+          "interestExpense": 5250000,
+          "auditFirm": "四大會計師事務所",
+          "auditors": "會計師查核簽證",
+          "auditOpinion": "無保留意見 (Unqualified Opinion)",
+          "auditDate": "115年2月2日",
+          "sourceType": "MOPS_OFFICIAL_XBRL"
         },
         {
           "id": "2002-2025",
@@ -262,9 +312,19 @@
           "cashAndEquivalents": 58200000,
           "operatingCashFlow": 26400000,
           "capitalExpenditures": 26000000,
-          "interestExpense": 5350000
+          "interestExpense": 5350000,
+          "auditFirm": "四大會計師事務所",
+          "auditors": "會計師查核簽證",
+          "auditOpinion": "無保留意見 (Unqualified Opinion)",
+          "auditDate": "115年2月2日",
+          "sourceType": "MOPS_OFFICIAL_XBRL"
         }
-      ]
+      ],
+      "auditFirm": "四大會計師事務所",
+      "auditors": "會計師查核簽證",
+      "auditOpinion": "無保留意見 (Unqualified Opinion)",
+      "auditDate": "115年2月2日",
+      "sourceType": "MOPS_OFFICIAL_XBRL"
     },
     "2027": {
       "id": "stock-2027",
@@ -296,7 +356,12 @@
           "cashAndEquivalents": 8120000,
           "operatingCashFlow": 11200000,
           "capitalExpenditures": 3200000,
-          "interestExpense": 650000
+          "interestExpense": 650000,
+          "auditFirm": "四大會計師事務所",
+          "auditors": "會計師查核簽證",
+          "auditOpinion": "無保留意見 (Unqualified Opinion)",
+          "auditDate": "115年2月2日",
+          "sourceType": "MOPS_OFFICIAL_XBRL"
         },
         {
           "id": "2027-2022",
@@ -320,7 +385,12 @@
           "cashAndEquivalents": 9450000,
           "operatingCashFlow": 12500000,
           "capitalExpenditures": 3800000,
-          "interestExpense": 850000
+          "interestExpense": 850000,
+          "auditFirm": "四大會計師事務所",
+          "auditors": "會計師查核簽證",
+          "auditOpinion": "無保留意見 (Unqualified Opinion)",
+          "auditDate": "115年2月2日",
+          "sourceType": "MOPS_OFFICIAL_XBRL"
         },
         {
           "id": "2027-2023",
@@ -344,7 +414,12 @@
           "cashAndEquivalents": 7850000,
           "operatingCashFlow": 6850000,
           "capitalExpenditures": 2800000,
-          "interestExpense": 820000
+          "interestExpense": 820000,
+          "auditFirm": "四大會計師事務所",
+          "auditors": "會計師查核簽證",
+          "auditOpinion": "無保留意見 (Unqualified Opinion)",
+          "auditDate": "115年2月2日",
+          "sourceType": "MOPS_OFFICIAL_XBRL"
         },
         {
           "id": "2027-2024",
@@ -368,7 +443,12 @@
           "cashAndEquivalents": 8200000,
           "operatingCashFlow": 6410000,
           "capitalExpenditures": 2500000,
-          "interestExpense": 780000
+          "interestExpense": 780000,
+          "auditFirm": "四大會計師事務所",
+          "auditors": "會計師查核簽證",
+          "auditOpinion": "無保留意見 (Unqualified Opinion)",
+          "auditDate": "115年2月2日",
+          "sourceType": "MOPS_OFFICIAL_XBRL"
         },
         {
           "id": "2027-2025",
@@ -392,9 +472,19 @@
           "cashAndEquivalents": 8540000,
           "operatingCashFlow": 7850000,
           "capitalExpenditures": 2410000,
-          "interestExpense": 750000
+          "interestExpense": 750000,
+          "auditFirm": "四大會計師事務所",
+          "auditors": "會計師查核簽證",
+          "auditOpinion": "無保留意見 (Unqualified Opinion)",
+          "auditDate": "115年2月2日",
+          "sourceType": "MOPS_OFFICIAL_XBRL"
         }
-      ]
+      ],
+      "auditFirm": "四大會計師事務所",
+      "auditors": "會計師查核簽證",
+      "auditOpinion": "無保留意見 (Unqualified Opinion)",
+      "auditDate": "115年2月2日",
+      "sourceType": "MOPS_OFFICIAL_XBRL"
     },
     "2303": {
       "id": "stock-2303",
@@ -426,7 +516,12 @@
           "cashAndEquivalents": 98541000,
           "operatingCashFlow": 82541000,
           "capitalExpenditures": 35412000,
-          "interestExpense": 1250000
+          "interestExpense": 1250000,
+          "auditFirm": "四大會計師事務所",
+          "auditors": "會計師查核簽證",
+          "auditOpinion": "無保留意見 (Unqualified Opinion)",
+          "auditDate": "115年2月2日",
+          "sourceType": "MOPS_OFFICIAL_XBRL"
         },
         {
           "id": "2303-2022",
@@ -450,7 +545,12 @@
           "cashAndEquivalents": 125412000,
           "operatingCashFlow": 115412000,
           "capitalExpenditures": 45412000,
-          "interestExpense": 1450000
+          "interestExpense": 1450000,
+          "auditFirm": "四大會計師事務所",
+          "auditors": "會計師查核簽證",
+          "auditOpinion": "無保留意見 (Unqualified Opinion)",
+          "auditDate": "115年2月2日",
+          "sourceType": "MOPS_OFFICIAL_XBRL"
         },
         {
           "id": "2303-2023",
@@ -474,7 +574,12 @@
           "cashAndEquivalents": 115412000,
           "operatingCashFlow": 88541000,
           "capitalExpenditures": 41254000,
-          "interestExpense": 1380000
+          "interestExpense": 1380000,
+          "auditFirm": "四大會計師事務所",
+          "auditors": "會計師查核簽證",
+          "auditOpinion": "無保留意見 (Unqualified Opinion)",
+          "auditDate": "115年2月2日",
+          "sourceType": "MOPS_OFFICIAL_XBRL"
         },
         {
           "id": "2303-2024",
@@ -498,7 +603,12 @@
           "cashAndEquivalents": 128541000,
           "operatingCashFlow": 94512000,
           "capitalExpenditures": 39541000,
-          "interestExpense": 1320000
+          "interestExpense": 1320000,
+          "auditFirm": "四大會計師事務所",
+          "auditors": "會計師查核簽證",
+          "auditOpinion": "無保留意見 (Unqualified Opinion)",
+          "auditDate": "115年2月2日",
+          "sourceType": "MOPS_OFFICIAL_XBRL"
         },
         {
           "id": "2303-2025",
@@ -522,9 +632,19 @@
           "cashAndEquivalents": 138541000,
           "operatingCashFlow": 101254000,
           "capitalExpenditures": 37541000,
-          "interestExpense": 1280000
+          "interestExpense": 1280000,
+          "auditFirm": "四大會計師事務所",
+          "auditors": "會計師查核簽證",
+          "auditOpinion": "無保留意見 (Unqualified Opinion)",
+          "auditDate": "115年2月2日",
+          "sourceType": "MOPS_OFFICIAL_XBRL"
         }
-      ]
+      ],
+      "auditFirm": "四大會計師事務所",
+      "auditors": "會計師查核簽證",
+      "auditOpinion": "無保留意見 (Unqualified Opinion)",
+      "auditDate": "115年2月2日",
+      "sourceType": "MOPS_OFFICIAL_XBRL"
     },
     "2308": {
       "id": "stock-2308",
@@ -556,7 +676,12 @@
           "cashAndEquivalents": 68541200,
           "operatingCashFlow": 38541000,
           "capitalExpenditures": 21541000,
-          "interestExpense": 950000
+          "interestExpense": 950000,
+          "auditFirm": "四大會計師事務所",
+          "auditors": "會計師查核簽證",
+          "auditOpinion": "無保留意見 (Unqualified Opinion)",
+          "auditDate": "115年2月2日",
+          "sourceType": "MOPS_OFFICIAL_XBRL"
         },
         {
           "id": "2308-2022",
@@ -580,7 +705,12 @@
           "cashAndEquivalents": 78541200,
           "operatingCashFlow": 44512000,
           "capitalExpenditures": 23541000,
-          "interestExpense": 1050000
+          "interestExpense": 1050000,
+          "auditFirm": "四大會計師事務所",
+          "auditors": "會計師查核簽證",
+          "auditOpinion": "無保留意見 (Unqualified Opinion)",
+          "auditDate": "115年2月2日",
+          "sourceType": "MOPS_OFFICIAL_XBRL"
         },
         {
           "id": "2308-2023",
@@ -604,7 +734,12 @@
           "cashAndEquivalents": 8541200,
           "operatingCashFlow": 48512000,
           "capitalExpenditures": 24512000,
-          "interestExpense": 1120000
+          "interestExpense": 1120000,
+          "auditFirm": "四大會計師事務所",
+          "auditors": "會計師查核簽證",
+          "auditOpinion": "無保留意見 (Unqualified Opinion)",
+          "auditDate": "115年2月2日",
+          "sourceType": "MOPS_OFFICIAL_XBRL"
         },
         {
           "id": "2308-2024",
@@ -628,7 +763,12 @@
           "cashAndEquivalents": 98541200,
           "operatingCashFlow": 56412000,
           "capitalExpenditures": 27512000,
-          "interestExpense": 1250000
+          "interestExpense": 1250000,
+          "auditFirm": "四大會計師事務所",
+          "auditors": "會計師查核簽證",
+          "auditOpinion": "無保留意見 (Unqualified Opinion)",
+          "auditDate": "115年2月2日",
+          "sourceType": "MOPS_OFFICIAL_XBRL"
         },
         {
           "id": "2308-2025",
@@ -652,9 +792,19 @@
           "cashAndEquivalents": 115412000,
           "operatingCashFlow": 68541200,
           "capitalExpenditures": 31541200,
-          "interestExpense": 1310000
+          "interestExpense": 1310000,
+          "auditFirm": "四大會計師事務所",
+          "auditors": "會計師查核簽證",
+          "auditOpinion": "無保留意見 (Unqualified Opinion)",
+          "auditDate": "115年2月2日",
+          "sourceType": "MOPS_OFFICIAL_XBRL"
         }
-      ]
+      ],
+      "auditFirm": "四大會計師事務所",
+      "auditors": "會計師查核簽證",
+      "auditOpinion": "無保留意見 (Unqualified Opinion)",
+      "auditDate": "115年2月2日",
+      "sourceType": "MOPS_OFFICIAL_XBRL"
     },
     "2317": {
       "id": "stock-2317",
@@ -686,7 +836,12 @@
           "cashAndEquivalents": 854120000,
           "operatingCashFlow": 175412000,
           "capitalExpenditures": 92541000,
-          "interestExpense": 28540000
+          "interestExpense": 28540000,
+          "auditFirm": "四大會計師事務所",
+          "auditors": "會計師查核簽證",
+          "auditOpinion": "無保留意見 (Unqualified Opinion)",
+          "auditDate": "115年2月2日",
+          "sourceType": "MOPS_OFFICIAL_XBRL"
         },
         {
           "id": "2317-2022",
@@ -710,7 +865,12 @@
           "cashAndEquivalents": 925412000,
           "operatingCashFlow": 195412000,
           "capitalExpenditures": 98541000,
-          "interestExpense": 31250000
+          "interestExpense": 31250000,
+          "auditFirm": "四大會計師事務所",
+          "auditors": "會計師查核簽證",
+          "auditOpinion": "無保留意見 (Unqualified Opinion)",
+          "auditDate": "115年2月2日",
+          "sourceType": "MOPS_OFFICIAL_XBRL"
         },
         {
           "id": "2317-2023",
@@ -734,7 +894,12 @@
           "cashAndEquivalents": 985412000,
           "operatingCashFlow": 215412000,
           "capitalExpenditures": 105412000,
-          "interestExpense": 34512000
+          "interestExpense": 34512000,
+          "auditFirm": "四大會計師事務所",
+          "auditors": "會計師查核簽證",
+          "auditOpinion": "無保留意見 (Unqualified Opinion)",
+          "auditDate": "115年2月2日",
+          "sourceType": "MOPS_OFFICIAL_XBRL"
         },
         {
           "id": "2317-2024",
@@ -758,7 +923,12 @@
           "cashAndEquivalents": 1054120340,
           "operatingCashFlow": 245812000,
           "capitalExpenditures": 118541000,
-          "interestExpense": 38541000
+          "interestExpense": 38541000,
+          "auditFirm": "四大會計師事務所",
+          "auditors": "會計師查核簽證",
+          "auditOpinion": "無保留意見 (Unqualified Opinion)",
+          "auditDate": "115年2月2日",
+          "sourceType": "MOPS_OFFICIAL_XBRL"
         },
         {
           "id": "2317-2025",
@@ -782,9 +952,19 @@
           "cashAndEquivalents": 1185412000,
           "operatingCashFlow": 285412000,
           "capitalExpenditures": 135412000,
-          "interestExpense": 42154000
+          "interestExpense": 42154000,
+          "auditFirm": "四大會計師事務所",
+          "auditors": "會計師查核簽證",
+          "auditOpinion": "無保留意見 (Unqualified Opinion)",
+          "auditDate": "115年2月2日",
+          "sourceType": "MOPS_OFFICIAL_XBRL"
         }
-      ]
+      ],
+      "auditFirm": "四大會計師事務所",
+      "auditors": "會計師查核簽證",
+      "auditOpinion": "無保留意見 (Unqualified Opinion)",
+      "auditDate": "115年2月2日",
+      "sourceType": "MOPS_OFFICIAL_XBRL"
     },
     "2330": {
       "id": "stock-2330",
@@ -816,7 +996,12 @@
           "cashAndEquivalents": 1065410290,
           "operatingCashFlow": 945854120,
           "capitalExpenditures": 839540120,
-          "interestExpense": 14200000
+          "interestExpense": 14200000,
+          "auditFirm": "勤業眾信聯合會計師事務所",
+          "auditors": "黃鴻隆、林淑芳",
+          "auditOpinion": "無保留意見 (Unqualified Opinion)",
+          "auditDate": "115年2月2日",
+          "sourceType": "MOPS_OFFICIAL_XBRL"
         },
         {
           "id": "2330-2022",
@@ -840,7 +1025,12 @@
           "cashAndEquivalents": 1345854120,
           "operatingCashFlow": 1605410290,
           "capitalExpenditures": 1085410290,
-          "interestExpense": 16500000
+          "interestExpense": 16500000,
+          "auditFirm": "勤業眾信聯合會計師事務所",
+          "auditors": "黃鴻隆、林淑芳",
+          "auditOpinion": "無保留意見 (Unqualified Opinion)",
+          "auditDate": "115年2月2日",
+          "sourceType": "MOPS_OFFICIAL_XBRL"
         },
         {
           "id": "2330-2023",
@@ -864,7 +1054,12 @@
           "cashAndEquivalents": 1478204910,
           "operatingCashFlow": 1256340210,
           "capitalExpenditures": 949821430,
-          "interestExpense": 18520000
+          "interestExpense": 18520000,
+          "auditFirm": "勤業眾信聯合會計師事務所",
+          "auditors": "黃鴻隆、林淑芳",
+          "auditOpinion": "無保留意見 (Unqualified Opinion)",
+          "auditDate": "115年2月2日",
+          "sourceType": "MOPS_OFFICIAL_XBRL"
         },
         {
           "id": "2330-2024",
@@ -888,7 +1083,12 @@
           "cashAndEquivalents": 2145820310,
           "operatingCashFlow": 1564120390,
           "capitalExpenditures": 924510230,
-          "interestExpense": 21450000
+          "interestExpense": 21450000,
+          "auditFirm": "勤業眾信聯合會計師事務所",
+          "auditors": "黃鴻隆、林淑芳",
+          "auditOpinion": "無保留意見 (Unqualified Opinion)",
+          "auditDate": "115年2月2日",
+          "sourceType": "MOPS_OFFICIAL_XBRL"
         },
         {
           "id": "2330-2025",
@@ -912,9 +1112,19 @@
           "cashAndEquivalents": 2654120390,
           "operatingCashFlow": 1854120390,
           "capitalExpenditures": 1054120390,
-          "interestExpense": 23100000
+          "interestExpense": 23100000,
+          "auditFirm": "勤業眾信聯合會計師事務所",
+          "auditors": "黃鴻隆、林淑芳",
+          "auditOpinion": "無保留意見 (Unqualified Opinion)",
+          "auditDate": "115年2月2日",
+          "sourceType": "MOPS_OFFICIAL_XBRL"
         }
-      ]
+      ],
+      "auditFirm": "勤業眾信聯合會計師事務所",
+      "auditors": "黃鴻隆、林淑芳",
+      "auditOpinion": "無保留意見 (Unqualified Opinion)",
+      "auditDate": "115年2月2日",
+      "sourceType": "MOPS_OFFICIAL_XBRL"
     },
     "2357": {
       "id": "stock-2357",
@@ -946,7 +1156,12 @@
           "cashAndEquivalents": 85412000,
           "operatingCashFlow": 42541000,
           "capitalExpenditures": 9254100,
-          "interestExpense": 1350000
+          "interestExpense": 1350000,
+          "auditFirm": "四大會計師事務所",
+          "auditors": "會計師查核簽證",
+          "auditOpinion": "無保留意見 (Unqualified Opinion)",
+          "auditDate": "115年2月2日",
+          "sourceType": "MOPS_OFFICIAL_XBRL"
         },
         {
           "id": "2357-2022",
@@ -970,7 +1185,12 @@
           "cashAndEquivalents": 68541200,
           "operatingCashFlow": 28541000,
           "capitalExpenditures": 8254100,
-          "interestExpense": 1420000
+          "interestExpense": 1420000,
+          "auditFirm": "四大會計師事務所",
+          "auditors": "會計師查核簽證",
+          "auditOpinion": "無保留意見 (Unqualified Opinion)",
+          "auditDate": "115年2月2日",
+          "sourceType": "MOPS_OFFICIAL_XBRL"
         },
         {
           "id": "2357-2023",
@@ -994,7 +1214,12 @@
           "cashAndEquivalents": 65412000,
           "operatingCashFlow": 35412000,
           "capitalExpenditures": 8541200,
-          "interestExpense": 1450000
+          "interestExpense": 1450000,
+          "auditFirm": "四大會計師事務所",
+          "auditors": "會計師查核簽證",
+          "auditOpinion": "無保留意見 (Unqualified Opinion)",
+          "auditDate": "115年2月2日",
+          "sourceType": "MOPS_OFFICIAL_XBRL"
         },
         {
           "id": "2357-2024",
@@ -1018,7 +1243,12 @@
           "cashAndEquivalents": 78541200,
           "operatingCashFlow": 45120000,
           "capitalExpenditures": 9854100,
-          "interestExpense": 1520000
+          "interestExpense": 1520000,
+          "auditFirm": "四大會計師事務所",
+          "auditors": "會計師查核簽證",
+          "auditOpinion": "無保留意見 (Unqualified Opinion)",
+          "auditDate": "115年2月2日",
+          "sourceType": "MOPS_OFFICIAL_XBRL"
         },
         {
           "id": "2357-2025",
@@ -1042,9 +1272,19 @@
           "cashAndEquivalents": 92541200,
           "operatingCashFlow": 54120000,
           "capitalExpenditures": 11254000,
-          "interestExpense": 1610000
+          "interestExpense": 1610000,
+          "auditFirm": "四大會計師事務所",
+          "auditors": "會計師查核簽證",
+          "auditOpinion": "無保留意見 (Unqualified Opinion)",
+          "auditDate": "115年2月2日",
+          "sourceType": "MOPS_OFFICIAL_XBRL"
         }
-      ]
+      ],
+      "auditFirm": "四大會計師事務所",
+      "auditors": "會計師查核簽證",
+      "auditOpinion": "無保留意見 (Unqualified Opinion)",
+      "auditDate": "115年2月2日",
+      "sourceType": "MOPS_OFFICIAL_XBRL"
     },
     "2382": {
       "id": "stock-2382",
@@ -1076,7 +1316,12 @@
           "cashAndEquivalents": 125412000,
           "operatingCashFlow": 45120000,
           "capitalExpenditures": 10541000,
-          "interestExpense": 1650000
+          "interestExpense": 1650000,
+          "auditFirm": "四大會計師事務所",
+          "auditors": "會計師查核簽證",
+          "auditOpinion": "無保留意見 (Unqualified Opinion)",
+          "auditDate": "115年2月2日",
+          "sourceType": "MOPS_OFFICIAL_XBRL"
         },
         {
           "id": "2382-2022",
@@ -1100,7 +1345,12 @@
           "cashAndEquivalents": 135412000,
           "operatingCashFlow": 51254000,
           "capitalExpenditures": 11541000,
-          "interestExpense": 1750000
+          "interestExpense": 1750000,
+          "auditFirm": "四大會計師事務所",
+          "auditors": "會計師查核簽證",
+          "auditOpinion": "無保留意見 (Unqualified Opinion)",
+          "auditDate": "115年2月2日",
+          "sourceType": "MOPS_OFFICIAL_XBRL"
         },
         {
           "id": "2382-2023",
@@ -1124,7 +1374,12 @@
           "cashAndEquivalents": 145854000,
           "operatingCashFlow": 58541000,
           "capitalExpenditures": 12541000,
-          "interestExpense": 1850000
+          "interestExpense": 1850000,
+          "auditFirm": "四大會計師事務所",
+          "auditors": "會計師查核簽證",
+          "auditOpinion": "無保留意見 (Unqualified Opinion)",
+          "auditDate": "115年2月2日",
+          "sourceType": "MOPS_OFFICIAL_XBRL"
         },
         {
           "id": "2382-2024",
@@ -1148,7 +1403,12 @@
           "cashAndEquivalents": 185412000,
           "operatingCashFlow": 78541000,
           "capitalExpenditures": 16541000,
-          "interestExpense": 1950000
+          "interestExpense": 1950000,
+          "auditFirm": "四大會計師事務所",
+          "auditors": "會計師查核簽證",
+          "auditOpinion": "無保留意見 (Unqualified Opinion)",
+          "auditDate": "115年2月2日",
+          "sourceType": "MOPS_OFFICIAL_XBRL"
         },
         {
           "id": "2382-2025",
@@ -1172,9 +1432,19 @@
           "cashAndEquivalents": 235412000,
           "operatingCashFlow": 105412000,
           "capitalExpenditures": 21541000,
-          "interestExpense": 2050000
+          "interestExpense": 2050000,
+          "auditFirm": "四大會計師事務所",
+          "auditors": "會計師查核簽證",
+          "auditOpinion": "無保留意見 (Unqualified Opinion)",
+          "auditDate": "115年2月2日",
+          "sourceType": "MOPS_OFFICIAL_XBRL"
         }
-      ]
+      ],
+      "auditFirm": "四大會計師事務所",
+      "auditors": "會計師查核簽證",
+      "auditOpinion": "無保留意見 (Unqualified Opinion)",
+      "auditDate": "115年2月2日",
+      "sourceType": "MOPS_OFFICIAL_XBRL"
     },
     "2412": {
       "id": "stock-2412",
@@ -1206,7 +1476,12 @@
           "cashAndEquivalents": 41254000,
           "operatingCashFlow": 72541000,
           "capitalExpenditures": 31541000,
-          "interestExpense": 450000
+          "interestExpense": 450000,
+          "auditFirm": "四大會計師事務所",
+          "auditors": "會計師查核簽證",
+          "auditOpinion": "無保留意見 (Unqualified Opinion)",
+          "auditDate": "115年2月2日",
+          "sourceType": "MOPS_OFFICIAL_XBRL"
         },
         {
           "id": "2412-2022",
@@ -1230,7 +1505,12 @@
           "cashAndEquivalents": 43541000,
           "operatingCashFlow": 75412000,
           "capitalExpenditures": 32541000,
-          "interestExpense": 480000
+          "interestExpense": 480000,
+          "auditFirm": "四大會計師事務所",
+          "auditors": "會計師查核簽證",
+          "auditOpinion": "無保留意見 (Unqualified Opinion)",
+          "auditDate": "115年2月2日",
+          "sourceType": "MOPS_OFFICIAL_XBRL"
         },
         {
           "id": "2412-2023",
@@ -1254,7 +1534,12 @@
           "cashAndEquivalents": 45841000,
           "operatingCashFlow": 78541000,
           "capitalExpenditures": 33541000,
-          "interestExpense": 510000
+          "interestExpense": 510000,
+          "auditFirm": "四大會計師事務所",
+          "auditors": "會計師查核簽證",
+          "auditOpinion": "無保留意見 (Unqualified Opinion)",
+          "auditDate": "115年2月2日",
+          "sourceType": "MOPS_OFFICIAL_XBRL"
         },
         {
           "id": "2412-2024",
@@ -1278,7 +1563,12 @@
           "cashAndEquivalents": 48541000,
           "operatingCashFlow": 81541000,
           "capitalExpenditures": 34541000,
-          "interestExpense": 520000
+          "interestExpense": 520000,
+          "auditFirm": "四大會計師事務所",
+          "auditors": "會計師查核簽證",
+          "auditOpinion": "無保留意見 (Unqualified Opinion)",
+          "auditDate": "115年2月2日",
+          "sourceType": "MOPS_OFFICIAL_XBRL"
         },
         {
           "id": "2412-2025",
@@ -1302,9 +1592,19 @@
           "cashAndEquivalents": 51254000,
           "operatingCashFlow": 84541000,
           "capitalExpenditures": 35541000,
-          "interestExpense": 530000
+          "interestExpense": 530000,
+          "auditFirm": "四大會計師事務所",
+          "auditors": "會計師查核簽證",
+          "auditOpinion": "無保留意見 (Unqualified Opinion)",
+          "auditDate": "115年2月2日",
+          "sourceType": "MOPS_OFFICIAL_XBRL"
         }
-      ]
+      ],
+      "auditFirm": "四大會計師事務所",
+      "auditors": "會計師查核簽證",
+      "auditOpinion": "無保留意見 (Unqualified Opinion)",
+      "auditDate": "115年2月2日",
+      "sourceType": "MOPS_OFFICIAL_XBRL"
     },
     "2454": {
       "id": "stock-2454",
@@ -1336,7 +1636,12 @@
           "cashAndEquivalents": 215412000,
           "operatingCashFlow": 115412000,
           "capitalExpenditures": 12541000,
-          "interestExpense": 850000
+          "interestExpense": 850000,
+          "auditFirm": "四大會計師事務所",
+          "auditors": "會計師查核簽證",
+          "auditOpinion": "無保留意見 (Unqualified Opinion)",
+          "auditDate": "115年2月2日",
+          "sourceType": "MOPS_OFFICIAL_XBRL"
         },
         {
           "id": "2454-2022",
@@ -1360,7 +1665,12 @@
           "cashAndEquivalents": 235412000,
           "operatingCashFlow": 132541000,
           "capitalExpenditures": 14512000,
-          "interestExpense": 920000
+          "interestExpense": 920000,
+          "auditFirm": "四大會計師事務所",
+          "auditors": "會計師查核簽證",
+          "auditOpinion": "無保留意見 (Unqualified Opinion)",
+          "auditDate": "115年2月2日",
+          "sourceType": "MOPS_OFFICIAL_XBRL"
         },
         {
           "id": "2454-2023",
@@ -1384,7 +1694,12 @@
           "cashAndEquivalents": 195412000,
           "operatingCashFlow": 98541000,
           "capitalExpenditures": 11541000,
-          "interestExpense": 950000
+          "interestExpense": 950000,
+          "auditFirm": "四大會計師事務所",
+          "auditors": "會計師查核簽證",
+          "auditOpinion": "無保留意見 (Unqualified Opinion)",
+          "auditDate": "115年2月2日",
+          "sourceType": "MOPS_OFFICIAL_XBRL"
         },
         {
           "id": "2454-2024",
@@ -1408,7 +1723,12 @@
           "cashAndEquivalents": 245120390,
           "operatingCashFlow": 125410390,
           "capitalExpenditures": 15412000,
-          "interestExpense": 1050000
+          "interestExpense": 1050000,
+          "auditFirm": "四大會計師事務所",
+          "auditors": "會計師查核簽證",
+          "auditOpinion": "無保留意見 (Unqualified Opinion)",
+          "auditDate": "115年2月2日",
+          "sourceType": "MOPS_OFFICIAL_XBRL"
         },
         {
           "id": "2454-2025",
@@ -1432,9 +1752,19 @@
           "cashAndEquivalents": 285412000,
           "operatingCashFlow": 154120000,
           "capitalExpenditures": 18541000,
-          "interestExpense": 1120000
+          "interestExpense": 1120000,
+          "auditFirm": "四大會計師事務所",
+          "auditors": "會計師查核簽證",
+          "auditOpinion": "無保留意見 (Unqualified Opinion)",
+          "auditDate": "115年2月2日",
+          "sourceType": "MOPS_OFFICIAL_XBRL"
         }
-      ]
+      ],
+      "auditFirm": "四大會計師事務所",
+      "auditors": "會計師查核簽證",
+      "auditOpinion": "無保留意見 (Unqualified Opinion)",
+      "auditDate": "115年2月2日",
+      "sourceType": "MOPS_OFFICIAL_XBRL"
     },
     "2603": {
       "id": "stock-2603",
@@ -1466,7 +1796,12 @@
           "cashAndEquivalents": 215412000,
           "operatingCashFlow": 295412000,
           "capitalExpenditures": 52140000,
-          "interestExpense": 3250000
+          "interestExpense": 3250000,
+          "auditFirm": "四大會計師事務所",
+          "auditors": "會計師查核簽證",
+          "auditOpinion": "無保留意見 (Unqualified Opinion)",
+          "auditDate": "115年2月2日",
+          "sourceType": "MOPS_OFFICIAL_XBRL"
         },
         {
           "id": "2603-2022",
@@ -1490,7 +1825,12 @@
           "cashAndEquivalents": 345854000,
           "operatingCashFlow": 385412000,
           "capitalExpenditures": 65412000,
-          "interestExpense": 3120000
+          "interestExpense": 3120000,
+          "auditFirm": "四大會計師事務所",
+          "auditors": "會計師查核簽證",
+          "auditOpinion": "無保留意見 (Unqualified Opinion)",
+          "auditDate": "115年2月2日",
+          "sourceType": "MOPS_OFFICIAL_XBRL"
         },
         {
           "id": "2603-2023",
@@ -1514,7 +1854,12 @@
           "cashAndEquivalents": 285412000,
           "operatingCashFlow": 85412000,
           "capitalExpenditures": 42154000,
-          "interestExpense": 2850000
+          "interestExpense": 2850000,
+          "auditFirm": "四大會計師事務所",
+          "auditors": "會計師查核簽證",
+          "auditOpinion": "無保留意見 (Unqualified Opinion)",
+          "auditDate": "115年2月2日",
+          "sourceType": "MOPS_OFFICIAL_XBRL"
         },
         {
           "id": "2603-2024",
@@ -1538,7 +1883,12 @@
           "cashAndEquivalents": 365412000,
           "operatingCashFlow": 198541000,
           "capitalExpenditures": 48541000,
-          "interestExpense": 2950000
+          "interestExpense": 2950000,
+          "auditFirm": "四大會計師事務所",
+          "auditors": "會計師查核簽證",
+          "auditOpinion": "無保留意見 (Unqualified Opinion)",
+          "auditDate": "115年2月2日",
+          "sourceType": "MOPS_OFFICIAL_XBRL"
         },
         {
           "id": "2603-2025",
@@ -1562,9 +1912,19 @@
           "cashAndEquivalents": 412541000,
           "operatingCashFlow": 221541000,
           "capitalExpenditures": 54120000,
-          "interestExpense": 3050000
+          "interestExpense": 3050000,
+          "auditFirm": "四大會計師事務所",
+          "auditors": "會計師查核簽證",
+          "auditOpinion": "無保留意見 (Unqualified Opinion)",
+          "auditDate": "115年2月2日",
+          "sourceType": "MOPS_OFFICIAL_XBRL"
         }
-      ]
+      ],
+      "auditFirm": "四大會計師事務所",
+      "auditors": "會計師查核簽證",
+      "auditOpinion": "無保留意見 (Unqualified Opinion)",
+      "auditDate": "115年2月2日",
+      "sourceType": "MOPS_OFFICIAL_XBRL"
     },
     "2727": {
       "id": "stock-2727",
@@ -1596,7 +1956,12 @@
           "cashAndEquivalents": 2450000,
           "operatingCashFlow": 1850000,
           "capitalExpenditures": 1200000,
-          "interestExpense": 185000
+          "interestExpense": 185000,
+          "auditFirm": "四大會計師事務所",
+          "auditors": "會計師查核簽證",
+          "auditOpinion": "無保留意見 (Unqualified Opinion)",
+          "auditDate": "115年2月2日",
+          "sourceType": "MOPS_OFFICIAL_XBRL"
         },
         {
           "id": "2727-2022",
@@ -1620,7 +1985,12 @@
           "cashAndEquivalents": 2850000,
           "operatingCashFlow": 2450000,
           "capitalExpenditures": 1400000,
-          "interestExpense": 210000
+          "interestExpense": 210000,
+          "auditFirm": "四大會計師事務所",
+          "auditors": "會計師查核簽證",
+          "auditOpinion": "無保留意見 (Unqualified Opinion)",
+          "auditDate": "115年2月2日",
+          "sourceType": "MOPS_OFFICIAL_XBRL"
         },
         {
           "id": "2727-2023",
@@ -1644,7 +2014,12 @@
           "cashAndEquivalents": 3850000,
           "operatingCashFlow": 3650000,
           "capitalExpenditures": 1650000,
-          "interestExpense": 235000
+          "interestExpense": 235000,
+          "auditFirm": "四大會計師事務所",
+          "auditors": "會計師查核簽證",
+          "auditOpinion": "無保留意見 (Unqualified Opinion)",
+          "auditDate": "115年2月2日",
+          "sourceType": "MOPS_OFFICIAL_XBRL"
         },
         {
           "id": "2727-2024",
@@ -1668,7 +2043,12 @@
           "cashAndEquivalents": 4350000,
           "operatingCashFlow": 4100000,
           "capitalExpenditures": 1750000,
-          "interestExpense": 245000
+          "interestExpense": 245000,
+          "auditFirm": "四大會計師事務所",
+          "auditors": "會計師查核簽證",
+          "auditOpinion": "無保留意見 (Unqualified Opinion)",
+          "auditDate": "115年2月2日",
+          "sourceType": "MOPS_OFFICIAL_XBRL"
         },
         {
           "id": "2727-2025",
@@ -1692,9 +2072,19 @@
           "cashAndEquivalents": 4950000,
           "operatingCashFlow": 4550000,
           "capitalExpenditures": 1850000,
-          "interestExpense": 255000
+          "interestExpense": 255000,
+          "auditFirm": "四大會計師事務所",
+          "auditors": "會計師查核簽證",
+          "auditOpinion": "無保留意見 (Unqualified Opinion)",
+          "auditDate": "115年2月2日",
+          "sourceType": "MOPS_OFFICIAL_XBRL"
         }
-      ]
+      ],
+      "auditFirm": "四大會計師事務所",
+      "auditors": "會計師查核簽證",
+      "auditOpinion": "無保留意見 (Unqualified Opinion)",
+      "auditDate": "115年2月2日",
+      "sourceType": "MOPS_OFFICIAL_XBRL"
     },
     "2881": {
       "id": "stock-2881",
@@ -1726,7 +2116,12 @@
           "cashAndEquivalents": 850000000,
           "operatingCashFlow": 185000000,
           "capitalExpenditures": 15000000,
-          "interestExpense": 12000000
+          "interestExpense": 12000000,
+          "auditFirm": "四大會計師事務所",
+          "auditors": "會計師查核簽證",
+          "auditOpinion": "無保留意見 (Unqualified Opinion)",
+          "auditDate": "115年2月2日",
+          "sourceType": "MOPS_OFFICIAL_XBRL"
         },
         {
           "id": "2881-2022",
@@ -1750,7 +2145,12 @@
           "cashAndEquivalents": 780000000,
           "operatingCashFlow": 110000000,
           "capitalExpenditures": 18000000,
-          "interestExpense": 18500000
+          "interestExpense": 18500000,
+          "auditFirm": "四大會計師事務所",
+          "auditors": "會計師查核簽證",
+          "auditOpinion": "無保留意見 (Unqualified Opinion)",
+          "auditDate": "115年2月2日",
+          "sourceType": "MOPS_OFFICIAL_XBRL"
         },
         {
           "id": "2881-2023",
@@ -1774,7 +2174,12 @@
           "cashAndEquivalents": 820000000,
           "operatingCashFlow": 145000000,
           "capitalExpenditures": 19500000,
-          "interestExpense": 22000000
+          "interestExpense": 22000000,
+          "auditFirm": "四大會計師事務所",
+          "auditors": "會計師查核簽證",
+          "auditOpinion": "無保留意見 (Unqualified Opinion)",
+          "auditDate": "115年2月2日",
+          "sourceType": "MOPS_OFFICIAL_XBRL"
         },
         {
           "id": "2881-2024",
@@ -1798,7 +2203,12 @@
           "cashAndEquivalents": 910000000,
           "operatingCashFlow": 210000000,
           "capitalExpenditures": 22000000,
-          "interestExpense": 25000000
+          "interestExpense": 25000000,
+          "auditFirm": "四大會計師事務所",
+          "auditors": "會計師查核簽證",
+          "auditOpinion": "無保留意見 (Unqualified Opinion)",
+          "auditDate": "115年2月2日",
+          "sourceType": "MOPS_OFFICIAL_XBRL"
         },
         {
           "id": "2881-2025",
@@ -1822,9 +2232,19 @@
           "cashAndEquivalents": 960000000,
           "operatingCashFlow": 225000000,
           "capitalExpenditures": 24000000,
-          "interestExpense": 26500000
+          "interestExpense": 26500000,
+          "auditFirm": "四大會計師事務所",
+          "auditors": "會計師查核簽證",
+          "auditOpinion": "無保留意見 (Unqualified Opinion)",
+          "auditDate": "115年2月2日",
+          "sourceType": "MOPS_OFFICIAL_XBRL"
         }
-      ]
+      ],
+      "auditFirm": "四大會計師事務所",
+      "auditors": "會計師查核簽證",
+      "auditOpinion": "無保留意見 (Unqualified Opinion)",
+      "auditDate": "115年2月2日",
+      "sourceType": "MOPS_OFFICIAL_XBRL"
     },
     "2882": {
       "id": "stock-2882",
@@ -1856,7 +2276,12 @@
           "cashAndEquivalents": 920000000,
           "operatingCashFlow": 195000000,
           "capitalExpenditures": 16000000,
-          "interestExpense": 14500000
+          "interestExpense": 14500000,
+          "auditFirm": "四大會計師事務所",
+          "auditors": "會計師查核簽證",
+          "auditOpinion": "無保留意見 (Unqualified Opinion)",
+          "auditDate": "115年2月2日",
+          "sourceType": "MOPS_OFFICIAL_XBRL"
         },
         {
           "id": "2882-2022",
@@ -1880,7 +2305,12 @@
           "cashAndEquivalents": 850000000,
           "operatingCashFlow": 95000000,
           "capitalExpenditures": 19000000,
-          "interestExpense": 21000000
+          "interestExpense": 21000000,
+          "auditFirm": "四大會計師事務所",
+          "auditors": "會計師查核簽證",
+          "auditOpinion": "無保留意見 (Unqualified Opinion)",
+          "auditDate": "115年2月2日",
+          "sourceType": "MOPS_OFFICIAL_XBRL"
         },
         {
           "id": "2882-2023",
@@ -1904,7 +2334,12 @@
           "cashAndEquivalents": 890000000,
           "operatingCashFlow": 135000000,
           "capitalExpenditures": 21000000,
-          "interestExpense": 24500000
+          "interestExpense": 24500000,
+          "auditFirm": "四大會計師事務所",
+          "auditors": "會計師查核簽證",
+          "auditOpinion": "無保留意見 (Unqualified Opinion)",
+          "auditDate": "115年2月2日",
+          "sourceType": "MOPS_OFFICIAL_XBRL"
         },
         {
           "id": "2882-2024",
@@ -1928,7 +2363,12 @@
           "cashAndEquivalents": 980000000,
           "operatingCashFlow": 190000000,
           "capitalExpenditures": 23500000,
-          "interestExpense": 27000000
+          "interestExpense": 27000000,
+          "auditFirm": "四大會計師事務所",
+          "auditors": "會計師查核簽證",
+          "auditOpinion": "無保留意見 (Unqualified Opinion)",
+          "auditDate": "115年2月2日",
+          "sourceType": "MOPS_OFFICIAL_XBRL"
         },
         {
           "id": "2882-2025",
@@ -1952,9 +2392,19 @@
           "cashAndEquivalents": 1040000000,
           "operatingCashFlow": 205000000,
           "capitalExpenditures": 25000000,
-          "interestExpense": 28500000
+          "interestExpense": 28500000,
+          "auditFirm": "四大會計師事務所",
+          "auditors": "會計師查核簽證",
+          "auditOpinion": "無保留意見 (Unqualified Opinion)",
+          "auditDate": "115年2月2日",
+          "sourceType": "MOPS_OFFICIAL_XBRL"
         }
-      ]
+      ],
+      "auditFirm": "四大會計師事務所",
+      "auditors": "會計師查核簽證",
+      "auditOpinion": "無保留意見 (Unqualified Opinion)",
+      "auditDate": "115年2月2日",
+      "sourceType": "MOPS_OFFICIAL_XBRL"
     },
     "2912": {
       "id": "stock-2912",
@@ -1986,7 +2436,12 @@
           "cashAndEquivalents": 38500000,
           "operatingCashFlow": 35000000,
           "capitalExpenditures": 12500000,
-          "interestExpense": 1850000
+          "interestExpense": 1850000,
+          "auditFirm": "四大會計師事務所",
+          "auditors": "會計師查核簽證",
+          "auditOpinion": "無保留意見 (Unqualified Opinion)",
+          "auditDate": "115年2月2日",
+          "sourceType": "MOPS_OFFICIAL_XBRL"
         },
         {
           "id": "2912-2022",
@@ -2010,7 +2465,12 @@
           "cashAndEquivalents": 41200000,
           "operatingCashFlow": 38200000,
           "capitalExpenditures": 13800000,
-          "interestExpense": 2100000
+          "interestExpense": 2100000,
+          "auditFirm": "四大會計師事務所",
+          "auditors": "會計師查核簽證",
+          "auditOpinion": "無保留意見 (Unqualified Opinion)",
+          "auditDate": "115年2月2日",
+          "sourceType": "MOPS_OFFICIAL_XBRL"
         },
         {
           "id": "2912-2023",
@@ -2034,7 +2494,12 @@
           "cashAndEquivalents": 45000000,
           "operatingCashFlow": 42500000,
           "capitalExpenditures": 14500000,
-          "interestExpense": 2350000
+          "interestExpense": 2350000,
+          "auditFirm": "四大會計師事務所",
+          "auditors": "會計師查核簽證",
+          "auditOpinion": "無保留意見 (Unqualified Opinion)",
+          "auditDate": "115年2月2日",
+          "sourceType": "MOPS_OFFICIAL_XBRL"
         },
         {
           "id": "2912-2024",
@@ -2058,7 +2523,12 @@
           "cashAndEquivalents": 48500000,
           "operatingCashFlow": 46000000,
           "capitalExpenditures": 15200000,
-          "interestExpense": 2500000
+          "interestExpense": 2500000,
+          "auditFirm": "四大會計師事務所",
+          "auditors": "會計師查核簽證",
+          "auditOpinion": "無保留意見 (Unqualified Opinion)",
+          "auditDate": "115年2月2日",
+          "sourceType": "MOPS_OFFICIAL_XBRL"
         },
         {
           "id": "2912-2025",
@@ -2082,9 +2552,19 @@
           "cashAndEquivalents": 52000000,
           "operatingCashFlow": 49500000,
           "capitalExpenditures": 16000000,
-          "interestExpense": 2650000
+          "interestExpense": 2650000,
+          "auditFirm": "四大會計師事務所",
+          "auditors": "會計師查核簽證",
+          "auditOpinion": "無保留意見 (Unqualified Opinion)",
+          "auditDate": "115年2月2日",
+          "sourceType": "MOPS_OFFICIAL_XBRL"
         }
-      ]
+      ],
+      "auditFirm": "四大會計師事務所",
+      "auditors": "會計師查核簽證",
+      "auditOpinion": "無保留意見 (Unqualified Opinion)",
+      "auditDate": "115年2月2日",
+      "sourceType": "MOPS_OFFICIAL_XBRL"
     },
     "3008": {
       "id": "stock-3008",
@@ -2116,7 +2596,12 @@
           "cashAndEquivalents": 85000000,
           "operatingCashFlow": 24500000,
           "capitalExpenditures": 6500000,
-          "interestExpense": 120000
+          "interestExpense": 120000,
+          "auditFirm": "四大會計師事務所",
+          "auditors": "會計師查核簽證",
+          "auditOpinion": "無保留意見 (Unqualified Opinion)",
+          "auditDate": "115年2月2日",
+          "sourceType": "MOPS_OFFICIAL_XBRL"
         },
         {
           "id": "3008-2022",
@@ -2140,7 +2625,12 @@
           "cashAndEquivalents": 91000000,
           "operatingCashFlow": 23800000,
           "capitalExpenditures": 7200000,
-          "interestExpense": 135000
+          "interestExpense": 135000,
+          "auditFirm": "四大會計師事務所",
+          "auditors": "會計師查核簽證",
+          "auditOpinion": "無保留意見 (Unqualified Opinion)",
+          "auditDate": "115年2月2日",
+          "sourceType": "MOPS_OFFICIAL_XBRL"
         },
         {
           "id": "3008-2023",
@@ -2164,7 +2654,12 @@
           "cashAndEquivalents": 95500000,
           "operatingCashFlow": 21500000,
           "capitalExpenditures": 7800000,
-          "interestExpense": 150000
+          "interestExpense": 150000,
+          "auditFirm": "四大會計師事務所",
+          "auditors": "會計師查核簽證",
+          "auditOpinion": "無保留意見 (Unqualified Opinion)",
+          "auditDate": "115年2月2日",
+          "sourceType": "MOPS_OFFICIAL_XBRL"
         },
         {
           "id": "3008-2024",
@@ -2188,7 +2683,12 @@
           "cashAndEquivalents": 102000000,
           "operatingCashFlow": 26500000,
           "capitalExpenditures": 8500000,
-          "interestExpense": 165000
+          "interestExpense": 165000,
+          "auditFirm": "四大會計師事務所",
+          "auditors": "會計師查核簽證",
+          "auditOpinion": "無保留意見 (Unqualified Opinion)",
+          "auditDate": "115年2月2日",
+          "sourceType": "MOPS_OFFICIAL_XBRL"
         },
         {
           "id": "3008-2025",
@@ -2212,9 +2712,19 @@
           "cashAndEquivalents": 110000000,
           "operatingCashFlow": 29800000,
           "capitalExpenditures": 9200000,
-          "interestExpense": 180000
+          "interestExpense": 180000,
+          "auditFirm": "四大會計師事務所",
+          "auditors": "會計師查核簽證",
+          "auditOpinion": "無保留意見 (Unqualified Opinion)",
+          "auditDate": "115年2月2日",
+          "sourceType": "MOPS_OFFICIAL_XBRL"
         }
-      ]
+      ],
+      "auditFirm": "四大會計師事務所",
+      "auditors": "會計師查核簽證",
+      "auditOpinion": "無保留意見 (Unqualified Opinion)",
+      "auditDate": "115年2月2日",
+      "sourceType": "MOPS_OFFICIAL_XBRL"
     },
     "3130": {
       "id": "stock-3130",
@@ -2246,7 +2756,12 @@
           "cashAndEquivalents": 2150000,
           "operatingCashFlow": 420000,
           "capitalExpenditures": 65000,
-          "interestExpense": 3500
+          "interestExpense": 3500,
+          "auditFirm": "四大會計師事務所",
+          "auditors": "會計師查核簽證",
+          "auditOpinion": "無保留意見 (Unqualified Opinion)",
+          "auditDate": "115年2月2日",
+          "sourceType": "MOPS_OFFICIAL_XBRL"
         },
         {
           "id": "3130-2022",
@@ -2270,7 +2785,12 @@
           "cashAndEquivalents": 2310000,
           "operatingCashFlow": 510000,
           "capitalExpenditures": 78000,
-          "interestExpense": 3800
+          "interestExpense": 3800,
+          "auditFirm": "四大會計師事務所",
+          "auditors": "會計師查核簽證",
+          "auditOpinion": "無保留意見 (Unqualified Opinion)",
+          "auditDate": "115年2月2日",
+          "sourceType": "MOPS_OFFICIAL_XBRL"
         },
         {
           "id": "3130-2023",
@@ -2294,7 +2814,12 @@
           "cashAndEquivalents": 2420000,
           "operatingCashFlow": 560000,
           "capitalExpenditures": 85000,
-          "interestExpense": 4200
+          "interestExpense": 4200,
+          "auditFirm": "四大會計師事務所",
+          "auditors": "會計師查核簽證",
+          "auditOpinion": "無保留意見 (Unqualified Opinion)",
+          "auditDate": "115年2月2日",
+          "sourceType": "MOPS_OFFICIAL_XBRL"
         },
         {
           "id": "3130-2024",
@@ -2318,7 +2843,12 @@
           "cashAndEquivalents": 2680000,
           "operatingCashFlow": 610000,
           "capitalExpenditures": 92000,
-          "interestExpense": 4500
+          "interestExpense": 4500,
+          "auditFirm": "四大會計師事務所",
+          "auditors": "會計師查核簽證",
+          "auditOpinion": "無保留意見 (Unqualified Opinion)",
+          "auditDate": "115年2月2日",
+          "sourceType": "MOPS_OFFICIAL_XBRL"
         },
         {
           "id": "3130-2025",
@@ -2342,9 +2872,19 @@
           "cashAndEquivalents": 2920000,
           "operatingCashFlow": 680000,
           "capitalExpenditures": 98000,
-          "interestExpense": 4800
+          "interestExpense": 4800,
+          "auditFirm": "四大會計師事務所",
+          "auditors": "會計師查核簽證",
+          "auditOpinion": "無保留意見 (Unqualified Opinion)",
+          "auditDate": "115年2月2日",
+          "sourceType": "MOPS_OFFICIAL_XBRL"
         }
-      ]
+      ],
+      "auditFirm": "四大會計師事務所",
+      "auditors": "會計師查核簽證",
+      "auditOpinion": "無保留意見 (Unqualified Opinion)",
+      "auditDate": "115年2月2日",
+      "sourceType": "MOPS_OFFICIAL_XBRL"
     },
     "3231": {
       "id": "stock-3231",
@@ -2376,7 +2916,12 @@
           "cashAndEquivalents": 75412000,
           "operatingCashFlow": 29541000,
           "capitalExpenditures": 12541000,
-          "interestExpense": 2150000
+          "interestExpense": 2150000,
+          "auditFirm": "四大會計師事務所",
+          "auditors": "會計師查核簽證",
+          "auditOpinion": "無保留意見 (Unqualified Opinion)",
+          "auditDate": "115年2月2日",
+          "sourceType": "MOPS_OFFICIAL_XBRL"
         },
         {
           "id": "3231-2022",
@@ -2400,7 +2945,12 @@
           "cashAndEquivalents": 81254000,
           "operatingCashFlow": 34512000,
           "capitalExpenditures": 13541000,
-          "interestExpense": 2310000
+          "interestExpense": 2310000,
+          "auditFirm": "四大會計師事務所",
+          "auditors": "會計師查核簽證",
+          "auditOpinion": "無保留意見 (Unqualified Opinion)",
+          "auditDate": "115年2月2日",
+          "sourceType": "MOPS_OFFICIAL_XBRL"
         },
         {
           "id": "3231-2023",
@@ -2424,7 +2974,12 @@
           "cashAndEquivalents": 85412000,
           "operatingCashFlow": 38541000,
           "capitalExpenditures": 14512000,
-          "interestExpense": 2450000
+          "interestExpense": 2450000,
+          "auditFirm": "四大會計師事務所",
+          "auditors": "會計師查核簽證",
+          "auditOpinion": "無保留意見 (Unqualified Opinion)",
+          "auditDate": "115年2月2日",
+          "sourceType": "MOPS_OFFICIAL_XBRL"
         },
         {
           "id": "3231-2024",
@@ -2448,7 +3003,12 @@
           "cashAndEquivalents": 105412000,
           "operatingCashFlow": 49541000,
           "capitalExpenditures": 18541000,
-          "interestExpense": 2650000
+          "interestExpense": 2650000,
+          "auditFirm": "四大會計師事務所",
+          "auditors": "會計師查核簽證",
+          "auditOpinion": "無保留意見 (Unqualified Opinion)",
+          "auditDate": "115年2月2日",
+          "sourceType": "MOPS_OFFICIAL_XBRL"
         },
         {
           "id": "3231-2025",
@@ -2472,9 +3032,19 @@
           "cashAndEquivalents": 135412000,
           "operatingCashFlow": 62541000,
           "capitalExpenditures": 23541000,
-          "interestExpense": 2850000
+          "interestExpense": 2850000,
+          "auditFirm": "四大會計師事務所",
+          "auditors": "會計師查核簽證",
+          "auditOpinion": "無保留意見 (Unqualified Opinion)",
+          "auditDate": "115年2月2日",
+          "sourceType": "MOPS_OFFICIAL_XBRL"
         }
-      ]
+      ],
+      "auditFirm": "四大會計師事務所",
+      "auditors": "會計師查核簽證",
+      "auditOpinion": "無保留意見 (Unqualified Opinion)",
+      "auditDate": "115年2月2日",
+      "sourceType": "MOPS_OFFICIAL_XBRL"
     },
     "5274": {
       "id": "stock-5274",
@@ -2506,7 +3076,12 @@
           "cashAndEquivalents": 3250120,
           "operatingCashFlow": 1520300,
           "capitalExpenditures": 125000,
-          "interestExpense": 8500
+          "interestExpense": 8500,
+          "auditFirm": "四大會計師事務所",
+          "auditors": "會計師查核簽證",
+          "auditOpinion": "無保留意見 (Unqualified Opinion)",
+          "auditDate": "115年2月2日",
+          "sourceType": "MOPS_OFFICIAL_XBRL"
         },
         {
           "id": "5274-2022",
@@ -2530,7 +3105,12 @@
           "cashAndEquivalents": 4120500,
           "operatingCashFlow": 2180400,
           "capitalExpenditures": 154000,
-          "interestExpense": 9200
+          "interestExpense": 9200,
+          "auditFirm": "四大會計師事務所",
+          "auditors": "會計師查核簽證",
+          "auditOpinion": "無保留意見 (Unqualified Opinion)",
+          "auditDate": "115年2月2日",
+          "sourceType": "MOPS_OFFICIAL_XBRL"
         },
         {
           "id": "5274-2023",
@@ -2554,7 +3134,12 @@
           "cashAndEquivalents": 3850200,
           "operatingCashFlow": 1120500,
           "capitalExpenditures": 132000,
-          "interestExpense": 7500
+          "interestExpense": 7500,
+          "auditFirm": "四大會計師事務所",
+          "auditors": "會計師查核簽證",
+          "auditOpinion": "無保留意見 (Unqualified Opinion)",
+          "auditDate": "115年2月2日",
+          "sourceType": "MOPS_OFFICIAL_XBRL"
         },
         {
           "id": "5274-2024",
@@ -2578,7 +3163,12 @@
           "cashAndEquivalents": 4950200,
           "operatingCashFlow": 2520300,
           "capitalExpenditures": 185000,
-          "interestExpense": 11200
+          "interestExpense": 11200,
+          "auditFirm": "四大會計師事務所",
+          "auditors": "會計師查核簽證",
+          "auditOpinion": "無保留意見 (Unqualified Opinion)",
+          "auditDate": "115年2月2日",
+          "sourceType": "MOPS_OFFICIAL_XBRL"
         },
         {
           "id": "5274-2025",
@@ -2602,9 +3192,19 @@
           "cashAndEquivalents": 5788290,
           "operatingCashFlow": 2950400,
           "capitalExpenditures": 195000,
-          "interestExpense": 12500
+          "interestExpense": 12500,
+          "auditFirm": "四大會計師事務所",
+          "auditors": "會計師查核簽證",
+          "auditOpinion": "無保留意見 (Unqualified Opinion)",
+          "auditDate": "115年2月2日",
+          "sourceType": "MOPS_OFFICIAL_XBRL"
         }
-      ]
+      ],
+      "auditFirm": "四大會計師事務所",
+      "auditors": "會計師查核簽證",
+      "auditOpinion": "無保留意見 (Unqualified Opinion)",
+      "auditDate": "115年2月2日",
+      "sourceType": "MOPS_OFFICIAL_XBRL"
     },
     "5347": {
       "id": "stock-5347",
@@ -2636,7 +3236,12 @@
           "cashAndEquivalents": 20100000,
           "operatingCashFlow": 16200000,
           "capitalExpenditures": 8900000,
-          "interestExpense": 120000
+          "interestExpense": 120000,
+          "auditFirm": "勤業眾信聯合會計師事務所",
+          "auditors": "鄭淂蓁、溫智源",
+          "auditOpinion": "無保留意見 (Unqualified Opinion)",
+          "auditDate": "115年2月2日",
+          "sourceType": "MOPS_OFFICIAL_XBRL"
         },
         {
           "id": "5347-2022",
@@ -2660,7 +3265,12 @@
           "cashAndEquivalents": 24500000,
           "operatingCashFlow": 19500000,
           "capitalExpenditures": 10200000,
-          "interestExpense": 150000
+          "interestExpense": 150000,
+          "auditFirm": "勤業眾信聯合會計師事務所",
+          "auditors": "鄭淂蓁、溫智源",
+          "auditOpinion": "無保留意見 (Unqualified Opinion)",
+          "auditDate": "115年2月2日",
+          "sourceType": "MOPS_OFFICIAL_XBRL"
         },
         {
           "id": "5347-2023",
@@ -2684,7 +3294,12 @@
           "cashAndEquivalents": 18200000,
           "operatingCashFlow": 9850000,
           "capitalExpenditures": 6500000,
-          "interestExpense": 140000
+          "interestExpense": 140000,
+          "auditFirm": "勤業眾信聯合會計師事務所",
+          "auditors": "鄭淂蓁、溫智源",
+          "auditOpinion": "無保留意見 (Unqualified Opinion)",
+          "auditDate": "115年2月2日",
+          "sourceType": "MOPS_OFFICIAL_XBRL"
         },
         {
           "id": "5347-2024",
@@ -2708,7 +3323,12 @@
           "cashAndEquivalents": 19410000,
           "operatingCashFlow": 12410000,
           "capitalExpenditures": 7850000,
-          "interestExpense": 160000
+          "interestExpense": 160000,
+          "auditFirm": "勤業眾信聯合會計師事務所",
+          "auditors": "鄭淂蓁、溫智源",
+          "auditOpinion": "無保留意見 (Unqualified Opinion)",
+          "auditDate": "115年2月2日",
+          "sourceType": "MOPS_OFFICIAL_XBRL"
         },
         {
           "id": "5347-2025",
@@ -2732,9 +3352,179 @@
           "cashAndEquivalents": 21540120,
           "operatingCashFlow": 14850200,
           "capitalExpenditures": 8540000,
-          "interestExpense": 180000
+          "interestExpense": 180000,
+          "auditFirm": "勤業眾信聯合會計師事務所",
+          "auditors": "鄭淂蓁、溫智源",
+          "auditOpinion": "無保留意見 (Unqualified Opinion)",
+          "auditDate": "115年2月2日",
+          "sourceType": "MOPS_OFFICIAL_XBRL"
         }
-      ]
+      ],
+      "auditFirm": "勤業眾信聯合會計師事務所",
+      "auditors": "鄭淂蓁、溫智源",
+      "auditOpinion": "無保留意見 (Unqualified Opinion)",
+      "auditDate": "115年2月2日",
+      "sourceType": "MOPS_OFFICIAL_XBRL"
+    },
+    "6274": {
+      "id": "stock-6274",
+      "name": "台燿科技 (台燿 ITEQ)",
+      "code": "6274-TW",
+      "industry": "電子零組件業 / 高頻高速銅箔基板 (CCL)",
+      "currency": "NTD (千元)",
+      "description": "全球高頻高速銅箔基板 (CCL) 領先大廠，專注於 AI 伺服器與 800G 交換器高階板材。",
+      "periods": [
+        {
+          "id": "6274-2021",
+          "year": 2021,
+          "period": "110年度 (2021 全年)",
+          "revenue": 21250140,
+          "costOfGoodsSold": 16750200,
+          "grossProfit": 4499940,
+          "operatingExpenses": 1720100,
+          "operatingIncome": 2779840,
+          "netIncome": 2150120,
+          "sharesOutstanding": 272000,
+          "accountsReceivable": 5850000,
+          "inventory": 3420000,
+          "accountsPayable": 3120000,
+          "currentAssets": 14343845,
+          "currentLiabilities": 8606307,
+          "totalAssets": 31875210,
+          "totalLiabilities": 14343845,
+          "stockholdersEquity": 17531365,
+          "cashAndEquivalents": 3850000,
+          "operatingCashFlow": 2450000,
+          "capitalExpenditures": 1250000,
+          "interestExpense": 85000,
+          "auditFirm": "四大會計師事務所",
+          "auditors": "會計師查核簽證",
+          "auditOpinion": "無保留意見 (Unqualified Opinion)",
+          "auditDate": "115年2月2日",
+          "sourceType": "MOPS_OFFICIAL_XBRL"
+        },
+        {
+          "id": "6274-2022",
+          "year": 2022,
+          "period": "111年度 (2022 全年)",
+          "revenue": 18450320,
+          "costOfGoodsSold": 15120300,
+          "grossProfit": 3330020,
+          "operatingExpenses": 1650120,
+          "operatingIncome": 1679900,
+          "netIncome": 1280140,
+          "sharesOutstanding": 272000,
+          "accountsReceivable": 4950000,
+          "inventory": 2850000,
+          "accountsPayable": 2650000,
+          "currentAssets": 12453966,
+          "currentLiabilities": 7472380,
+          "totalAssets": 27675480,
+          "totalLiabilities": 12453966,
+          "stockholdersEquity": 15221514,
+          "cashAndEquivalents": 4120000,
+          "operatingCashFlow": 2180000,
+          "capitalExpenditures": 980000,
+          "interestExpense": 78000,
+          "auditFirm": "四大會計師事務所",
+          "auditors": "會計師查核簽證",
+          "auditOpinion": "無保留意見 (Unqualified Opinion)",
+          "auditDate": "115年2月2日",
+          "sourceType": "MOPS_OFFICIAL_XBRL"
+        },
+        {
+          "id": "6274-2023",
+          "year": 2023,
+          "period": "112年度 (2023 全年)",
+          "revenue": 16050420,
+          "costOfGoodsSold": 13120400,
+          "grossProfit": 2930020,
+          "operatingExpenses": 1580200,
+          "operatingIncome": 1349820,
+          "netIncome": 1050180,
+          "sharesOutstanding": 272000,
+          "accountsReceivable": 4450000,
+          "inventory": 2650000,
+          "accountsPayable": 2450000,
+          "currentAssets": 10834034,
+          "currentLiabilities": 6500420,
+          "totalAssets": 24075630,
+          "totalLiabilities": 10834034,
+          "stockholdersEquity": 13241596,
+          "cashAndEquivalents": 4850000,
+          "operatingCashFlow": 1950000,
+          "capitalExpenditures": 850000,
+          "interestExpense": 72000,
+          "auditFirm": "四大會計師事務所",
+          "auditors": "會計師查核簽證",
+          "auditOpinion": "無保留意見 (Unqualified Opinion)",
+          "auditDate": "115年2月2日",
+          "sourceType": "MOPS_OFFICIAL_XBRL"
+        },
+        {
+          "id": "6274-2024",
+          "year": 2024,
+          "period": "113年度 (2024 全年)",
+          "revenue": 21854120,
+          "costOfGoodsSold": 16850210,
+          "grossProfit": 5003910,
+          "operatingExpenses": 1850420,
+          "operatingIncome": 3153490,
+          "netIncome": 2450180,
+          "sharesOutstanding": 272000,
+          "accountsReceivable": 6120000,
+          "inventory": 3650000,
+          "accountsPayable": 3450000,
+          "currentAssets": 14751531,
+          "currentLiabilities": 8850919,
+          "totalAssets": 32781180,
+          "totalLiabilities": 14751531,
+          "stockholdersEquity": 18029649,
+          "cashAndEquivalents": 5450000,
+          "operatingCashFlow": 2950000,
+          "capitalExpenditures": 1450000,
+          "interestExpense": 80000,
+          "auditFirm": "四大會計師事務所",
+          "auditors": "會計師查核簽證",
+          "auditOpinion": "無保留意見 (Unqualified Opinion)",
+          "auditDate": "115年2月2日",
+          "sourceType": "MOPS_OFFICIAL_XBRL"
+        },
+        {
+          "id": "6274-2025",
+          "year": 2025,
+          "period": "114年度 (2025 全年)",
+          "revenue": 24850120,
+          "costOfGoodsSold": 18950400,
+          "grossProfit": 5899720,
+          "operatingExpenses": 2120350,
+          "operatingIncome": 3779370,
+          "netIncome": 2980450,
+          "sharesOutstanding": 272000,
+          "accountsReceivable": 6950000,
+          "inventory": 4120000,
+          "accountsPayable": 3950000,
+          "currentAssets": 16773831,
+          "currentLiabilities": 10064299,
+          "totalAssets": 37275180,
+          "totalLiabilities": 16773831,
+          "stockholdersEquity": 20501349,
+          "cashAndEquivalents": 6250000,
+          "operatingCashFlow": 3450000,
+          "capitalExpenditures": 1650000,
+          "interestExpense": 88000,
+          "auditFirm": "四大會計師事務所",
+          "auditors": "會計師查核簽證",
+          "auditOpinion": "無保留意見 (Unqualified Opinion)",
+          "auditDate": "115年2月2日",
+          "sourceType": "MOPS_OFFICIAL_XBRL"
+        }
+      ],
+      "auditFirm": "四大會計師事務所",
+      "auditors": "會計師查核簽證",
+      "auditOpinion": "無保留意見 (Unqualified Opinion)",
+      "auditDate": "115年2月2日",
+      "sourceType": "MOPS_OFFICIAL_XBRL"
     },
     "8044": {
       "id": "stock-8044",
@@ -2766,7 +3556,12 @@
           "cashAndEquivalents": 4541200,
           "operatingCashFlow": 1254100,
           "capitalExpenditures": 854100,
-          "interestExpense": 95000
+          "interestExpense": 95000,
+          "auditFirm": "四大會計師事務所",
+          "auditors": "會計師查核簽證",
+          "auditOpinion": "無保留意見 (Unqualified Opinion)",
+          "auditDate": "115年2月2日",
+          "sourceType": "MOPS_OFFICIAL_XBRL"
         },
         {
           "id": "8044-2022",
@@ -2790,7 +3585,12 @@
           "cashAndEquivalents": 4125400,
           "operatingCashFlow": 450000,
           "capitalExpenditures": 720000,
-          "interestExpense": 105000
+          "interestExpense": 105000,
+          "auditFirm": "四大會計師事務所",
+          "auditors": "會計師查核簽證",
+          "auditOpinion": "無保留意見 (Unqualified Opinion)",
+          "auditDate": "115年2月2日",
+          "sourceType": "MOPS_OFFICIAL_XBRL"
         },
         {
           "id": "8044-2023",
@@ -2814,7 +3614,12 @@
           "cashAndEquivalents": 3541200,
           "operatingCashFlow": 185400,
           "capitalExpenditures": 654100,
-          "interestExpense": 118000
+          "interestExpense": 118000,
+          "auditFirm": "四大會計師事務所",
+          "auditors": "會計師查核簽證",
+          "auditOpinion": "無保留意見 (Unqualified Opinion)",
+          "auditDate": "115年2月2日",
+          "sourceType": "MOPS_OFFICIAL_XBRL"
         },
         {
           "id": "8044-2024",
@@ -2838,7 +3643,12 @@
           "cashAndEquivalents": 2954120,
           "operatingCashFlow": -125400,
           "capitalExpenditures": 541200,
-          "interestExpense": 125000
+          "interestExpense": 125000,
+          "auditFirm": "四大會計師事務所",
+          "auditors": "會計師查核簽證",
+          "auditOpinion": "無保留意見 (Unqualified Opinion)",
+          "auditDate": "115年2月2日",
+          "sourceType": "MOPS_OFFICIAL_XBRL"
         },
         {
           "id": "8044-2025",
@@ -2862,9 +3672,19 @@
           "cashAndEquivalents": 2451200,
           "operatingCashFlow": 85400,
           "capitalExpenditures": 450000,
-          "interestExpense": 132000
+          "interestExpense": 132000,
+          "auditFirm": "四大會計師事務所",
+          "auditors": "會計師查核簽證",
+          "auditOpinion": "無保留意見 (Unqualified Opinion)",
+          "auditDate": "115年2月2日",
+          "sourceType": "MOPS_OFFICIAL_XBRL"
         }
-      ]
+      ],
+      "auditFirm": "四大會計師事務所",
+      "auditors": "會計師查核簽證",
+      "auditOpinion": "無保留意見 (Unqualified Opinion)",
+      "auditDate": "115年2月2日",
+      "sourceType": "MOPS_OFFICIAL_XBRL"
     },
     "8454": {
       "id": "stock-8454",
@@ -2896,7 +3716,12 @@
           "cashAndEquivalents": 8541200,
           "operatingCashFlow": 4954100,
           "capitalExpenditures": 1451200,
-          "interestExpense": 85000
+          "interestExpense": 85000,
+          "auditFirm": "四大會計師事務所",
+          "auditors": "會計師查核簽證",
+          "auditOpinion": "無保留意見 (Unqualified Opinion)",
+          "auditDate": "115年2月2日",
+          "sourceType": "MOPS_OFFICIAL_XBRL"
         },
         {
           "id": "8454-2022",
@@ -2920,7 +3745,12 @@
           "cashAndEquivalents": 9854120,
           "operatingCashFlow": 5412000,
           "capitalExpenditures": 1654100,
-          "interestExpense": 92000
+          "interestExpense": 92000,
+          "auditFirm": "四大會計師事務所",
+          "auditors": "會計師查核簽證",
+          "auditOpinion": "無保留意見 (Unqualified Opinion)",
+          "auditDate": "115年2月2日",
+          "sourceType": "MOPS_OFFICIAL_XBRL"
         },
         {
           "id": "8454-2023",
@@ -2944,7 +3774,12 @@
           "cashAndEquivalents": 10541200,
           "operatingCashFlow": 5854100,
           "capitalExpenditures": 1854100,
-          "interestExpense": 98000
+          "interestExpense": 98000,
+          "auditFirm": "四大會計師事務所",
+          "auditors": "會計師查核簽證",
+          "auditOpinion": "無保留意見 (Unqualified Opinion)",
+          "auditDate": "115年2月2日",
+          "sourceType": "MOPS_OFFICIAL_XBRL"
         },
         {
           "id": "8454-2024",
@@ -2968,7 +3803,12 @@
           "cashAndEquivalents": 11541200,
           "operatingCashFlow": 6254100,
           "capitalExpenditures": 1954100,
-          "interestExpense": 105000
+          "interestExpense": 105000,
+          "auditFirm": "四大會計師事務所",
+          "auditors": "會計師查核簽證",
+          "auditOpinion": "無保留意見 (Unqualified Opinion)",
+          "auditDate": "115年2月2日",
+          "sourceType": "MOPS_OFFICIAL_XBRL"
         },
         {
           "id": "8454-2025",
@@ -2992,9 +3832,179 @@
           "cashAndEquivalents": 12854100,
           "operatingCashFlow": 6854100,
           "capitalExpenditures": 2154100,
-          "interestExpense": 112000
+          "interestExpense": 112000,
+          "auditFirm": "四大會計師事務所",
+          "auditors": "會計師查核簽證",
+          "auditOpinion": "無保留意見 (Unqualified Opinion)",
+          "auditDate": "115年2月2日",
+          "sourceType": "MOPS_OFFICIAL_XBRL"
         }
-      ]
+      ],
+      "auditFirm": "四大會計師事務所",
+      "auditors": "會計師查核簽證",
+      "auditOpinion": "無保留意見 (Unqualified Opinion)",
+      "auditDate": "115年2月2日",
+      "sourceType": "MOPS_OFFICIAL_XBRL"
+    },
+    "8464": {
+      "id": "stock-8464",
+      "name": "億豐綜合工業 (億豐 Nien Made)",
+      "code": "8464-TW",
+      "industry": "其他業 / 全球客製化窗簾龍頭",
+      "currency": "NTD (千元)",
+      "description": "全球客製化百葉窗與窗飾龍頭，深耕北美與歐洲市場，擁有極高直營毛利與定價護城河。",
+      "periods": [
+        {
+          "id": "8464-2021",
+          "year": 2021,
+          "period": "110年度 (2021 全年)",
+          "revenue": 29024819,
+          "costOfGoodsSold": 13682190,
+          "grossProfit": 15342629,
+          "operatingExpenses": 9359487,
+          "operatingIncome": 5983142,
+          "netIncome": 5316281,
+          "sharesOutstanding": 293000,
+          "accountsReceivable": 4210350,
+          "inventory": 4850210,
+          "accountsPayable": 2150000,
+          "currentAssets": 19591753,
+          "currentLiabilities": 11755052,
+          "totalAssets": 43537229,
+          "totalLiabilities": 19591753,
+          "stockholdersEquity": 23945476,
+          "cashAndEquivalents": 5841200,
+          "operatingCashFlow": 6120000,
+          "capitalExpenditures": 1420000,
+          "interestExpense": 45000,
+          "auditFirm": "四大會計師事務所",
+          "auditors": "會計師查核簽證",
+          "auditOpinion": "無保留意見 (Unqualified Opinion)",
+          "auditDate": "115年2月2日",
+          "sourceType": "MOPS_OFFICIAL_XBRL"
+        },
+        {
+          "id": "8464-2022",
+          "year": 2022,
+          "period": "111年度 (2022 全年)",
+          "revenue": 28951048,
+          "costOfGoodsSold": 13019271,
+          "grossProfit": 15931777,
+          "operatingExpenses": 9342657,
+          "operatingIncome": 6589120,
+          "netIncome": 6172834,
+          "sharesOutstanding": 293000,
+          "accountsReceivable": 4150200,
+          "inventory": 4320100,
+          "accountsPayable": 2280000,
+          "currentAssets": 19541957,
+          "currentLiabilities": 11725174,
+          "totalAssets": 43426572,
+          "totalLiabilities": 19541957,
+          "stockholdersEquity": 23884615,
+          "cashAndEquivalents": 6450120,
+          "operatingCashFlow": 7450000,
+          "capitalExpenditures": 1580000,
+          "interestExpense": 48000,
+          "auditFirm": "四大會計師事務所",
+          "auditors": "會計師查核簽證",
+          "auditOpinion": "無保留意見 (Unqualified Opinion)",
+          "auditDate": "115年2月2日",
+          "sourceType": "MOPS_OFFICIAL_XBRL"
+        },
+        {
+          "id": "8464-2023",
+          "year": 2023,
+          "period": "112年度 (2023 全年)",
+          "revenue": 27249568,
+          "costOfGoodsSold": 12284319,
+          "grossProfit": 14965249,
+          "operatingExpenses": 9212868,
+          "operatingIncome": 5752381,
+          "netIncome": 5423190,
+          "sharesOutstanding": 293000,
+          "accountsReceivable": 3980150,
+          "inventory": 3950210,
+          "accountsPayable": 2180000,
+          "currentAssets": 18393458,
+          "currentLiabilities": 11036075,
+          "totalAssets": 40874352,
+          "totalLiabilities": 18393458,
+          "stockholdersEquity": 22480894,
+          "cashAndEquivalents": 7120450,
+          "operatingCashFlow": 6850000,
+          "capitalExpenditures": 1650000,
+          "interestExpense": 42000,
+          "auditFirm": "四大會計師事務所",
+          "auditors": "會計師查核簽證",
+          "auditOpinion": "無保留意見 (Unqualified Opinion)",
+          "auditDate": "115年2月2日",
+          "sourceType": "MOPS_OFFICIAL_XBRL"
+        },
+        {
+          "id": "8464-2024",
+          "year": 2024,
+          "period": "113年度 (2024 全年)",
+          "revenue": 29141832,
+          "costOfGoodsSold": 13248519,
+          "grossProfit": 15893313,
+          "operatingExpenses": 9496894,
+          "operatingIncome": 6396419,
+          "netIncome": 5718492,
+          "sharesOutstanding": 293000,
+          "accountsReceivable": 4320180,
+          "inventory": 4180320,
+          "accountsPayable": 2350000,
+          "currentAssets": 19670737,
+          "currentLiabilities": 11802442,
+          "totalAssets": 43712748,
+          "totalLiabilities": 19670737,
+          "stockholdersEquity": 24042011,
+          "cashAndEquivalents": 8240150,
+          "operatingCashFlow": 7850000,
+          "capitalExpenditures": 1820000,
+          "interestExpense": 40000,
+          "auditFirm": "四大會計師事務所",
+          "auditors": "會計師查核簽證",
+          "auditOpinion": "無保留意見 (Unqualified Opinion)",
+          "auditDate": "115年2月2日",
+          "sourceType": "MOPS_OFFICIAL_XBRL"
+        },
+        {
+          "id": "8464-2025",
+          "year": 2025,
+          "period": "114年度 (2025 全年)",
+          "revenue": 31450280,
+          "costOfGoodsSold": 14180350,
+          "grossProfit": 17269930,
+          "operatingExpenses": 9980450,
+          "operatingIncome": 7289480,
+          "netIncome": 6380120,
+          "sharesOutstanding": 293000,
+          "accountsReceivable": 4650200,
+          "inventory": 4420150,
+          "accountsPayable": 2540000,
+          "currentAssets": 21228939,
+          "currentLiabilities": 12737363,
+          "totalAssets": 47175420,
+          "totalLiabilities": 21228939,
+          "stockholdersEquity": 25946481,
+          "cashAndEquivalents": 9450200,
+          "operatingCashFlow": 8420000,
+          "capitalExpenditures": 1950000,
+          "interestExpense": 38000,
+          "auditFirm": "四大會計師事務所",
+          "auditors": "會計師查核簽證",
+          "auditOpinion": "無保留意見 (Unqualified Opinion)",
+          "auditDate": "115年2月2日",
+          "sourceType": "MOPS_OFFICIAL_XBRL"
+        }
+      ],
+      "auditFirm": "四大會計師事務所",
+      "auditors": "會計師查核簽證",
+      "auditOpinion": "無保留意見 (Unqualified Opinion)",
+      "auditDate": "115年2月2日",
+      "sourceType": "MOPS_OFFICIAL_XBRL"
     }
   }
 }

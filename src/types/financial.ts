@@ -36,6 +36,14 @@ export interface FinancialPeriod {
   capitalExpenditures: number;  // 資本支出 (PP&E CapEx)
   intangibleCapEx?: number;     // 購置電腦軟體及無形資產支出
   leasePrincipalRepayment?: number; // 償還租賃負債本金 (IFRS 16 籌資現金流)
+
+  // 🏛️ 官方會計師查核簽證溯源元數據 (XBRL Audit Provenance Metadata)
+  auditFirm?: string;           // 簽證會計師事務所 (如: 勤業眾信聯合會計師事務所 Deloitte)
+  auditors?: string;            // 查核簽證會計師 (如: 鄭淂蓁、溫智源)
+  auditOpinion?: string;        // 查核意見類型 (如: 無保留意見 Unqualified Opinion)
+  auditDate?: string;           // 查核簽證日期 (如: 115/02/02)
+  sourceType?: 'MOPS_OFFICIAL_XBRL' | 'TWSE_OPEN_DATA' | 'VERIFIED_BENCHMARK';
+  xbrlSchemaRef?: string;       // IFRS Taxonomy 官方標準綱要
 }
 
 export interface CalculatedRatios {
@@ -102,6 +110,11 @@ export interface AccountEntity {
   currency: string;
   description: string;
   isConsolidatedGroup?: boolean;
+  auditFirm?: string;           // 簽證會計師事務所 (如: 勤業眾信聯合會計師事務所)
+  auditors?: string;            // 查核簽證會計師 (如: 鄭淂蓁、溫智源)
+  auditOpinion?: string;        // 查核意見類型 (如: 無保留意見)
+  auditDate?: string;           // 查核簽證日期 (如: 115/02/02)
+  sourceType?: 'MOPS_OFFICIAL_XBRL' | 'TWSE_OPEN_DATA' | 'VERIFIED_BENCHMARK';
   periods: FinancialPeriod[];
 }
 

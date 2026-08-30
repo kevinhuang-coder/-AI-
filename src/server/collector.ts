@@ -63,6 +63,8 @@ export const TAIWAN_CORE_STOCKS: Array<{ code: string; name: string; industry: s
   { code: '2912', name: '統一超', industry: '連鎖超商零售通路 (7-ELEVEN)' },
   { code: '2727', name: '王品', industry: '連鎖餐飲服務業' },
   { code: '8454', name: '富邦媒', industry: '電子商務與網購平台 (momo)' },
+  { code: '8464', name: '億豐', industry: '全球客製化窗簾製造與銷售' },
+  { code: '6274', name: '台燿', industry: '高頻高速銅箔基板 (CCL)' },
   { code: '8044', name: '網家', industry: '電子商務與數位金融 (PChome)' },
   { code: '9910', name: '豐泰', industry: '運動鞋製造代工' },
 
