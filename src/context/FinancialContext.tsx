@@ -392,7 +392,19 @@ export const FinancialProvider: React.FC<{ children: React.ReactNode }> = ({ chi
 
   const loadStockByCode = async (stockCode: string): Promise<boolean> => {
     try {
-      const company = await fetchTaiwanStockFinancials(stockCode);
+      const clean = stockCode.trim().toUpperCase().replace(/-?TW$/i, '').replace(/[^0-9A-Z]/g, '');
+
+      // 0. 優先檢查是否已存在於當前 companies 列表中
+      const existingInState = companies.find(
+        (c) => c.code.replace(/-?TW$/i, '') === clean || c.id === `stock-${clean}` || c.id.includes(clean)
+      );
+      if (existingInState) {
+        setActiveCompanyId(existingInState.id);
+        return true;
+      }
+
+      // 1. 檢索官方財報實體
+      const company = await fetchTaiwanStockFinancials(clean);
       if (!company) {
         throw new Error(`查無股票代號「${stockCode}」之公開財務報表數據`);
       }

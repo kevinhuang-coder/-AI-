@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useFinancial } from '../../context/FinancialContext';
-import { VERIFIED_TAIWAN_STOCKS, sanitizeFinancialEntity } from '../../utils/stockFetcher';
+import { VERIFIED_TAIWAN_STOCKS, sanitizeFinancialEntity, fetchTaiwanStockFinancials } from '../../utils/stockFetcher';
 import { TWSE_STOCK_DIRECTORY } from '../../data/twseStockDirectory';
 import { searchTaiwanMarketStocks, MarketStockItem } from '../../data/twseFullMarketDirectory';
 import {
@@ -161,50 +161,32 @@ export const DatabaseHubModal: React.FC = () => {
     try {
       setIsLoading(true);
       setErrorMsg(null);
-      addLog(`開始採集與會計校驗代號「${cleanCode}」...`);
+      addLog(`🚀 開始採集與會計校驗代號「${cleanCode}」...`);
 
-      // 優先嘗試後端同步
-      let success = false;
-      let stockName = `台股代號 ${cleanCode}`;
-      let periodsCount = 5;
+      // 真正獲取並校驗財務實體數據
+      const stockEntity = await fetchTaiwanStockFinancials(cleanCode);
 
-      try {
-        const res = await fetch('/api/financial/db/sync', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ code: cleanCode }),
-        });
+      if (stockEntity && stockEntity.periods && stockEntity.periods.length > 0) {
+        const stockName = stockEntity.name;
+        const periodsCount = stockEntity.periods.length;
 
-        if (res.ok) {
-          const data = await res.json();
-          if (data.success && data.result) {
-            success = true;
-            stockName = data.result.name || stockName;
-            periodsCount = data.result.periodsCount || periodsCount;
+        // 1. 同步存入伺服器資料庫
+        try {
+          await fetch('/api/financial/db/sync', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ code: cleanCode }),
+          });
+        } catch {}
+
+        // 2. 存入瀏覽器快取
+        try {
+          if (typeof window !== 'undefined') {
+            localStorage.setItem(`cached_stock_${cleanCode}`, JSON.stringify(stockEntity));
           }
-        }
-      } catch {
-        // 後端若無回應，走前端直連官方審定庫
-      }
+        } catch {}
 
-      // 前端直連官方審定庫與全市場字典保底
-      if (!success && VERIFIED_TAIWAN_STOCKS[cleanCode]) {
-        const stock = VERIFIED_TAIWAN_STOCKS[cleanCode];
-        stockName = stock.name;
-        periodsCount = stock.periods.length;
-        success = true;
-      } else if (!success && TWSE_STOCK_DIRECTORY[cleanCode]) {
-        const meta = TWSE_STOCK_DIRECTORY[cleanCode];
-        stockName = meta.name;
-        periodsCount = 5;
-        success = true;
-      }
-
-      if (success) {
-        addLog(`🟢 [${cleanCode}] ${stockName} 採集成功，共 ${periodsCount} 期數據通過五重會計勾稽入庫！`);
-        setInputCode('');
-
-        // 更新清單
+        // 3. 更新目錄列表
         setCompanies((prev) => {
           const exists = prev.some((c) => c.code === cleanCode);
           if (exists) return prev;
@@ -212,9 +194,9 @@ export const DatabaseHubModal: React.FC = () => {
             {
               code: cleanCode,
               name: stockName,
-              industry: TWSE_STOCK_DIRECTORY[cleanCode]?.industry || '台灣上市櫃公開申報實體',
+              industry: stockEntity.industry,
               periodsCount,
-              yearRange: '2021 ~ 2025',
+              yearRange: `${stockEntity.periods[0].year} ~ ${stockEntity.periods[stockEntity.periods.length - 1].year}`,
               lastUpdated: new Date().toISOString().split('T')[0],
             },
             ...prev,
@@ -226,9 +208,12 @@ export const DatabaseHubModal: React.FC = () => {
           totalCompanies: prev.totalCompanies + 1,
           totalPeriods: prev.totalPeriods + periodsCount,
         }));
+
+        addLog(`🟢 [${cleanCode}] ${stockName} 採集成功，共 ${periodsCount} 期數據通過五重會計勾稽入庫！`);
+        setInputCode('');
       } else {
         addLog(`🔴 [${cleanCode}] 查無此代號之公開申報資料，請確認是否為台灣 4 碼上市櫃代號。`);
-        setErrorMsg(`查無代號「${cleanCode}」之公開財報數據。`);
+        setErrorMsg(`查無股票代號「${cleanCode}」之公開財務報表數據`);
       }
     } catch (err: any) {
       addLog(`🔴 採集錯誤: ${err.message || '連線逾時'}`);
