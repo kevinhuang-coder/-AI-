@@ -49,21 +49,22 @@ export const FinancialHealthRadar: React.FC = () => {
     return { label: '待加強', color: 'text-rose-400 bg-rose-500/10 border-rose-500/30' };
   };
 
-  // 動態依綜合評分計算產業排名與實質風險等級
+  // 動態依綜合評分計算市場百分位與實質風險等級
   const getIndustryRank = (score: number) => {
-    if (score >= 88) return { text: '前 10% (頂尖)', color: 'text-emerald-400' };
-    if (score >= 75) return { text: '前 25% (優良)', color: 'text-cyan-300' };
-    if (score >= 60) return { text: '中前段 40%', color: 'text-blue-300' };
-    if (score >= 45) return { text: '中後段 65%', color: 'text-amber-400' };
-    return { text: '後 20% (落後)', color: 'text-rose-400' };
+    if (score >= 93) return { text: '前 1% (頂尖龍頭)', color: 'text-emerald-400' };
+    if (score >= 85) return { text: '前 5% (優質領先)', color: 'text-emerald-400' };
+    if (score >= 75) return { text: '前 15% (穩健優良)', color: 'text-cyan-300' };
+    if (score >= 60) return { text: '前 35% (中上)', color: 'text-blue-300' };
+    if (score >= 45) return { text: '中後段 60%', color: 'text-amber-400' };
+    return { text: '後 20% (落後警戒)', color: 'text-rose-400' };
   };
 
   const getRiskLevel = (score: number) => {
-    if (score >= 88) return { text: '極低風險', color: 'text-emerald-400' };
-    if (score >= 75) return { text: '低風險', color: 'text-cyan-300' };
-    if (score >= 60) return { text: '中度穩健', color: 'text-blue-300' };
+    if (score >= 90) return { text: '極低風險 (堡壘級)', color: 'text-emerald-400' };
+    if (score >= 75) return { text: '低風險 (穩健)', color: 'text-cyan-300' };
+    if (score >= 60) return { text: '中度風險', color: 'text-blue-300' };
     if (score >= 45) return { text: '警戒注意', color: 'text-amber-400' };
-    return { text: '高風險', color: 'text-rose-400' };
+    return { text: '高風險 🔴', color: 'text-rose-400' };
   };
 
   const rankInfo = getIndustryRank(health.totalScore);

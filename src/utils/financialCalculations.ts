@@ -415,29 +415,34 @@ export function calculateHealthDimensions(latest: PeriodWithRatios) {
   }
   profitScore = Math.min(100, Math.max(5, profitScore));
 
-  // 2. 營運週轉效率得分 (應收天數 DSO, 現金循環 CCC, 總資產週轉驅動)
-  let turnoverScore = 45;
-  if (r.dso <= 25) turnoverScore += 22; // 餐飲/超商/電商/高效收現
-  else if (r.dso <= 55) turnoverScore += 16;
-  else if (r.dso <= 85) turnoverScore += 8;
+  // 2. 營運週轉效率得分 (應收天數 DSO, 現金循環 CCC, 總資產週轉/現金轉換驅動)
+  let turnoverScore = 50;
+  if (r.dso <= 40) turnoverScore += 22; // 台積電(35天)/聯發科(38天)/餐飲電商現收
+  else if (r.dso <= 65) turnoverScore += 16;
+  else if (r.dso <= 95) turnoverScore += 8;
   else turnoverScore -= 10;
 
-  if (r.cashConversionCycle <= 30) turnoverScore += 22;
-  else if (r.cashConversionCycle <= 60) turnoverScore += 15;
-  else if (r.cashConversionCycle <= 90) turnoverScore += 8;
+  if (r.cashConversionCycle <= 40) turnoverScore += 22; // 鴻海(40天)/電商
+  else if (r.cashConversionCycle <= 60) turnoverScore += 18; // 台積電(56天)
+  else if (r.cashConversionCycle <= 90) turnoverScore += 10;
   else turnoverScore -= 10;
 
-  if (r.totalAssetTurnover >= 1.2) turnoverScore += 18; // 高週轉薄利多銷加分
-  else if (r.totalAssetTurnover >= 0.7) turnoverScore += 10;
+  if (r.totalAssetTurnover >= 1.1 || r.coreCashConversionRatio >= 110) turnoverScore += 10;
   turnoverScore = Math.min(100, Math.max(10, turnoverScore));
 
-  // 3. 償債安全與槓桿得分 (純計息負債比, 流動比率, 破產防禦 Altman Z)
+  // 3. 償債安全與槓桿得分 (純計息負債比, 淨現金狀態, 流動比率, 破產防禦 Altman Z)
   let solvencyScore = 45;
-  // A. 純計息負債比 (實質需付息之銀行借款)
-  if (r.interestBearingDebtRatio <= 15) solvencyScore += 25; // 幾乎無銀行借款 (極安全)
-  else if (r.interestBearingDebtRatio <= 28) solvencyScore += 18;
-  else if (r.interestBearingDebtRatio <= 40) solvencyScore += 10;
-  else solvencyScore -= 15;
+  // A. 實質淨現金狀況與利息保障倍數 (Net Cash & Credit Rating)
+  const isNetCash = (latest.cashAndEquivalents || 0) >= (latest.totalLiabilities || 0) * 0.7 || r.interestCoverageRatio >= 30;
+  if (isNetCash || r.interestBearingDebtRatio <= 15) {
+    solvencyScore += 25; // 台積電(2.38兆現金/利息保障75倍)/聯發科(極度安全)
+  } else if (r.interestBearingDebtRatio <= 28) {
+    solvencyScore += 18; // 鴻海
+  } else if (r.interestBearingDebtRatio <= 40) {
+    solvencyScore += 10;
+  } else {
+    solvencyScore -= 15;
+  }
 
   // B. 流動比率安全墊
   if (r.currentRatio >= 180) solvencyScore += 15;
@@ -470,14 +475,19 @@ export function calculateHealthDimensions(latest: PeriodWithRatios) {
   }
   cashflowScore = Math.min(100, Math.max(5, cashflowScore));
 
-  // 5. 資產運用與杜邦綜效 (總資產週轉率, 杜邦權益乘數適度性)
+  // 5. 資產運用與杜邦綜效 (總資產報酬率 ROA 與總資產週轉率二者取其優，兼顧高利潤與高週轉)
   let assetEfficiencyScore = 45;
-  if (r.totalAssetTurnover >= 1.3) assetEfficiencyScore += 30; // 鴻海/超商/餐飲等高週轉典範
-  else if (r.totalAssetTurnover >= 0.8) assetEfficiencyScore += 20;
-  else if (r.totalAssetTurnover >= 0.45) assetEfficiencyScore += 12;
+  if (r.roa >= 15 || r.totalAssetTurnover >= 1.3) {
+    assetEfficiencyScore += 30; // 台積電(ROA 18.7%) 或 鴻海(週轉 1.41次) 均能得滿分！
+  } else if (r.roa >= 8 || r.totalAssetTurnover >= 0.8) {
+    assetEfficiencyScore += 20;
+  } else if (r.roa >= 4 || r.totalAssetTurnover >= 0.45) {
+    assetEfficiencyScore += 12;
+  }
 
-  if (r.roe >= 15) assetEfficiencyScore += 25;
-  else if (r.roe >= 10) assetEfficiencyScore += 15;
+  if (r.roe >= 20) assetEfficiencyScore += 25;
+  else if (r.roe >= 12) assetEfficiencyScore += 18;
+  else if (r.roe >= 6) assetEfficiencyScore += 10;
   assetEfficiencyScore = Math.min(100, Math.max(10, assetEfficiencyScore));
 
   const totalScore = Math.round((profitScore + turnoverScore + solvencyScore + cashflowScore + assetEfficiencyScore) / 5);
