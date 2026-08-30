@@ -676,17 +676,17 @@ export const PdfReportModal: React.FC = () => {
                   
                   {/* Row 1: 嚴謹自由現金流 */}
                   <div className="p-2 bg-white rounded-lg border border-slate-200 flex flex-col justify-between">
-                    <div className="flex items-center justify-between gap-2 flex-wrap mb-0.5">
-                      <div className="flex items-center gap-1.5">
-                        <span className="font-bold text-slate-900 text-[10px]">① 嚴謹自由現金流 (Rigorous FCF)</span>
-                        <span className="text-slate-500 font-mono text-[9px]">公式：營業現金流 (OCF) - 資本支出 (CapEx)</span>
-                      </div>
+                    <div className="flex items-center justify-between gap-2 mb-0.5">
+                      <span className="font-bold text-slate-900 text-[10px]">① 嚴謹自由現金流 (Rigorous FCF)</span>
                       <div className="font-mono text-[10px]">
                         <span className="text-slate-600">${(latestPeriod.operatingCashFlow / 1000).toFixed(0)}M - ${(latestPeriod.capitalExpenditures / 1000).toFixed(0)}M</span>
                         <span className={`font-bold ml-1.5 ${r.rigorousFcf >= 0 ? 'text-emerald-800' : 'text-rose-800'}`}>= {formatMoney(r.rigorousFcf)}</span>
                       </div>
                     </div>
-                    <div className="flex items-start gap-1.5 text-[9px] text-slate-600 leading-normal">
+                    <div className="text-[8.5px] text-slate-500 font-mono mb-1">
+                      公式：營業活動現金流 (OCF) - 購置固定資產資本支出 (CapEx)
+                    </div>
+                    <div className="flex items-start gap-1.5 text-[9px] text-slate-600 leading-normal border-t border-slate-100 pt-1">
                       <span className="font-bold text-slate-900 flex-shrink-0">【會計勾稽與推論】</span>
                       <p className="flex-1">
                         {r.rigorousFcf >= 0
@@ -698,17 +698,17 @@ export const PdfReportModal: React.FC = () => {
 
                   {/* Row 2: 獲利現金含金量 */}
                   <div className="p-2 bg-white rounded-lg border border-slate-200 flex flex-col justify-between">
-                    <div className="flex items-center justify-between gap-2 flex-wrap mb-0.5">
-                      <div className="flex items-center gap-1.5">
-                        <span className="font-bold text-slate-900 text-[10px]">② 獲利現金含金量 (Cash Conversion Quality)</span>
-                        <span className="text-slate-500 font-mono text-[9px]">公式：營業現金流 (OCF) ÷ 稅後純益 (Net Income) × 100%</span>
-                      </div>
+                    <div className="flex items-center justify-between gap-2 mb-0.5">
+                      <span className="font-bold text-slate-900 text-[10px]">② 獲利現金含金量 (Cash Conversion Quality)</span>
                       <div className="font-mono text-[10px]">
                         <span className="text-slate-600">${(latestPeriod.operatingCashFlow / 1000).toFixed(0)}M ÷ ${(latestPeriod.netIncome / 1000).toFixed(0)}M</span>
                         <span className="font-bold text-cyan-900 ml-1.5">= {r.coreCashConversionRatio}%</span>
                       </div>
                     </div>
-                    <div className="flex items-start gap-1.5 text-[9px] text-slate-600 leading-normal">
+                    <div className="text-[8.5px] text-slate-500 font-mono mb-1">
+                      公式：營業活動現金流 (OCF) ÷ 稅後純益 (Net Income) × 100%
+                    </div>
+                    <div className="flex items-start gap-1.5 text-[9px] text-slate-600 leading-normal border-t border-slate-100 pt-1">
                       <span className="font-bold text-slate-900 flex-shrink-0">【會計勾稽與推論】</span>
                       <p className="flex-1">
                         {r.coreCashConversionRatio >= 100
@@ -720,17 +720,17 @@ export const PdfReportModal: React.FC = () => {
 
                   {/* Row 3: 杜邦分析三因子歸因 */}
                   <div className="p-2 bg-white rounded-lg border border-slate-200 flex flex-col justify-between">
-                    <div className="flex items-center justify-between gap-2 flex-wrap mb-0.5">
-                      <div className="flex items-center gap-1.5">
-                        <span className="font-bold text-slate-900 text-[10px]">③ 杜邦分析三因子連乘歸因 (DuPont 3-Way Attribution)</span>
-                        <span className="text-slate-500 font-mono text-[9px]">公式：稅後純益率 × 總資產週轉率 × 權益乘數</span>
-                      </div>
+                    <div className="flex items-center justify-between gap-2 mb-0.5">
+                      <span className="font-bold text-slate-900 text-[10px]">③ 杜邦分析三因子連乘歸因 (DuPont 3-Way Attribution)</span>
                       <div className="font-mono text-[10px]">
                         <span className="text-slate-600">{r.dupontNetMargin}% × {r.dupontAssetTurnover}次 × {r.dupontEquityMultiplier}倍</span>
                         <span className="font-bold text-amber-900 ml-1.5">= ROE {r.dupontRoe}%</span>
                       </div>
                     </div>
-                    <div className="flex items-start gap-1.5 text-[9px] text-slate-600 leading-normal">
+                    <div className="text-[8.5px] text-slate-500 font-mono mb-1">
+                      公式：稅後純益率 (獲利能力) × 總資產週轉率 (營運效率) × 權益乘數 (財務槓桿)
+                    </div>
+                    <div className="flex items-start gap-1.5 text-[9px] text-slate-600 leading-normal border-t border-slate-100 pt-1">
                       <span className="font-bold text-slate-900 flex-shrink-0">【會計勾稽與推論】</span>
                       <p className="flex-1">
                         ROE 股東權益報酬率達 {r.dupontRoe}%，經三因子拆解顯示主要受「{r.dupontNetMargin >= 15 ? '高產品淨利率 (利潤驅動)' : '高資產週轉效率 (薄利多銷)'}」所帶動，權益乘數維持在 {r.dupontEquityMultiplier} 倍（財務槓桿穩健），屬高品質之長期複利回報結構。
@@ -740,17 +740,17 @@ export const PdfReportModal: React.FC = () => {
 
                   {/* Row 4: Altman Z 破產防禦模型 */}
                   <div className="p-2 bg-white rounded-lg border border-slate-200 flex flex-col justify-between">
-                    <div className="flex items-center justify-between gap-2 flex-wrap mb-0.5">
-                      <div className="flex items-center gap-1.5">
-                        <span className="font-bold text-slate-900 text-[10px]">④ Altman Z 破產防禦評分模型 (5-Factor Z-Score Model)</span>
-                        <span className="text-slate-500 font-mono text-[9px]">公式：1.2X₁ + 1.4X₂ + 3.3X₃ + 0.6X₄ + 0.999X₅</span>
-                      </div>
+                    <div className="flex items-center justify-between gap-2 mb-0.5">
+                      <span className="font-bold text-slate-900 text-[10px]">④ Altman Z 破產防禦評分模型 (5-Factor Z-Score Model)</span>
                       <div className="font-mono text-[10px]">
                         <span className="text-slate-600">1.2({zX1}) + 1.4({zX2}) + 3.3({zX3}) + 0.6({zX4}) + 1.0({zX5})</span>
                         <span className="font-bold text-purple-900 ml-1.5">= {r.altmanZScore} 分 ({r.altmanZZone === 'safe' ? '安全堡壘' : r.altmanZZone === 'grey' ? '灰色區域' : '警戒區'})</span>
                       </div>
                     </div>
-                    <div className="flex items-start gap-1.5 text-[9px] text-slate-600 leading-normal">
+                    <div className="text-[8.5px] text-slate-500 font-mono mb-1">
+                      公式：1.2X₁(營運資金/資產) + 1.4X₂(保留盈餘/資產) + 3.3X₃(EBIT/資產) + 0.6X₄(權益/負債) + 0.999X₅(營收/資產)
+                    </div>
+                    <div className="flex items-start gap-1.5 text-[9px] text-slate-600 leading-normal border-t border-slate-100 pt-1">
                       <span className="font-bold text-slate-900 flex-shrink-0">【會計勾稽與推論】</span>
                       <p className="flex-1">
                         {r.altmanZZone === 'safe'
