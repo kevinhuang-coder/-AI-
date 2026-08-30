@@ -6,6 +6,7 @@ import { financialDb, normalizeStockCode } from './database';
 export const TAIWAN_CORE_STOCKS: Array<{ code: string; name: string; industry: string }> = [
   // 1. 半導體晶圓與 IC 設計
   { code: '2330', name: '台積電', industry: '半導體晶圓代工' },
+  { code: '5347', name: '世界先進', industry: '特殊製程與晶圓專工 (VIS)' },
   { code: '5274', name: '信驊', industry: '伺服器遠端管理晶片 (BMC) 龍頭' },
   { code: '2454', name: '聯發科', industry: '半導體 IC 設計' },
   { code: '2303', name: '聯電', industry: '晶圓專工與成熟製程' },
@@ -15,6 +16,7 @@ export const TAIWAN_CORE_STOCKS: Array<{ code: string; name: string; industry: s
   { code: '3661', name: '世芯-KY', industry: '高階 ASIC 晶片設計' },
   { code: '6415', name: '矽力*-KY', industry: '電源管理晶片 (PMIC)' },
   { code: '2408', name: '南亞科', industry: 'DRAM 記憶體製造' },
+  { code: '2027', name: '大成鋼', industry: '鋼鐵工業與不銹鋼通路' },
 
   // 2. AI 伺服器、EMS 電子製造與關鍵零組件
   { code: '2317', name: '鴻海', industry: '電子製造服務 (EMS)' },
