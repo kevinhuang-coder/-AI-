@@ -530,6 +530,192 @@ export function calculateHealthDimensions(latest: PeriodWithRatios) {
   };
 }
 
+export interface InvestorTrustMetrics {
+  periodCount: number;
+  yearsSpan: string;
+  sumRevenue: number;
+  sumNetIncome: number;
+  sumOCF: number;
+  sumCapEx: number;
+  sumFCF: number;
+  cashConversionRate: number;
+  cashQualityTag: string;
+  isCashSolid: boolean;
+  cashAndEquivalents: number;
+  interestCoverage: number;
+  altmanZ: number;
+  defenseTag: string;
+  isFortressSafe: boolean;
+  gmStart: number;
+  gmEnd: number;
+  gmDelta: string;
+  omStart: number;
+  omEnd: number;
+  omDelta: string;
+  moatTag: string;
+  isMoatExpanding: boolean;
+  topRisks: string[];
+}
+
+/**
+ * 價值投資人基本面安全感與真金白銀檢驗引擎 (Fundamental Trust & Safety Engine)
+ * 跨越單年會計迷思，直接統計 5 年累計真金流動、極端下檔防禦與護城河動態
+ */
+export function calculateInvestorTrustMetrics(periodsWithRatios: PeriodWithRatios[]): InvestorTrustMetrics {
+  if (!periodsWithRatios || periodsWithRatios.length === 0) {
+    return {
+      periodCount: 0,
+      yearsSpan: '無數據',
+      sumRevenue: 0,
+      sumNetIncome: 0,
+      sumOCF: 0,
+      sumCapEx: 0,
+      sumFCF: 0,
+      cashConversionRate: 0,
+      cashQualityTag: '暫無數據',
+      isCashSolid: false,
+      cashAndEquivalents: 0,
+      interestCoverage: 0,
+      altmanZ: 0,
+      defenseTag: '暫無數據',
+      isFortressSafe: false,
+      gmStart: 0,
+      gmEnd: 0,
+      gmDelta: '0.0',
+      omStart: 0,
+      omEnd: 0,
+      omDelta: '0.0',
+      moatTag: '暫無數據',
+      isMoatExpanding: false,
+      topRisks: [],
+    };
+  }
+
+  const sorted = [...periodsWithRatios].sort((a, b) => a.year - b.year);
+  const earliest = sorted[0];
+  const latest = sorted[sorted.length - 1];
+  const periodCount = sorted.length;
+  const yearsSpan = `${earliest.year} ~ ${latest.year} (${periodCount} 年期累計)`;
+
+  // 1. 5 年累計真金白銀總帳
+  let sumRevenue = 0;
+  let sumNetIncome = 0;
+  let sumOCF = 0;
+  let sumCapEx = 0;
+  let sumFCF = 0;
+
+  sorted.forEach(p => {
+    sumRevenue += p.revenue;
+    sumNetIncome += p.netIncome;
+    sumOCF += p.operatingCashFlow;
+    sumCapEx += p.capitalExpenditures;
+    sumFCF += (p.operatingCashFlow - p.capitalExpenditures);
+  });
+
+  const cashConversionRate = sumNetIncome > 0 ? Math.round((sumOCF / sumNetIncome) * 100) : 0;
+  let cashQualityTag = '🟢 獲利 100% 真金進帳 (自體造血印鈔機)';
+  let isCashSolid = true;
+
+  if (sumOCF < 0) {
+    cashQualityTag = '🔴 營運現金流赤字失血 (紙上獲利警戒)';
+    isCashSolid = false;
+  } else if (cashConversionRate < 80) {
+    cashQualityTag = '🟡 現金轉化率偏低 (需留意應收與存貨積壓)';
+    isCashSolid = false;
+  } else if (sumFCF <= 0) {
+    cashQualityTag = '🟡 資本支出巨大吃掉現金 (自由現金流承壓)';
+    isCashSolid = false;
+  }
+
+  // 2. 極端情境下檔防禦
+  const cashAndEquivalents = latest.cashAndEquivalents || 0;
+  const interestCoverage = latest.ratios.interestCoverageRatio || 0;
+  const altmanZ = latest.ratios.altmanZScore || 0;
+
+  let defenseTag = '🟢 堡壘級安全 (零短期償債危機，防禦縱深極佳)';
+  let isFortressSafe = true;
+
+  if (interestCoverage < 2.5 || latest.ratios.currentRatio < 100) {
+    defenseTag = '🔴 償債流動性吃緊 (升息與景氣暴跌脆弱)';
+    isFortressSafe = false;
+  } else if (interestCoverage < 8 || altmanZ < 2.2) {
+    defenseTag = '🟡 償債能力中度穩健 (需密切監控銀行利息負擔)';
+    isFortressSafe = false;
+  }
+
+  // 3. 護城河與定價權動態 (5年前 vs 最新年度)
+  const gmStart = earliest.ratios.grossMargin;
+  const gmEnd = latest.ratios.grossMargin;
+  const gmDeltaNum = gmEnd - gmStart;
+  const gmDelta = (gmDeltaNum >= 0 ? `+${gmDeltaNum.toFixed(1)}` : `${gmDeltaNum.toFixed(1)}`);
+
+  const omStart = earliest.ratios.operatingMargin;
+  const omEnd = latest.ratios.operatingMargin;
+  const omDeltaNum = omEnd - omStart;
+  const omDelta = (omDeltaNum >= 0 ? `+${omDeltaNum.toFixed(1)}` : `${omDeltaNum.toFixed(1)}`);
+
+  let moatTag = '🟢 定價權持續擴張 (毛利與營益率穩步攀升)';
+  let isMoatExpanding = true;
+
+  if (gmDeltaNum < -3.0) {
+    moatTag = '🔴 護城河面臨侵蝕 (毛利率遭市場價格戰壓縮)';
+    isMoatExpanding = false;
+  } else if (Math.abs(gmDeltaNum) <= 3.0) {
+    moatTag = `🟢 護城河穩定牢固 (毛利率維持在 ${gmEnd}% 區間)`;
+  }
+
+  // 4. 誠實客觀潛在風險提示 (Top 2 Risks)
+  const topRisks: string[] = [];
+
+  if (latest.capitalExpenditures >= latest.operatingCashFlow * 0.45 && latest.capitalExpenditures > 10000000) {
+    topRisks.push(`年資本支出高達 $${(latest.capitalExpenditures / 100000).toFixed(0)} 億元，折舊負擔沉重，需持續關注全球終端半導體需求與產能稼動率。`);
+  }
+  if (latest.ratios.grossMargin <= 10) {
+    topRisks.push(`本業毛利率 (${latest.ratios.grossMargin}%) 與營益率 (${latest.ratios.operatingMargin}%) 偏薄，對原物料上漲、匯率波動及單一品牌客戶砍價敏感。`);
+  }
+  if (latest.operatingCashFlow < 0 || latest.ratios.freeCashFlow < 0) {
+    topRisks.push(`營運現金流呈現失血狀態，本業尚未轉虧為盈，需密切關注流動性資金鏈與市場價格戰壓力。`);
+  }
+  if (latest.ratios.dso >= 65) {
+    topRisks.push(`應收帳款回收天數達 ${latest.ratios.dso} 天，需留意下游客戶拉貨週期與貨款回收速度。`);
+  }
+  if (latest.ratios.roe >= 22 && latest.ratios.dupontEquityMultiplier <= 2.2) {
+    topRisks.push(`當前資本回報率 (ROE ${latest.ratios.roe}%) 處於歷史高基期，需留意未來產業景氣循環高峰後之成長放緩風險。`);
+  }
+
+  if (topRisks.length === 0) {
+    topRisks.push(`總體經濟通膨與地緣政治供應鏈重組可能對營運成本與毛利率造成邊際壓力。`);
+    topRisks.push(`需持續追蹤主要競爭對手之產能擴充進度與新技術替代風險。`);
+  }
+
+  return {
+    periodCount,
+    yearsSpan,
+    sumRevenue,
+    sumNetIncome,
+    sumOCF,
+    sumCapEx,
+    sumFCF,
+    cashConversionRate,
+    cashQualityTag,
+    isCashSolid,
+    cashAndEquivalents,
+    interestCoverage,
+    altmanZ,
+    defenseTag,
+    isFortressSafe,
+    gmStart,
+    gmEnd,
+    gmDelta,
+    omStart,
+    omEnd,
+    omDelta,
+    moatTag,
+    isMoatExpanding,
+    topRisks: topRisks.slice(0, 2),
+  };
+}
+
 /**
  * 內建專業財務分析與趨勢預測引擎（支援離線/本機快速推算）
  */

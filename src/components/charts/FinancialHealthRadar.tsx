@@ -9,7 +9,7 @@ import {
   Radar,
   Tooltip,
 } from 'recharts';
-import { calculateHealthDimensions } from '../../utils/financialCalculations';
+import { calculateHealthDimensions, calculateInvestorTrustMetrics } from '../../utils/financialCalculations';
 import {
   Activity,
   ShieldCheck,
@@ -19,14 +19,18 @@ import {
   Percent,
   Layers,
   Zap,
+  Banknote,
+  Lock,
+  AlertTriangle,
 } from 'lucide-react';
 
 export const FinancialHealthRadar: React.FC = () => {
-  const { latestPeriod, activeCompany } = useFinancial();
+  const { latestPeriod, activeCompany, activeCompanyPeriodsWithRatios } = useFinancial();
 
   if (!latestPeriod) return null;
 
   const health = calculateHealthDimensions(latestPeriod);
+  const trustMetrics = calculateInvestorTrustMetrics(activeCompanyPeriodsWithRatios || [latestPeriod]);
   const r = latestPeriod.ratios;
 
   const getRatingColor = (rating: string) => {
@@ -281,6 +285,139 @@ export const FinancialHealthRadar: React.FC = () => {
           })}
         </div>
 
+      </div>
+
+      {/* Institutional Fundamental Trust & Safety Engine Section */}
+      <div className="mt-6 pt-5 border-t border-slate-800/80">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4">
+          <div className="flex items-center space-x-2">
+            <div className="p-1.5 rounded-xl bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">
+              <ShieldCheck className="w-4 h-4" />
+            </div>
+            <div>
+              <h4 className="text-sm font-bold text-slate-100 flex items-center gap-2">
+                價值投資人基本面安全感檢驗 (Fundamental Trust & Safety)
+                <span className="text-[10px] px-2 py-0.5 rounded-md bg-indigo-500/10 text-indigo-300 border border-indigo-500/20 font-mono font-normal">
+                  {trustMetrics.yearsSpan}
+                </span>
+              </h4>
+              <p className="text-[11px] text-slate-400">
+                跨越單年會計迷思，以 {trustMetrics.periodCount} 年累計真金流動、極端下檔防禦與護城河動態進行客觀壓力測試
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* 3 High-Impact Real-Cash Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-3.5 mb-3.5">
+          {/* Card 1: 5年累計真金白銀總帳 */}
+          <div className="p-3.5 bg-slate-950/80 rounded-xl border border-slate-800 hover:border-slate-700 transition">
+            <div className="flex items-center justify-between mb-2 pb-1.5 border-b border-slate-800/60">
+              <span className="text-xs font-bold text-slate-200 flex items-center gap-1.5">
+                <Banknote className="w-3.5 h-3.5 text-emerald-400" />
+                {trustMetrics.periodCount}年累計真金變現總帳
+              </span>
+              <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-emerald-950/80 text-emerald-300 border border-emerald-800/50 font-bold">
+                變現率 {trustMetrics.cashConversionRate}%
+              </span>
+            </div>
+            <div className="space-y-1.5 text-xs">
+              <div className="flex justify-between text-slate-400">
+                <span>累計稅後淨利:</span>
+                <span className="font-mono font-semibold text-slate-200">${(trustMetrics.sumNetIncome / 100000).toFixed(1)} 億</span>
+              </div>
+              <div className="flex justify-between text-slate-400">
+                <span>累計營業現金(OCF):</span>
+                <span className="font-mono font-semibold text-emerald-400">${(trustMetrics.sumOCF / 100000).toFixed(1)} 億</span>
+              </div>
+              <div className="flex justify-between text-slate-400">
+                <span>累計嚴謹自由現金(FCF):</span>
+                <span className="font-mono font-semibold text-cyan-300">${(trustMetrics.sumFCF / 100000).toFixed(1)} 億</span>
+              </div>
+            </div>
+            <div className="mt-2.5 pt-2 border-t border-slate-800/60 text-[11px] font-medium text-emerald-400 truncate">
+              {trustMetrics.cashQualityTag}
+            </div>
+          </div>
+
+          {/* Card 2: 極端情境下檔防禦墊 */}
+          <div className="p-3.5 bg-slate-950/80 rounded-xl border border-slate-800 hover:border-slate-700 transition">
+            <div className="flex items-center justify-between mb-2 pb-1.5 border-b border-slate-800/60">
+              <span className="text-xs font-bold text-slate-200 flex items-center gap-1.5">
+                <Lock className="w-3.5 h-3.5 text-blue-400" />
+                極端情境下檔防禦墊
+              </span>
+              <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-blue-950/80 text-blue-300 border border-blue-800/50 font-bold">
+                Altman Z: {trustMetrics.altmanZ}
+              </span>
+            </div>
+            <div className="space-y-1.5 text-xs">
+              <div className="flex justify-between text-slate-400">
+                <span>期末手握現金與約當:</span>
+                <span className="font-mono font-semibold text-slate-200">${(trustMetrics.cashAndEquivalents / 100000).toFixed(1)} 億</span>
+              </div>
+              <div className="flex justify-between text-slate-400">
+                <span>利息保障倍數:</span>
+                <span className="font-mono font-semibold text-blue-300">
+                  {trustMetrics.interestCoverage >= 50 ? '> 50 倍 (極安全)' : `${trustMetrics.interestCoverage} 倍`}
+                </span>
+              </div>
+              <div className="flex justify-between text-slate-400">
+                <span>短期流動比率:</span>
+                <span className="font-mono font-semibold text-slate-200">{latestPeriod.ratios.currentRatio}%</span>
+              </div>
+            </div>
+            <div className="mt-2.5 pt-2 border-t border-slate-800/60 text-[11px] font-medium text-blue-300 truncate">
+              {trustMetrics.defenseTag}
+            </div>
+          </div>
+
+          {/* Card 3: 護城河定價權動態 */}
+          <div className="p-3.5 bg-slate-950/80 rounded-xl border border-slate-800 hover:border-slate-700 transition">
+            <div className="flex items-center justify-between mb-2 pb-1.5 border-b border-slate-800/60">
+              <span className="text-xs font-bold text-slate-200 flex items-center gap-1.5">
+                <TrendingUp className="w-3.5 h-3.5 text-amber-400" />
+                護城河定價權軌跡
+              </span>
+              <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-amber-950/80 text-amber-300 border border-amber-800/50 font-bold">
+                毛利 {trustMetrics.gmDelta}%
+              </span>
+            </div>
+            <div className="space-y-1.5 text-xs">
+              <div className="flex justify-between text-slate-400">
+                <span>毛利率長期軌跡:</span>
+                <span className="font-mono font-semibold text-slate-200">{trustMetrics.gmStart}% ➔ {trustMetrics.gmEnd}%</span>
+              </div>
+              <div className="flex justify-between text-slate-400">
+                <span>營益率長期軌跡:</span>
+                <span className="font-mono font-semibold text-amber-300">{trustMetrics.omStart}% ➔ {trustMetrics.omEnd}% ({trustMetrics.omDelta}%)</span>
+              </div>
+              <div className="flex justify-between text-slate-400">
+                <span>杜邦核心引擎:</span>
+                <span className="font-sans font-semibold text-indigo-300">{health.businessEngine}</span>
+              </div>
+            </div>
+            <div className="mt-2.5 pt-2 border-t border-slate-800/60 text-[11px] font-medium text-amber-300 truncate">
+              {trustMetrics.moatTag}
+            </div>
+          </div>
+        </div>
+
+        {/* Honest Downside Risk Panel */}
+        <div className="p-3 bg-slate-950/90 rounded-xl border border-slate-800/90 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2.5 text-xs">
+          <div className="flex items-center space-x-1.5 text-amber-400 font-bold flex-shrink-0">
+            <AlertTriangle className="w-4 h-4 text-amber-400 flex-shrink-0" />
+            <span>投資人核心關注風險 (Honest Risk Notice)：</span>
+          </div>
+          <div className="flex-1 text-slate-300 text-[11px] leading-relaxed space-y-0.5">
+            {trustMetrics.topRisks.map((risk, idx) => (
+              <div key={idx} className="flex items-start gap-1">
+                <span className="text-amber-500 font-mono">•</span>
+                <span>{risk}</span>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
 
     </div>
