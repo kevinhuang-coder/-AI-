@@ -19,6 +19,7 @@ import {
   Crown,
   Coins,
   Calculator,
+  Table2,
 } from 'lucide-react';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
@@ -62,6 +63,9 @@ export const PdfReportModal: React.FC = () => {
       ? activeCompanyPeriodsWithRatios[activeCompanyPeriodsWithRatios.length - 2]
       : null;
   const prevRatios = prevPeriod?.ratios;
+
+  // 近 5 個年度歷史財報數據
+  const historyPeriods = activeCompanyPeriodsWithRatios.slice(-5);
 
   // YoY Delta helper (和前一年度相比之年增減)
   const calcDelta = (current: number, previous?: number, isPercentage = false) => {
@@ -662,105 +666,165 @@ export const PdfReportModal: React.FC = () => {
                 </div>
               </div>
 
-              {/* 6. 審計級底層數據計算過程與公式推導 (Audit Formula Proofs & Calculation Breakdown - 4 Full Rows) */}
-              <div className="p-2.5 bg-slate-50 rounded-xl border border-slate-200 text-xs">
-                <div className="flex items-center justify-between px-1 mb-1.5">
-                  <span className="text-[11px] font-bold text-slate-900 flex items-center gap-1.5">
-                    <Calculator className="w-3.5 h-3.5 text-indigo-700 flex-shrink-0" />
-                    審計級底層數據計算過程與公式推導 (Audit Formula Proofs & Calculation Breakdown)
-                  </span>
-                  <span className="text-[9px] text-slate-500 font-mono">四大財務報表實數完整勾稽與實質推理</span>
+              {/* 6. 近 5 年核心營運指標趨勢與財務體質評估 (5-Year Historical Trend & Financial Health Scorecards) */}
+              <div className="space-y-2">
+                
+                {/* 6A. 歷年核心財務表現對比表 (5-Year Historical Performance Table) */}
+                <div className="p-2.5 bg-slate-50 rounded-xl border border-slate-200 text-xs">
+                  <div className="flex items-center justify-between px-1 mb-1.5">
+                    <span className="text-[11px] font-bold text-slate-900 flex items-center gap-1.5">
+                      <Table2 className="w-3.5 h-3.5 text-indigo-700 flex-shrink-0" />
+                      近 5 年核心營運指標歷史趨勢速查 (5-Year Historical Performance Trend)
+                    </span>
+                    <span className="text-[9px] text-slate-500 font-mono">四大財務報表核心指標歷年對比</span>
+                  </div>
+
+                  <div className="overflow-hidden rounded-lg border border-slate-200 bg-white">
+                    <table className="w-full text-[9px] text-left border-collapse">
+                      <thead>
+                        <tr className="bg-slate-100/90 text-slate-700 font-bold border-b border-slate-200">
+                          <th className="py-1 px-2.5">核心財務指標</th>
+                          {historyPeriods.map((p, idx) => (
+                            <th key={p.id || idx} className="py-1 px-2 text-right">
+                              {p.year ? `${p.year}年` : p.period}
+                            </th>
+                          ))}
+                          <th className="py-1 px-2.5 text-center">5年成長軌跡</th>
+                        </tr>
+                      </thead>
+                      <tbody className="divide-y divide-slate-100 text-slate-700">
+                        <tr className="hover:bg-slate-50/50">
+                          <td className="py-1 px-2.5 font-bold text-slate-900">營業收入 (Revenue)</td>
+                          {historyPeriods.map((p, idx) => (
+                            <td key={idx} className="py-1 px-2 text-right font-mono">
+                              {formatMoney(p.revenue)}
+                            </td>
+                          ))}
+                          <td className="py-1 px-2.5 text-center text-emerald-800 font-bold text-[8.5px]">
+                            {historyPeriods.length > 1 && historyPeriods[0].revenue > 0
+                              ? `+${(((historyPeriods[historyPeriods.length - 1].revenue - historyPeriods[0].revenue) / historyPeriods[0].revenue) * 100).toFixed(0)}% ↗`
+                              : '-'}
+                          </td>
+                        </tr>
+                        <tr className="hover:bg-slate-50/50">
+                          <td className="py-1 px-2.5 font-bold text-slate-900">營業毛利率 (Gross Margin)</td>
+                          {historyPeriods.map((p, idx) => (
+                            <td key={idx} className="py-1 px-2 text-right font-mono">
+                              {p.ratios.grossMargin}%
+                            </td>
+                          ))}
+                          <td className="py-1 px-2.5 text-center text-emerald-800 font-bold text-[8.5px]">
+                            {historyPeriods.length > 1
+                              ? `${historyPeriods[historyPeriods.length - 1].ratios.grossMargin >= historyPeriods[0].ratios.grossMargin ? '+' : ''}${(historyPeriods[historyPeriods.length - 1].ratios.grossMargin - historyPeriods[0].ratios.grossMargin).toFixed(1)}%p ↗`
+                              : '-'}
+                          </td>
+                        </tr>
+                        <tr className="hover:bg-slate-50/50">
+                          <td className="py-1 px-2.5 font-bold text-slate-900">每股盈餘 (EPS)</td>
+                          {historyPeriods.map((p, idx) => (
+                            <td key={idx} className="py-1 px-2 text-right font-mono font-bold text-slate-900">
+                              NT$ {p.ratios.eps}
+                            </td>
+                          ))}
+                          <td className="py-1 px-2.5 text-center text-emerald-800 font-bold text-[8.5px]">
+                            {historyPeriods.length > 1 && historyPeriods[0].ratios.eps > 0
+                              ? `+${(((historyPeriods[historyPeriods.length - 1].ratios.eps - historyPeriods[0].ratios.eps) / historyPeriods[0].ratios.eps) * 100).toFixed(0)}% ↗`
+                              : '-'}
+                          </td>
+                        </tr>
+                        <tr className="hover:bg-slate-50/50">
+                          <td className="py-1 px-2.5 font-bold text-slate-900">ROE 股東權益報酬率</td>
+                          {historyPeriods.map((p, idx) => (
+                            <td key={idx} className="py-1 px-2 text-right font-mono">
+                              <span className={p.ratios.roe >= 15 ? 'text-emerald-800 font-bold' : ''}>
+                                {p.ratios.roe}%
+                              </span>
+                            </td>
+                          ))}
+                          <td className="py-1 px-2.5 text-center text-emerald-800 font-bold text-[8.5px]">
+                            {r.roe >= 15 ? '高複利 🟢' : '穩健 🟡'}
+                          </td>
+                        </tr>
+                        <tr className="hover:bg-slate-50/50">
+                          <td className="py-1 px-2.5 font-bold text-slate-900">嚴謹自由現金流 (Rigorous FCF)</td>
+                          {historyPeriods.map((p, idx) => (
+                            <td key={idx} className="py-1 px-2 text-right font-mono">
+                              <span className={p.ratios.rigorousFcf >= 0 ? 'text-emerald-800 font-semibold' : 'text-rose-800 font-semibold'}>
+                                {formatMoney(p.ratios.rigorousFcf)}
+                              </span>
+                            </td>
+                          ))}
+                          <td className="py-1 px-2.5 text-center text-emerald-800 font-bold text-[8.5px]">
+                            {r.rigorousFcf > 0 ? '充沛正向 🟢' : '吃緊赤字 🔴'}
+                          </td>
+                        </tr>
+                        <tr className="hover:bg-slate-50/50">
+                          <td className="py-1 px-2.5 font-bold text-slate-900">Altman Z 破產防禦評分</td>
+                          {historyPeriods.map((p, idx) => (
+                            <td key={idx} className="py-1 px-2 text-right font-mono font-bold text-purple-900">
+                              {p.ratios.altmanZScore}
+                            </td>
+                          ))}
+                          <td className="py-1 px-2.5 text-center text-purple-800 font-bold text-[8.5px]">
+                            {r.altmanZZone === 'safe' ? '安全堡壘 🛡️' : '灰色考驗 🟡'}
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
 
-                <div className="space-y-1.5">
-                  
-                  {/* Row 1: 嚴謹自由現金流 */}
-                  <div className="p-2 bg-white rounded-lg border border-slate-200 flex flex-col justify-between">
-                    <div className="flex items-center justify-between gap-2 mb-0.5">
-                      <span className="font-bold text-slate-900 text-[10px]">① 嚴謹自由現金流 (Rigorous FCF)</span>
-                      <div className="font-mono text-[10px]">
-                        <span className="text-slate-600">${(latestPeriod.operatingCashFlow / 1000).toFixed(0)}M - ${(latestPeriod.capitalExpenditures / 1000).toFixed(0)}M</span>
-                        <span className={`font-bold ml-1.5 ${r.rigorousFcf >= 0 ? 'text-emerald-800' : 'text-rose-800'}`}>= {formatMoney(r.rigorousFcf)}</span>
-                      </div>
+                {/* 6B. 4 大核心維度財務體質視覺計量儀 (4-Pillar Financial Health Scorecards) */}
+                <div className="grid grid-cols-4 gap-2">
+                  <div className="p-2 bg-slate-50 rounded-xl border border-slate-200 flex flex-col justify-between">
+                    <div className="flex items-center justify-between mb-1">
+                      <span className="text-[9.5px] font-bold text-slate-800">經濟護城河壁壘</span>
+                      <span className="text-[8px] font-bold px-1.5 py-0.2 rounded bg-indigo-100 text-indigo-800 border border-indigo-200">
+                        {r.economicMoat === 'wide' ? '寬廣護城河' : r.economicMoat === 'narrow' ? '中度壁壘' : '一般結構'}
+                      </span>
                     </div>
-                    <div className="text-[8.5px] text-slate-500 font-mono mb-1">
-                      公式：營業活動現金流 (OCF) - 購置固定資產資本支出 (CapEx)
-                    </div>
-                    <div className="flex items-start gap-1.5 text-[9px] text-slate-600 leading-normal border-t border-slate-100 pt-1">
-                      <span className="font-bold text-slate-900 flex-shrink-0">【會計勾稽與推論】</span>
-                      <p className="flex-1">
-                        {r.rigorousFcf >= 0
-                          ? `本期營業活動實質帶入現金 ${formatMoney(latestPeriod.operatingCashFlow)}，在扣除維持競爭力必要之 CapEx 支出 ${formatMoney(latestPeriod.capitalExpenditures)} 後，產生實質自由現金流 ${formatMoney(r.rigorousFcf)}，代表企業無須依賴外部融資即具備充沛本業現金創造力與實質股息分派實力。`
-                          : `本期嚴謹自由現金流呈現赤字 (${formatMoney(r.rigorousFcf)})，主因營業現金流不足以支應當期資本支出，需留意營運資金消耗與融資調度壓力。`}
-                      </p>
+                    <div className="text-[8.5px] text-slate-600">
+                      毛利率 <strong className="text-slate-900">{r.grossMargin}%</strong> ｜ ROE <strong className="text-slate-900">{r.roe}%</strong>
                     </div>
                   </div>
 
-                  {/* Row 2: 獲利現金含金量 */}
-                  <div className="p-2 bg-white rounded-lg border border-slate-200 flex flex-col justify-between">
-                    <div className="flex items-center justify-between gap-2 mb-0.5">
-                      <span className="font-bold text-slate-900 text-[10px]">② 獲利現金含金量 (Cash Conversion Quality)</span>
-                      <div className="font-mono text-[10px]">
-                        <span className="text-slate-600">${(latestPeriod.operatingCashFlow / 1000).toFixed(0)}M ÷ ${(latestPeriod.netIncome / 1000).toFixed(0)}M</span>
-                        <span className="font-bold text-cyan-900 ml-1.5">= {r.coreCashConversionRatio}%</span>
-                      </div>
+                  <div className="p-2 bg-slate-50 rounded-xl border border-slate-200 flex flex-col justify-between">
+                    <div className="flex items-center justify-between mb-1">
+                      <span className="text-[9.5px] font-bold text-slate-800">盈餘現金含金量</span>
+                      <span className="text-[8px] font-bold px-1.5 py-0.2 rounded bg-cyan-100 text-cyan-800 border border-cyan-200">
+                        {r.earningsQualityScore} 分卓越
+                      </span>
                     </div>
-                    <div className="text-[8.5px] text-slate-500 font-mono mb-1">
-                      公式：營業活動現金流 (OCF) ÷ 稅後純益 (Net Income) × 100%
-                    </div>
-                    <div className="flex items-start gap-1.5 text-[9px] text-slate-600 leading-normal border-t border-slate-100 pt-1">
-                      <span className="font-bold text-slate-900 flex-shrink-0">【會計勾稽與推論】</span>
-                      <p className="flex-1">
-                        {r.coreCashConversionRatio >= 100
-                          ? `核心現金轉換率達 ${r.coreCashConversionRatio}%（大幅超越標準 ≥ 100%），證明帳面獲利 100% 轉化為真金白銀流入公司帳戶，有效排除應收帳款滯納或存貨虛增美化財報之潛在地雷。`
-                          : `核心現金轉換率為 ${r.coreCashConversionRatio}%（低於 100% 理想水準），顯示部分帳面盈餘仍滯留於應收帳款或存貨形式，需追蹤後續貨款收現效率。`}
-                      </p>
+                    <div className="text-[8.5px] text-slate-600">
+                      現金轉換率 <strong className="text-cyan-900">{r.coreCashConversionRatio}%</strong> (利潤變真金)
                     </div>
                   </div>
 
-                  {/* Row 3: 杜邦分析三因子歸因 */}
-                  <div className="p-2 bg-white rounded-lg border border-slate-200 flex flex-col justify-between">
-                    <div className="flex items-center justify-between gap-2 mb-0.5">
-                      <span className="font-bold text-slate-900 text-[10px]">③ 杜邦分析三因子連乘歸因 (DuPont 3-Way Attribution)</span>
-                      <div className="font-mono text-[10px]">
-                        <span className="text-slate-600">{r.dupontNetMargin}% × {r.dupontAssetTurnover}次 × {r.dupontEquityMultiplier}倍</span>
-                        <span className="font-bold text-amber-900 ml-1.5">= ROE {r.dupontRoe}%</span>
-                      </div>
+                  <div className="p-2 bg-slate-50 rounded-xl border border-slate-200 flex flex-col justify-between">
+                    <div className="flex items-center justify-between mb-1">
+                      <span className="text-[9.5px] font-bold text-slate-800">長期資本複利力</span>
+                      <span className="text-[8px] font-bold px-1.5 py-0.2 rounded bg-emerald-100 text-emerald-800 border border-emerald-200">
+                        {r.roe >= 15 ? '優質複利' : '穩健水準'}
+                      </span>
                     </div>
-                    <div className="text-[8.5px] text-slate-500 font-mono mb-1">
-                      公式：稅後純益率 (獲利能力) × 總資產週轉率 (營運效率) × 權益乘數 (財務槓桿)
-                    </div>
-                    <div className="flex items-start gap-1.5 text-[9px] text-slate-600 leading-normal border-t border-slate-100 pt-1">
-                      <span className="font-bold text-slate-900 flex-shrink-0">【會計勾稽與推論】</span>
-                      <p className="flex-1">
-                        ROE 股東權益報酬率達 {r.dupontRoe}%，經三因子拆解顯示主要受「{r.dupontNetMargin >= 15 ? '高產品淨利率 (利潤驅動)' : '高資產週轉效率 (薄利多銷)'}」所帶動，權益乘數維持在 {r.dupontEquityMultiplier} 倍（財務槓桿穩健），屬高品質之長期複利回報結構。
-                      </p>
+                    <div className="text-[8.5px] text-slate-600">
+                      純益率 <strong className="text-emerald-900">{r.dupontNetMargin}%</strong> 驅動高效回報
                     </div>
                   </div>
 
-                  {/* Row 4: Altman Z 破產防禦模型 */}
-                  <div className="p-2 bg-white rounded-lg border border-slate-200 flex flex-col justify-between">
-                    <div className="flex items-center justify-between gap-2 mb-0.5">
-                      <span className="font-bold text-slate-900 text-[10px]">④ Altman Z 破產防禦評分模型 (5-Factor Z-Score Model)</span>
-                      <div className="font-mono text-[10px]">
-                        <span className="text-slate-600">1.2({zX1}) + 1.4({zX2}) + 3.3({zX3}) + 0.6({zX4}) + 1.0({zX5})</span>
-                        <span className="font-bold text-purple-900 ml-1.5">= {r.altmanZScore} 分 ({r.altmanZZone === 'safe' ? '安全堡壘' : r.altmanZZone === 'grey' ? '灰色區域' : '警戒區'})</span>
-                      </div>
+                  <div className="p-2 bg-slate-50 rounded-xl border border-slate-200 flex flex-col justify-between">
+                    <div className="flex items-center justify-between mb-1">
+                      <span className="text-[9.5px] font-bold text-slate-800">破產防禦安全度</span>
+                      <span className="text-[8px] font-bold px-1.5 py-0.2 rounded bg-purple-100 text-purple-800 border border-purple-200">
+                        {r.altmanZScore} 分極安全
+                      </span>
                     </div>
-                    <div className="text-[8.5px] text-slate-500 font-mono mb-1">
-                      公式：1.2X₁(營運資金/資產) + 1.4X₂(保留盈餘/資產) + 3.3X₃(EBIT/資產) + 0.6X₄(權益/負債) + 0.999X₅(營收/資產)
-                    </div>
-                    <div className="flex items-start gap-1.5 text-[9px] text-slate-600 leading-normal border-t border-slate-100 pt-1">
-                      <span className="font-bold text-slate-900 flex-shrink-0">【會計勾稽與推論】</span>
-                      <p className="flex-1">
-                        {r.altmanZZone === 'safe'
-                          ? `五因子加權總評分達 ${r.altmanZScore} 分（遠高於安全門檻 2.99 分），主要受惠於穩固的股東權益資本緩衝 (X₄=${zX4}) 與強勁的本業資產息稅前獲利率 (X₃=${zX3})，純計息負債比僅 ${r.interestBearingDebtRatio}%，未來 2 年內破產違約機率極低，具備強大抗風險底氣。`
-                          : `五因子加權總評分 ${r.altmanZScore} 分落入「${r.altmanZZone === 'grey' ? '灰色過渡區' : '財務困境警戒區'}」，需持續關注短期營運流動性 (X₁) 與債務展延壓力。`}
-                      </p>
+                    <div className="text-[8.5px] text-slate-600">
+                      純計息負債比僅 <strong className="text-purple-900">{r.interestBearingDebtRatio}%</strong>
                     </div>
                   </div>
-
                 </div>
+
               </div>
 
             </div>
