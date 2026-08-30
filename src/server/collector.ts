@@ -1,6 +1,6 @@
 import { AccountEntity } from '../types/financial';
 import { sanitizeFinancialEntity, VERIFIED_TAIWAN_STOCKS } from '../utils/stockFetcher';
-import { financialDb } from './database';
+import { financialDb, normalizeStockCode } from './database';
 
 // 台灣 50 (0050) 與核心代表性上市櫃權值龍頭企業清單 (共 50 檔)
 export const TAIWAN_CORE_STOCKS: Array<{ code: string; name: string; industry: string }> = [
@@ -87,7 +87,7 @@ class FinancialCollector {
    * 採集單檔股票並自動清洗入庫
    */
   public async collectAndStoreStock(stockCode: string): Promise<IngestionResult> {
-    const cleanCode = stockCode.trim().toUpperCase().replace(/[^0-9A-Z]/g, '').replace('-TW', '');
+    const cleanCode = normalizeStockCode(stockCode);
     if (!cleanCode) {
       return {
         code: stockCode,

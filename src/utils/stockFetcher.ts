@@ -2016,7 +2016,7 @@ export function sanitizeFinancialEntity(company: AccountEntity): AccountEntity {
  * 依台股 4 碼代號即時查詢官方標準年報 (純年度年報體系，100% 官方真實審計數據)
  */
 export async function fetchTaiwanStockFinancials(stockCode: string): Promise<AccountEntity | null> {
-  const cleanCode = stockCode.trim().toUpperCase().replace(/[^0-9A-Z]/g, '');
+  const cleanCode = stockCode.trim().toUpperCase().replace(/-?TW$/i, '').replace(/[^0-9A-Z]/g, '').replace(/TW$/i, '');
   if (!cleanCode) return null;
 
   // 1. 第一層：優先查詢內建標竿企業年報庫 (0.001s 瞬間載入，經會計審定)

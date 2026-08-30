@@ -3,7 +3,7 @@ import path from 'path';
 import { createServer as createViteServer } from 'vite';
 import { GoogleGenAI } from '@google/genai';
 import dotenv from 'dotenv';
-import { financialDb } from './src/server/database';
+import { financialDb, normalizeStockCode } from './src/server/database';
 import { financialCollector } from './src/server/collector';
 
 dotenv.config();
@@ -600,7 +600,7 @@ app.delete('/api/financial/db/stock/:code', (req, res) => {
 // 台股代號一鍵即時聯網財報查詢 API (支援全台灣 2000+ 上市、上櫃與興櫃所有股票)
 app.get('/api/financial/fetch-stock', async (req, res) => {
   try {
-    const rawCode = (req.query.code as string || '').trim().toUpperCase().replace(/[^0-9A-Z]/g, '');
+    const rawCode = normalizeStockCode(req.query.code as string || '');
     if (!rawCode) {
       return res.status(400).json({ success: false, error: '請輸入有效之台股代號' });
     }

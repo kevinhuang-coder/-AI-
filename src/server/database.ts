@@ -17,6 +17,11 @@ export interface WarehouseSchema {
   companies: Record<string, AccountEntity>;
 }
 
+export function normalizeStockCode(code: string): string {
+  if (!code) return '';
+  return code.trim().toUpperCase().replace(/-?TW$/i, '').replace(/[^0-9A-Z]/g, '').replace(/TW$/i, '');
+}
+
 class FinancialDatabase {
   private cache: WarehouseSchema = {
     version: '1.0.0',
@@ -47,9 +52,20 @@ class FinancialDatabase {
         const raw = fs.readFileSync(DB_FILE, 'utf-8');
         const parsed = JSON.parse(raw);
         if (parsed && typeof parsed.companies === 'object') {
+          // 自動遷移修復鍵名（如 2002TW -> 2002）
+          const cleanedCompanies: Record<string, AccountEntity> = {};
+          Object.entries(parsed.companies as Record<string, AccountEntity>).forEach(([k, comp]) => {
+            const cleanKey = normalizeStockCode(k);
+            cleanedCompanies[cleanKey] = sanitizeFinancialEntity({
+              ...comp,
+              code: `${cleanKey}-TW`,
+            });
+          });
+          parsed.companies = cleanedCompanies;
           this.cache = parsed;
+          this.saveToDisk();
           this.isLoaded = true;
-          console.log(`[Financial DB] 成功加載資料庫，共收錄 ${Object.keys(this.cache.companies).length} 家企業。`);
+          console.log(`[Financial DB] 成功加載並校驗資料庫，共收錄 ${Object.keys(this.cache.companies).length} 家企業。`);
           return;
         }
       }
@@ -57,16 +73,17 @@ class FinancialDatabase {
       // 首次初始化：載入內建官方審定標竿股票
       console.log('[Financial DB] 首次建立資料庫，正在灌入內建官方審定標竿企業...');
       Object.entries(VERIFIED_TAIWAN_STOCKS).forEach(([code, stock]) => {
+        const cleanKey = normalizeStockCode(code);
         const entity: AccountEntity = {
-          id: `stock-${code}`,
+          id: `stock-${cleanKey}`,
           name: stock.name,
-          code: stock.code,
+          code: `${cleanKey}-TW`,
           industry: stock.industry,
           currency: stock.currency,
           description: stock.description,
           periods: stock.periods,
         };
-        this.cache.companies[code] = sanitizeFinancialEntity(entity);
+        this.cache.companies[cleanKey] = sanitizeFinancialEntity(entity);
       });
 
       this.saveToDisk();
@@ -100,7 +117,7 @@ class FinancialDatabase {
    * 查詢指定股票代號之官方審定財報 (0 延遲，< 1ms)
    */
   public getCompany(stockCode: string): AccountEntity | null {
-    const cleanCode = stockCode.trim().toUpperCase().replace(/[^0-9A-Z]/g, '');
+    const cleanCode = normalizeStockCode(stockCode);
     if (!cleanCode) return null;
     return this.cache.companies[cleanCode] || null;
   }
@@ -110,10 +127,13 @@ class FinancialDatabase {
    */
   public saveCompany(company: AccountEntity): boolean {
     if (!company || !company.code || !Array.isArray(company.periods)) return false;
-    const cleanCode = company.code.trim().toUpperCase().replace(/[^0-9A-Z]/g, '').replace('-TW', '');
+    const cleanCode = normalizeStockCode(company.code);
     
     // 強制通過五重會計勾稽防偽閘門
-    const sanitized = sanitizeFinancialEntity(company);
+    const sanitized = sanitizeFinancialEntity({
+      ...company,
+      code: `${cleanCode}-TW`,
+    });
     this.cache.companies[cleanCode] = sanitized;
     return this.saveToDisk();
   }
@@ -125,8 +145,11 @@ class FinancialDatabase {
     let count = 0;
     companies.forEach((c) => {
       if (c && c.code) {
-        const cleanCode = c.code.trim().toUpperCase().replace(/[^0-9A-Z]/g, '').replace('-TW', '');
-        this.cache.companies[cleanCode] = sanitizeFinancialEntity(c);
+        const cleanCode = normalizeStockCode(c.code);
+        this.cache.companies[cleanCode] = sanitizeFinancialEntity({
+          ...c,
+          code: `${cleanCode}-TW`,
+        });
         count++;
       }
     });
