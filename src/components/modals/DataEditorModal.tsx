@@ -4,6 +4,7 @@ import { AccountEntity, FinancialPeriod, FinancialChangeRecord } from '../../typ
 import { ChangeHistoryPanel } from './ChangeHistoryPanel';
 import { fetchTaiwanStockFinancials, VERIFIED_TAIWAN_STOCKS } from '../../utils/stockFetcher';
 import { searchTaiwanMarketStocks, MarketStockItem } from '../../data/twseFullMarketDirectory';
+import { parseXbrlXmlString, parseXbrlZipArchive, XbrlParseResult } from '../../utils/xbrlParser';
 import {
   X,
   Plus,
@@ -26,6 +27,9 @@ import {
   Search,
   Zap,
   Globe,
+  FileCode,
+  FolderArchive,
+  ShieldCheck,
 } from 'lucide-react';
 
 export const DataEditorModal: React.FC = () => {
@@ -49,6 +53,8 @@ export const DataEditorModal: React.FC = () => {
   const [periods, setPeriods] = useState<FinancialPeriod[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [restoreToast, setRestoreToast] = useState<string | null>(null);
+  const [isDragging, setIsDragging] = useState(false);
+  const [isParsingXbrl, setIsParsingXbrl] = useState(false);
 
   const [importSuccessInfo, setImportSuccessInfo] = useState<{
     companyName: string;
@@ -404,15 +410,92 @@ export const DataEditorModal: React.FC = () => {
   const handleFileInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
-
-    if (file.name.toLowerCase().endsWith('.csv') || file.type === 'text/csv') {
-      handleCsvUploadFile(file);
-    } else {
-      setError('請選擇標準 CSV 格式之財務資料檔案 (*.csv)。');
-    }
+    handleProcessFile(file);
     if (fileInputRef.current) {
       fileInputRef.current.value = '';
     }
+  };
+
+  // 統一處理上傳檔案 (支援 .zip, .xml, .xbrl, .html, .csv)
+  const handleProcessFile = async (file: File) => {
+    setError(null);
+    const lowerName = file.name.toLowerCase();
+
+    // 1. 官方 XBRL ZIP 壓縮包 (.zip)
+    if (lowerName.endsWith('.zip')) {
+      setIsParsingXbrl(true);
+      try {
+        const buffer = await file.arrayBuffer();
+        const res = await parseXbrlZipArchive(buffer);
+        if (res.success && res.company) {
+          applyParsedCompany(res.company, file.name, '官方 MOPS XBRL 壓縮包');
+        } else {
+          setError(res.error || '無法解析該 ZIP 壓縮包中的 XBRL 報表');
+        }
+      } catch (err: any) {
+        setError(`ZIP 解壓失敗: ${err.message}`);
+      } finally {
+        setIsParsingXbrl(false);
+      }
+      return;
+    }
+
+    // 2. 官方 XBRL / iXBRL 單檔 (.xml, .xbrl, .html)
+    if (lowerName.endsWith('.xml') || lowerName.endsWith('.xbrl') || lowerName.endsWith('.html')) {
+      setIsParsingXbrl(true);
+      try {
+        const text = await file.text();
+        const res = parseXbrlXmlString(text);
+        if (res.success && res.company) {
+          applyParsedCompany(res.company, file.name, '官方 MOPS XBRL 申報檔');
+        } else {
+          setError(res.error || '無法解析該 XML 中的 IFRS 財務科目');
+        }
+      } catch (err: any) {
+        setError(`XML 讀取失敗: ${err.message}`);
+      } finally {
+        setIsParsingXbrl(false);
+      }
+      return;
+    }
+
+    // 3. 標準 CSV 格式 (.csv)
+    if (lowerName.endsWith('.csv') || file.type === 'text/csv') {
+      handleCsvUploadFile(file);
+      return;
+    }
+
+    setError('不支援的檔案格式。請上傳公開資訊觀測站官方 XBRL 檔 (*.zip, *.xml, *.xbrl) 或標準 CSV 檔 (*.csv)。');
+  };
+
+  const applyParsedCompany = (comp: AccountEntity, filename: string, sourceLabel: string) => {
+    setName(comp.name);
+    setCode(comp.code);
+    setIndustry(comp.industry);
+    setCurrency(comp.currency);
+    setDescription(comp.description);
+    const sorted = [...comp.periods].sort((a, b) => a.year - b.year);
+    setPeriods(sorted);
+    setImportSuccessInfo({
+      companyName: comp.name,
+      periodsCount: sorted.length,
+      filename: `${filename} (${sourceLabel})`,
+    });
+
+    addChangeRecord(
+      {
+        id: editingCompany ? editingCompany.id : `company-${Date.now()}`,
+        name: comp.name,
+        code: comp.code,
+        industry: comp.industry,
+        currency: comp.currency,
+        description: comp.description,
+        periods: sorted,
+      },
+      'import_xbrl',
+      '官方 XBRL 財報匯入',
+      `自「${filename}」解析匯入 ${sorted.length} 個財務期別（會計師查核簽證審定）`
+    );
   };
 
   // CSV Import helper
@@ -818,37 +901,76 @@ export const DataEditorModal: React.FC = () => {
                 </div>
               </div>
 
-              {/* Standard CSV Import Toolbar for Custom / Unlisted Companies */}
-              <div className="flex flex-col sm:flex-row items-center justify-between gap-3 p-3.5 sm:p-4 rounded-2xl bg-slate-950/60 border border-slate-800">
-                <div className="flex items-center space-x-2.5">
-                  <FileSpreadsheet className="w-4 h-4 text-emerald-400 flex-shrink-0" />
-                  <span className="text-xs text-slate-300">
-                    如需分析未上市 / 內部私有企業數據，可使用標準 CSV 格式：
-                  </span>
+              {/* Official MOPS XBRL & CSV Drag-and-Drop Dropzone */}
+              <div
+                onDragOver={(e) => {
+                  e.preventDefault();
+                  setIsDragging(true);
+                }}
+                onDragLeave={() => setIsDragging(false)}
+                onDrop={(e) => {
+                  e.preventDefault();
+                  setIsDragging(false);
+                  const file = e.dataTransfer.files?.[0];
+                  if (file) handleProcessFile(file);
+                }}
+                className={`p-4 sm:p-5 rounded-2xl border-2 border-dashed transition-all flex flex-col sm:flex-row items-center justify-between gap-4 ${
+                  isDragging
+                    ? 'border-cyan-400 bg-cyan-950/40 scale-[1.01]'
+                    : 'border-slate-700/80 bg-slate-950/70 hover:border-slate-600'
+                }`}
+              >
+                <div className="flex items-center space-x-3.5">
+                  <div className="w-10 h-10 rounded-2xl bg-cyan-600/20 text-cyan-400 border border-cyan-500/30 flex items-center justify-center flex-shrink-0">
+                    {isParsingXbrl ? (
+                      <Loader2 className="w-5 h-5 animate-spin text-cyan-400" />
+                    ) : (
+                      <FolderArchive className="w-5 h-5" />
+                    )}
+                  </div>
+                  <div>
+                    <div className="flex items-center gap-2 flex-wrap">
+                      <h4 className="text-xs sm:text-sm font-bold text-white flex items-center gap-1.5">
+                        <span>公開資訊觀測站 (MOPS) 官方 XBRL / ZIP 拖曳上傳</span>
+                      </h4>
+                      <span className="text-[10px] px-2 py-0.5 rounded-full bg-cyan-500/20 text-cyan-300 font-mono font-bold">
+                        🏆 100% 官方簽證原檔
+                      </span>
+                    </div>
+                    <p className="text-[11px] sm:text-xs text-slate-400 mt-0.5">
+                      可直接拖入 MOPS 下載之 <span className="text-cyan-300 font-mono">.zip</span> 壓縮檔、<span className="text-cyan-300 font-mono">.xml / .xbrl</span> 單檔或標準 <span className="text-emerald-300 font-mono">.csv</span> 試算表，0.01 秒完成解析對帳。
+                    </p>
+                  </div>
                 </div>
+
                 <div className="flex items-center space-x-2 w-full sm:w-auto justify-end">
                   <input
                     ref={fileInputRef}
                     type="file"
-                    accept=".csv,text/csv"
+                    accept=".zip,.xml,.xbrl,.html,.csv,text/csv,application/zip"
                     className="hidden"
                     onChange={handleFileInputChange}
                   />
                   <button
                     type="button"
                     onClick={downloadTemplate}
-                    className="flex items-center space-x-1.5 px-3 py-1.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-800 text-xs font-medium transition min-h-[32px]"
+                    className="flex items-center space-x-1.5 px-3 py-1.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-800 text-xs font-medium transition min-h-[34px] cursor-pointer"
                   >
                     <Download className="w-3.5 h-3.5 text-slate-400" />
-                    <span>下載 CSV 範本</span>
+                    <span>CSV 範本</span>
                   </button>
                   <button
                     type="button"
+                    disabled={isParsingXbrl}
                     onClick={() => fileInputRef.current?.click()}
-                    className="flex items-center space-x-1.5 px-3.5 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 text-xs font-semibold transition min-h-[32px]"
+                    className="flex items-center space-x-1.5 px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white text-xs font-bold transition shadow-sm cursor-pointer min-h-[34px]"
                   >
-                    <Upload className="w-3.5 h-3.5 text-emerald-400" />
-                    <span>匯入 CSV 數據</span>
+                    {isParsingXbrl ? (
+                      <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                    ) : (
+                      <Upload className="w-3.5 h-3.5" />
+                    )}
+                    <span>選擇 XBRL/ZIP 檔案</span>
                   </button>
                 </div>
               </div>

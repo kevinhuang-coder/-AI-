@@ -5,6 +5,7 @@ import { GoogleGenAI } from '@google/genai';
 import dotenv from 'dotenv';
 import { financialDb, normalizeStockCode } from './src/server/database';
 import { financialCollector } from './src/server/collector';
+import { parseXbrlXmlString } from './src/utils/xbrlParser';
 
 dotenv.config();
 
@@ -592,6 +593,23 @@ app.delete('/api/financial/db/stock/:code', (req, res) => {
     const code = req.params.code;
     const deleted = financialDb.deleteCompany(code);
     return res.json({ success: deleted });
+  } catch (err: any) {
+    return res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// 7. 官方標準 XBRL 解析與入庫 API
+app.post('/api/financial/xbrl/parse', async (req, res) => {
+  try {
+    const { xmlContent, code } = req.body;
+    if (!xmlContent) {
+      return res.status(400).json({ success: false, error: '請提供欲解析之 XBRL XML 內容' });
+    }
+    const result = parseXbrlXmlString(xmlContent, code);
+    if (result.success && result.company) {
+      financialDb.saveCompany(result.company);
+    }
+    return res.json(result);
   } catch (err: any) {
     return res.status(500).json({ success: false, error: err.message });
   }
